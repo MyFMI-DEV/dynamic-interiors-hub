@@ -8,6 +8,7 @@ import LocationCategory from "./pages/LocationCategory";
 import HowItWorks from "./pages/HowItWorks";
 import WhyChooseUs from "./pages/WhyChooseUs";
 import PostFree from "./pages/PostFree";
+import Sitemap from "./pages/Sitemap";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/why-choose-us" element={<WhyChooseUs />} />
           <Route path="/post-free" element={<PostFree />} />
+          <Route path="/sitemap.xml" element={<Sitemap />} />
           <Route path="/:location/:category" element={<LocationCategory />} />
         </Routes>
       </BrowserRouter>
