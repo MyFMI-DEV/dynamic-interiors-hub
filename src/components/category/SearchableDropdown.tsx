@@ -34,15 +34,28 @@ const SearchableDropdown = ({
 }: SearchableDropdownProps) => {
   const [open, setOpen] = useState(false);
 
+  // Early return for loading state
+  if (isLoading) {
+    return (
+      <Button 
+        variant="secondary" 
+        className="min-w-[200px] justify-between"
+        disabled
+      >
+        Loading...
+        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      </Button>
+    );
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button 
           variant="secondary" 
           className="min-w-[200px] justify-between"
-          disabled={isLoading}
         >
-          {isLoading ? "Loading..." : title}
+          {title}
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -50,9 +63,9 @@ const SearchableDropdown = ({
         <Command>
           <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
           <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-          {groups?.map((group) => (
+          {(groups || []).map((group) => (
             <CommandGroup key={group.heading} heading={group.heading}>
-              {group.items?.map((item) => {
+              {(group.items || []).map((item) => {
                 const isActive = value === item.toLowerCase().replace(/\s+/g, '-');
                 return (
                   <CommandItem
