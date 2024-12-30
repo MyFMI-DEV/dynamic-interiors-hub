@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useLocationData } from "@/hooks/useLocationData";
 import { useLocationDescription } from "@/hooks/useLocationDescription";
