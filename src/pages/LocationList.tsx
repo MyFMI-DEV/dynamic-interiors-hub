@@ -9,6 +9,7 @@ import LoadingState from "@/components/ui/LoadingState";
 
 interface Location {
   main_location: string;
+  sub_location: string;
 }
 
 interface Category {
@@ -23,11 +24,10 @@ const LocationList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch locations
+        // Fetch all locations including sub-locations
         const { data: locationsData } = await supabase
           .from('locations')
-          .select('main_location')
-          .eq('sub_location', 'City Centre');
+          .select('main_location, sub_location');
 
         // Fetch categories
         const { data: categoriesData } = await supabase
@@ -37,7 +37,10 @@ const LocationList = () => {
         if (locationsData && categoriesData) {
           // Remove duplicates
           const uniqueLocations = locationsData.filter((location, index, self) =>
-            index === self.findIndex((l) => l.main_location === location.main_location)
+            index === self.findIndex((l) => 
+              l.main_location === location.main_location && 
+              l.sub_location === location.sub_location
+            )
           );
           const uniqueCategories = categoriesData.filter((category, index, self) =>
             index === self.findIndex((c) => c.sub_category === category.sub_category)
@@ -56,8 +59,10 @@ const LocationList = () => {
     fetchData();
   }, []);
 
-  const formatUrl = (location: string, category: string) => {
-    return `/${location.toLowerCase().replace(/\s+/g, '-')}/${category.toLowerCase().replace(/\s+/g, '-')}`;
+  const formatUrl = (location: Location, category: string) => {
+    const locationPath = `${location.main_location.toLowerCase()}-${location.sub_location.toLowerCase()}`.replace(/\s+/g, '-');
+    const categoryPath = category.toLowerCase().replace(/\s+/g, '-');
+    return `/${locationPath}/${categoryPath}`;
   };
 
   if (isLoading) {
@@ -75,13 +80,15 @@ const LocationList = () => {
         <Card className="p-6">
           <div className="space-y-8">
             {locations.map((location) => (
-              <div key={location.main_location} className="space-y-4">
-                <h2 className="text-2xl font-semibold">{location.main_location}</h2>
+              <div key={`${location.main_location}-${location.sub_location}`} className="space-y-4">
+                <h2 className="text-2xl font-semibold">
+                  {location.main_location} - {location.sub_location}
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {categories.map((category) => (
                     <Link
-                      key={`${location.main_location}-${category.sub_category}`}
-                      to={formatUrl(location.main_location, category.sub_category)}
+                      key={`${location.main_location}-${location.sub_location}-${category.sub_category}`}
+                      to={formatUrl(location, category.sub_category)}
                       className="p-3 bg-accent hover:bg-primary hover:text-white rounded-lg transition-colors"
                     >
                       {category.sub_category}
