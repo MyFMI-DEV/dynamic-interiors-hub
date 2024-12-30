@@ -47,11 +47,6 @@ const SearchableDropdown = ({
     );
   }
 
-  if (!Array.isArray(groups)) {
-    console.warn('SearchableDropdown: groups prop is not an array');
-    return null;
-  }
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -67,17 +62,15 @@ const SearchableDropdown = ({
         <Command>
           <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
           <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-          {groups.map((group) => {
-            if (!group || typeof group !== 'object') {
-              console.warn('SearchableDropdown: Invalid group object');
+          {groups?.map((group) => {
+            if (!group?.heading || !Array.isArray(group?.items)) {
               return null;
             }
             
             return (
               <CommandGroup key={group.heading} heading={group.heading}>
-                {Array.isArray(group.items) && group.items.map((item) => {
+                {group.items.map((item) => {
                   if (typeof item !== 'string') {
-                    console.warn('SearchableDropdown: Invalid item type');
                     return null;
                   }
 
