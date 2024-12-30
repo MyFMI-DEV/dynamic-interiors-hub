@@ -19,17 +19,25 @@ serve(async (req) => {
 
   try {
     const { location, category } = await req.json();
+    console.log(`Generating description for ${location}/${category}`);
+    
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Check if description already exists
-    const { data: existingDescription } = await supabase
+    const { data: existingDescription, error: fetchError } = await supabase
       .from('location_category_descriptions')
       .select('description')
       .eq('location', location)
       .eq('category', category)
       .maybeSingle();
 
+    if (fetchError) {
+      console.error('Error fetching existing description:', fetchError);
+      throw fetchError;
+    }
+
     if (existingDescription) {
+      console.log('Returning existing description');
       return new Response(
         JSON.stringify({ description: existingDescription.description }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -37,6 +45,7 @@ serve(async (req) => {
     }
 
     // Generate new description using OpenAI
+    console.log('Generating new description using OpenAI');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -59,7 +68,7 @@ serve(async (req) => {
     });
 
     const data = await response.json();
-    console.log('OpenAI response:', data);
+    console.log('OpenAI response received');
     
     if (!data.choices?.[0]?.message?.content) {
       throw new Error('Failed to generate description from OpenAI');
@@ -83,6 +92,7 @@ serve(async (req) => {
       throw insertError;
     }
 
+    console.log('Description generated and stored successfully');
     return new Response(
       JSON.stringify({ description: generatedDescription }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
