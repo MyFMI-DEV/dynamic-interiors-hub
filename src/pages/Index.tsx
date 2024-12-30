@@ -58,7 +58,7 @@ const Index = () => {
             className="h-24 md:h-32 lg:h-40 mx-auto transition-all duration-300 hover:scale-105"
           />
           <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mt-8 text-center font-bold">
-            Find Top Interior & Home Products and Services in Your Area
+            Discover Premium Home & Interior Solutions Near You
           </h1>
           <p className="text-white text-xl md:text-2xl mt-4 text-center font-light">
             Connect with Trusted Suppliers, Retailers, and Service Providers Today
