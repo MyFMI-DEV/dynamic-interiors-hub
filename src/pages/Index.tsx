@@ -21,7 +21,9 @@ const Index = () => {
       
       if (error) throw error;
       
-      return [...new Set(data.map(c => c.main_category))];
+      // Get unique main categories
+      const uniqueCategories = [...new Set(data.map(c => c.main_category))];
+      return uniqueCategories;
     }
   });
 
