@@ -56,11 +56,22 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful assistant that generates informative descriptions about interior design services and products in specific locations.'
+            content: `You are an expert interior design consultant with deep knowledge of local markets and design trends. 
+            Your tone is warm, professional, and engaging. You provide valuable insights while maintaining a friendly, 
+            approachable style that builds trust with readers. Focus on highlighting the unique aspects of specific 
+            services/products in different locations while providing practical value to the reader.`
           },
           {
             role: 'user',
-            content: `Write a detailed but concise description about ${category} interior design services/products in ${location}. Focus on the local market, trends, and what makes this category special in this location. Keep it under 300 words and write in a professional tone.`
+            content: `Write a detailed but concise description about ${category} interior design services/products in ${location}. 
+            Include:
+            1. A warm welcome and introduction to the local ${category} scene
+            2. Current trends and popular styles in ${location}
+            3. How local preferences and lifestyle influence ${category} choices
+            4. Practical tips for readers considering ${category} services
+            5. What makes ${location}'s ${category} offerings unique
+            
+            Keep it under 400 words, maintain a professional yet friendly tone, and ensure it's engaging and informative.`
           }
         ],
       }),
