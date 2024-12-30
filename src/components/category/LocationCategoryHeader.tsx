@@ -14,8 +14,10 @@ const LocationCategoryHeader = ({
   location, 
   category 
 }: LocationCategoryHeaderProps) => {
-  // Format strings to capitalize first letter
-  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  // Format strings to capitalize first letter and handle 'all' case
+  const formattedCategory = category.toLowerCase() === 'all' 
+    ? 'Interiors'
+    : category.charAt(0).toUpperCase() + category.slice(1);
   const formattedMainLocation = mainLocation.charAt(0).toUpperCase() + mainLocation.slice(1);
   const formattedSubLocation = subLocation.charAt(0).toUpperCase() + subLocation.slice(1);
 
