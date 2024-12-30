@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import LeadForm from "@/components/LeadForm";
 import { useToast } from "@/hooks/use-toast";
 import { ExternalLink } from "lucide-react";
 
@@ -79,8 +77,6 @@ const Index = () => {
             </Button>
           </Card>
         </div>
-
-        <LeadForm />
       </main>
 
       <footer className="bg-primary text-white py-8 mt-12">

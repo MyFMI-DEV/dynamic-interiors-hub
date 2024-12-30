@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import LeadForm from "@/components/LeadForm";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const LocationCategory = () => {
@@ -47,8 +46,6 @@ const LocationCategory = () => {
             {content.description}
           </div>
         </Card>
-
-        <LeadForm />
       </main>
 
       <footer className="bg-primary text-white py-8 mt-12">
