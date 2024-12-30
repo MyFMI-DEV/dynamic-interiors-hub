@@ -7,6 +7,8 @@ const corsHeaders = {
   'Content-Type': 'application/xml',
 };
 
+const DOMAIN = 'https://lovable.dev'; // Update this to your actual domain
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -33,7 +35,7 @@ serve(async (req) => {
     // Generate URLs for all location/category combinations
     const urls = locations.flatMap(location => 
       categories.map(category => ({
-        loc: `https://your-domain.com/${location.main_location.toLowerCase()}-${location.sub_location.toLowerCase().replace(/\s+/g, '-')}/${category.sub_category.toLowerCase().replace(/\s+/g, '-')}`,
+        loc: `${DOMAIN}/${location.main_location.toLowerCase()}-${location.sub_location.toLowerCase().replace(/\s+/g, '-')}/${category.sub_category.toLowerCase().replace(/\s+/g, '-')}`,
         lastmod: new Date().toISOString().split('T')[0],
         changefreq: 'weekly',
         priority: '0.8'
@@ -43,13 +45,13 @@ serve(async (req) => {
     // Add static pages
     const staticPages = [
       {
-        loc: 'https://your-domain.com',
+        loc: DOMAIN,
         lastmod: new Date().toISOString().split('T')[0],
         changefreq: 'daily',
         priority: '1.0'
       },
       {
-        loc: 'https://your-domain.com/locations',
+        loc: `${DOMAIN}/locations`,
         lastmod: new Date().toISOString().split('T')[0],
         changefreq: 'daily',
         priority: '0.9'
