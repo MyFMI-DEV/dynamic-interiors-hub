@@ -14,12 +14,22 @@ import LocationCategoryHeader from "@/components/category/LocationCategoryHeader
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
 import { useQuery } from "@tanstack/react-query";
 
+interface CachedContent {
+  description: string;
+  seoMetadata: {
+    meta_title: string;
+    meta_description: string;
+    keywords: string[];
+  };
+  categoryImage: string;
+}
+
 const LocationCategory = () => {
   const { location, category } = useParams();
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [mainLocation, setMainLocation] = useState("");
-  const [subLocation, setSubLocation] = useState("");
+  const [mainLocation, setSubLocation] = useState("");
+  const [subLocation, setMainLocation] = useState("");
   const { toast } = useToast();
 
   // Check for cached page data
@@ -34,7 +44,7 @@ const LocationCategory = () => {
         .maybeSingle();
 
       if (error) throw error;
-      return data;
+      return data ? data.content as CachedContent : null;
     },
   });
 
@@ -56,8 +66,8 @@ const LocationCategory = () => {
   // Cache the page data when all content is loaded
   useEffect(() => {
     const cachePageData = async () => {
-      if (description && seoMetadata && categoryImage && !cachedPage) {
-        const pageContent = {
+      if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
+        const pageContent: CachedContent = {
           description,
           seoMetadata,
           categoryImage,
@@ -66,8 +76,8 @@ const LocationCategory = () => {
         const { error } = await supabase
           .from('cached_pages')
           .upsert({
-            location: location?.toLowerCase(),
-            category: category?.toLowerCase(),
+            location: location.toLowerCase(),
+            category: category.toLowerCase(),
             content: pageContent,
           });
 
@@ -118,13 +128,6 @@ const LocationCategory = () => {
     fetchCategories();
   }, [toast]);
 
-  // Use cached data if available
-  useEffect(() => {
-    if (cachedPage) {
-      console.log('Using cached page data');
-    }
-  }, [cachedPage]);
-
   const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage || isLoadingCache;
 
   if (isLoading) {
@@ -132,16 +135,16 @@ const LocationCategory = () => {
   }
 
   const paragraphs = cachedPage ? 
-    cachedPage.content.description?.split('\n\n') : 
+    cachedPage.description.split('\n\n') : 
     description?.split('\n\n') || [];
 
   return (
     <LocationCategoryLayout>
-      {(cachedPage?.content.seoMetadata || seoMetadata) && (
+      {(cachedPage?.seoMetadata || seoMetadata) && (
         <SEOHead
-          title={cachedPage?.content.seoMetadata?.meta_title || seoMetadata.meta_title}
-          description={cachedPage?.content.seoMetadata?.meta_description || seoMetadata.meta_description}
-          keywords={cachedPage?.content.seoMetadata?.keywords || seoMetadata.keywords}
+          title={cachedPage?.seoMetadata?.meta_title || seoMetadata.meta_title}
+          description={cachedPage?.seoMetadata?.meta_description || seoMetadata.meta_description}
+          keywords={cachedPage?.seoMetadata?.keywords || seoMetadata.keywords}
           location={location || ''}
           category={category || ''}
         />
@@ -155,7 +158,7 @@ const LocationCategory = () => {
       />
 
       <CategoryContent 
-        categoryImage={cachedPage?.content.categoryImage || categoryImage}
+        categoryImage={cachedPage?.categoryImage || categoryImage}
         category={category || ''}
         location={location || ''}
         paragraphs={paragraphs}
