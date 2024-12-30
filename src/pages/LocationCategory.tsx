@@ -25,7 +25,7 @@ const LocationCategory = () => {
   const [mainLocation, setMainLocation] = useState("");
   const [subLocation, setSubLocation] = useState("");
 
-  console.log('Rendering LocationCategory with:', { location, category });
+  console.log('LocationCategory: Initial render', { location, category });
 
   const { 
     data: cachedPage, 
@@ -59,7 +59,26 @@ const LocationCategory = () => {
   
   useIframeMessage();
 
+  console.log('LocationCategory: Loading states', {
+    isLoadingCache,
+    isLoadingLocation,
+    isLoadingDescription,
+    isLoadingSEO,
+    isLoadingImage,
+    loadingCategories
+  });
+
+  console.log('LocationCategory: Data states', {
+    cachedPage: !!cachedPage,
+    locationData: !!locationData,
+    description: !!description,
+    seoMetadata: !!seoMetadata,
+    categoryImage: !!categoryImage,
+    categories: categories.length
+  });
+
   const handleLocationParsed = (mainLoc: string, subLoc: string) => {
+    console.log('LocationCategory: Location parsed', { mainLoc, subLoc });
     setMainLocation(mainLoc);
     setSubLocation(subLoc);
   };
@@ -76,10 +95,10 @@ const LocationCategory = () => {
 
     errors.forEach(({ error, message }) => {
       if (error) {
-        console.error(message, error);
+        console.error('LocationCategory: Error occurred:', { message, error });
         toast({
           title: "Error",
-          description: `${message}. Please try again.`,
+          description: `${message}. Please try refreshing the page.`,
           variant: "destructive",
         });
       }
@@ -100,6 +119,13 @@ const LocationCategory = () => {
 
   const isLoading = isLoadingCache || isLoadingLocation || isLoadingDescription || 
                     isLoadingSEO || loadingCategories || isLoadingImage;
+
+  console.log('LocationCategory: Final render state', {
+    isLoading,
+    loadingProgress,
+    completedSteps,
+    totalSteps
+  });
 
   if (isLoading) {
     return (

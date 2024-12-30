@@ -20,6 +20,13 @@ const LoadingProgress = ({
   progress,
   loadingSteps 
 }: LoadingProgressProps) => {
+  console.log('LoadingProgress render:', { 
+    category, 
+    location, 
+    progress, 
+    loadingSteps 
+  });
+
   const getLoadingMessage = () => {
     if (!loadingSteps.cache) return "Checking cache...";
     if (!loadingSteps.location) return "Verifying location...";

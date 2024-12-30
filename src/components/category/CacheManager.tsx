@@ -24,7 +24,18 @@ const CacheManager = ({
 
   useEffect(() => {
     const cachePageData = async () => {
+      console.log('CacheManager: Checking conditions for caching...', {
+        description: !!description,
+        seoMetadata: !!seoMetadata,
+        categoryImage: !!categoryImage,
+        cachedPage: !!cachedPage,
+        location,
+        category
+      });
+
       if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
+        console.log('CacheManager: Caching new page data');
+        
         const pageContent = {
           description,
           seoMetadata,
@@ -42,11 +53,19 @@ const CacheManager = ({
         if (error) {
           console.error('Error caching page:', error);
           toast({
-            title: "Error",
-            description: "Failed to cache page data.",
+            title: "Cache Error",
+            description: "Failed to cache page data. Please try refreshing.",
             variant: "destructive",
           });
+        } else {
+          console.log('CacheManager: Successfully cached page data');
+          toast({
+            title: "Success",
+            description: "Page data cached successfully.",
+          });
         }
+      } else {
+        console.log('CacheManager: Skipping cache operation - conditions not met');
       }
     };
 
