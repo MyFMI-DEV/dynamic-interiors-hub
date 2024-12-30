@@ -2,22 +2,33 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleBrowseClick = () => {
-    navigate("/london/all");
-    toast({
-      title: "Welcome!",
-      description: "Browse our selection of interior products and services.",
-    });
-  };
+  const { data: categories } = useQuery({
+    queryKey: ['mainCategories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('main_category')
+        .distinct();
+      
+      if (error) throw error;
+      return data.map(c => c.main_category);
+    }
+  });
 
-  const handlePlatformRedirect = () => {
-    window.open("https://www.findmyinteriors.com", "_blank");
+  const handleCategoryClick = (category: string) => {
+    navigate(`/london/${category.toLowerCase().replace(' ', '-')}`);
+    toast({
+      title: "Category Selected",
+      description: `Browsing ${category} services in London.`,
+    });
   };
 
   return (
@@ -30,56 +41,66 @@ const Index = () => {
             className="h-24 md:h-32 lg:h-40 mx-auto transition-all duration-300 hover:scale-105"
           />
           <h2 className="text-white text-xl md:text-2xl mt-6 text-center font-light">
-            Your Shortcut to the Best Deals on Home Products and Services
+            Connect with Top Interior Design Professionals in Your Area
           </h2>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <Button 
-            variant="outline" 
-            size="lg" 
-            onClick={handlePlatformRedirect}
-            className="gap-2 text-lg"
-          >
-            Sign up/login to post today <ExternalLink className="h-5 w-5" />
-          </Button>
-          <p className="mt-4 text-muted-foreground">
-            Join our Find My Interiors Community today and connect with local experts to find the best products, service and deals
-          </p>
+      <nav className="bg-secondary py-4">
+        <div className="container mx-auto px-4">
+          <ul className="flex justify-center space-x-8">
+            <li>
+              <Link to="/how-it-works" className="text-primary-foreground hover:text-primary">
+                How It Works
+              </Link>
+            </li>
+            <li>
+              <Link to="/why-choose-us" className="text-primary-foreground hover:text-primary">
+                Why Choose Us
+              </Link>
+            </li>
+          </ul>
         </div>
+      </nav>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-          Find Interior Products & Services in the UK
+      <main className="container mx-auto px-4 py-12">
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
+          Find Interior Design Services in the UK
         </h1>
         
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">For Buyers</h2>
-            <p className="mb-4">Access the best deals on home products and services, completely free!</p>
-            <Button 
-              className="w-full"
-              onClick={handleBrowseClick}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {categories?.map((category) => (
+            <Card 
+              key={category} 
+              className="p-6 cursor-pointer hover:shadow-lg transition-shadow"
+              onClick={() => handleCategoryClick(category)}
             >
-              Start Browsing
-            </Button>
-          </Card>
-
-          <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-4">For Sellers</h2>
-            <p className="mb-4">Join our platform to list your products and services.</p>
-            <Button 
-              className="w-full"
-              onClick={handlePlatformRedirect}
-            >
-              Post on Platform <ExternalLink className="ml-2 h-4 w-4" />
-            </Button>
-          </Card>
+              <h3 className="text-xl font-semibold mb-4">{category}</h3>
+              <p className="text-muted-foreground mb-4">
+                Find the best {category.toLowerCase()} professionals in your area.
+              </p>
+              <Button className="w-full">Browse {category}</Button>
+            </Card>
+          ))}
         </div>
+
+        <section className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-6">Available Locations</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            {['London', 'Manchester', 'Birmingham', 'Leeds', 'Liverpool'].map((city) => (
+              <Button
+                key={city}
+                variant="outline"
+                onClick={() => navigate(`/${city.toLowerCase()}/all`)}
+              >
+                {city}
+              </Button>
+            ))}
+          </div>
+        </section>
       </main>
 
-      <footer className="bg-primary text-white py-8 mt-12">
+      <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p>© {new Date().getFullYear()} FindMyInteriors UK. All rights reserved.</p>
         </div>
