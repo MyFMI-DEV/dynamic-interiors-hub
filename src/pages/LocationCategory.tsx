@@ -6,6 +6,7 @@ import { useLocationDescription } from "@/hooks/useLocationDescription";
 import { useSEOMetadata } from "@/hooks/useSEOMetadata";
 import { useCategoryImage } from "@/hooks/useCategoryImage";
 import { SEOHead } from "@/components/SEOHead";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/layout/Header";
@@ -18,7 +19,20 @@ const LocationCategory = () => {
   const { location, category } = useParams();
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [mainLocation, setMainLocation] = useState("");
+  const [subLocation, setSubLocation] = useState("");
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Parse location parameter to extract main and sub location
+    if (location) {
+      const parts = location.split('-');
+      const mainLoc = parts[0];
+      const subLoc = parts.slice(1).join(' ');
+      setMainLocation(mainLoc);
+      setSubLocation(subLoc);
+    }
+  }, [location]);
 
   const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
@@ -88,8 +102,14 @@ const LocationCategory = () => {
       <Navigation />
 
       <main className="container mx-auto px-4 py-12">
+        <Breadcrumbs 
+          location={mainLocation} 
+          subLocation={subLocation}
+          category={category}
+        />
+
         <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-          {category} in {location}
+          {category} in {mainLocation} - {subLocation}
         </h1>
 
         <CategoryContent 
