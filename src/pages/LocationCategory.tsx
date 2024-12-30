@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
+interface Category {
+  main_category: string;
+  sub_categories: string[];
+}
 
 const LocationCategory = () => {
   const { location, category } = useParams();
@@ -11,8 +17,49 @@ const LocationCategory = () => {
     title: "",
     description: null
   });
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('main_category, sub_category')
+          .order('main_category', { ascending: true });
+
+        if (error) throw error;
+
+        // Group by main category
+        const groupedCategories = data.reduce((acc: Category[], curr) => {
+          const existingCategory = acc.find(c => c.main_category === curr.main_category);
+          if (existingCategory) {
+            existingCategory.sub_categories.push(curr.sub_category);
+          } else {
+            acc.push({
+              main_category: curr.main_category,
+              sub_categories: [curr.sub_category]
+            });
+          }
+          return acc;
+        }, []);
+
+        setCategories(groupedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load categories. Please try again later.",
+        });
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, [toast]);
 
   useEffect(() => {
     const fetchDescription = async () => {
@@ -31,7 +78,6 @@ const LocationCategory = () => {
           throw error;
         }
 
-        // If description exists, use it. Otherwise, use a default description
         const description = existingDescription?.description || 
           `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`;
 
@@ -59,7 +105,7 @@ const LocationCategory = () => {
     }
   }, [location, category, toast]);
 
-  if (loading) {
+  if (loading || loadingCategories) {
     return (
       <div className="min-h-screen bg-background">
         <header className="bg-primary py-6">
@@ -101,6 +147,37 @@ const LocationCategory = () => {
             {content.description}
           </div>
         </Card>
+
+        <div className="mt-8">
+          <Tabs defaultValue={categories[0]?.main_category} className="w-full">
+            <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
+              {categories.map((cat) => (
+                <TabsTrigger
+                  key={cat.main_category}
+                  value={cat.main_category}
+                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
+                >
+                  {cat.main_category}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {categories.map((cat) => (
+              <TabsContent key={cat.main_category} value={cat.main_category}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {cat.sub_categories.map((subCat) => (
+                    <Link
+                      key={subCat}
+                      to={`/${location}/${subCat.toLowerCase().replace(/\s+/g, '-')}`}
+                      className="p-4 bg-accent rounded-lg hover:bg-primary hover:text-white transition-colors"
+                    >
+                      {subCat}
+                    </Link>
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
       </main>
 
       <footer className="bg-primary text-white py-8 mt-12">
