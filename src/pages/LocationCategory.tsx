@@ -66,6 +66,27 @@ const LocationCategory = () => {
       try {
         setLoading(true);
         
+        // First, check if the location exists
+        const { data: existingLocation, error: locationError } = await supabase
+          .from('locations')
+          .select('id')
+          .eq('main_location', location)
+          .eq('sub_location', 'City Centre')
+          .maybeSingle();
+
+        if (locationError) throw locationError;
+
+        // If location doesn't exist in the database, we'll use default content
+        if (!existingLocation) {
+          setContent({
+            title: `${category} in ${location}`,
+            description: `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`
+          });
+          setLoading(false);
+          return;
+        }
+
+        // If location exists, fetch the description
         const { data: existingDescription, error } = await supabase
           .from('location_category_descriptions')
           .select('description')
@@ -73,10 +94,7 @@ const LocationCategory = () => {
           .eq('category', category?.toLowerCase())
           .maybeSingle();
 
-        if (error) {
-          console.error('Supabase error:', error);
-          throw error;
-        }
+        if (error) throw error;
 
         const description = existingDescription?.description || 
           `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`;
