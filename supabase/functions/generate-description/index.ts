@@ -56,22 +56,21 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert interior design consultant with deep knowledge of local markets and design trends. 
-            Your tone is warm, professional, and engaging. You provide valuable insights while maintaining a friendly, 
-            approachable style that builds trust with readers. Focus on highlighting the unique aspects of specific 
-            services/products in different locations while providing practical value to the reader.`
+            content: `You are an expert interior design consultant providing clear, direct information about local markets and design trends. 
+            Use straightforward, professional language. Avoid flowery or colloquial terms like "nestled," "scene," or similar descriptive phrases.
+            Focus on facts, specific services, and practical information. Your tone should be professional and direct while remaining helpful.`
           },
           {
             role: 'user',
-            content: `Write a detailed but concise description about ${category} interior design services/products in ${location}. 
+            content: `Write a clear, direct description about ${category} services and products in ${location}. 
             Include:
-            1. A warm welcome and introduction to the local ${category} scene
-            2. Current trends and popular styles in ${location}
-            3. How local preferences and lifestyle influence ${category} choices
-            4. Practical tips for readers considering ${category} services
-            5. What makes ${location}'s ${category} offerings unique
+            1. A direct introduction to ${category} services in ${location}
+            2. Current trends in ${location}
+            3. How local requirements influence ${category} choices
+            4. Practical advice for people considering ${category} services
+            5. Specific benefits of ${location}'s ${category} services
             
-            Keep it under 400 words, maintain a professional yet friendly tone, and ensure it's engaging and informative.`
+            Keep it under 400 words, use straightforward language, and focus on practical information.`
           }
         ],
       }),
