@@ -9,9 +9,9 @@ const Hero = ({ backgroundImage }: HeroProps) => {
         <img 
           src={backgroundImage}
           alt="Modern interior design" 
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover opacity-40"
         />
-        <div className="absolute inset-0 bg-primary/80"></div>
+        <div className="absolute inset-0 bg-primary/60"></div>
       </div>
       <div className="container mx-auto px-4 relative z-10 max-w-4xl">
         <img 
