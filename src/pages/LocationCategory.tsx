@@ -35,16 +35,9 @@ type DatabaseCachedPage = {
   last_updated: string;
 }
 
-const LocationCategory = () => {
-  const { location, category } = useParams();
-  const [categories, setCategories] = useState([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [mainLocation, setMainLocation] = useState("");
-  const [subLocation, setSubLocation] = useState("");
-  const { toast } = useToast();
-
-  // Check for cached page data
-  const { data: cachedPage, isLoading: isLoadingCache } = useQuery({
+// Since this component is getting too long (204 lines), let's split out the cache handling logic
+const useCachedPage = (location: string | undefined, category: string | undefined) => {
+  return useQuery({
     queryKey: ['cached-page', location, category],
     queryFn: async () => {
       console.log('Checking for cached data:', location, category);
@@ -67,6 +60,18 @@ const LocationCategory = () => {
       return null;
     },
   });
+};
+
+const LocationCategory = () => {
+  const { location, category } = useParams();
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [mainLocation, setMainLocation] = useState("");
+  const [subLocation, setSubLocation] = useState("");
+  const { toast } = useToast();
+
+  // Use our extracted custom hook
+  const { data: cachedPage, isLoading: isLoadingCache } = useCachedPage(location, category);
 
   useEffect(() => {
     if (location) {
@@ -77,6 +82,31 @@ const LocationCategory = () => {
       setSubLocation(subLoc);
     }
   }, [location]);
+
+  // Add message event listener to handle iframe communication
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      // Check if the origin is from our allowed domains
+      const allowedOrigins = [
+        window.location.origin,
+        'http://localhost:5173',
+        'http://localhost:3000'
+      ];
+      
+      if (!allowedOrigins.includes(event.origin)) {
+        console.log('Ignored message from unauthorized origin:', event.origin);
+        return;
+      }
+      
+      // Handle the message
+      if (event.data && event.data.type === 'iframe-height') {
+        // Handle iframe height adjustment if needed
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
