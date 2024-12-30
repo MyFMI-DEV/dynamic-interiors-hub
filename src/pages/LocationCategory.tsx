@@ -15,26 +15,32 @@ import LocationCategoryLayout from "@/components/category/LocationCategoryLayout
 import { useQuery } from "@tanstack/react-query";
 import { Json } from "@/integrations/supabase/types";
 
+interface SEOMetadata {
+  meta_title: string;
+  meta_description: string;
+  keywords: string[];
+}
+
 interface CachedContent {
   description: string;
-  seoMetadata: {
-    meta_title: string;
-    meta_description: string;
-    keywords: string[];
-  };
+  seoMetadata: SEOMetadata;
   categoryImage: string;
 }
 
-interface CachedPageData {
-  content: CachedContent;
+type DatabaseCachedPage = {
+  id: string;
+  location: string;
+  category: string;
+  content: Json;
+  last_updated: string;
 }
 
 const LocationCategory = () => {
   const { location, category } = useParams();
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [mainLocation, setSubLocation] = useState("");
-  const [subLocation, setMainLocation] = useState("");
+  const [mainLocation, setMainLocation] = useState("");
+  const [subLocation, setSubLocation] = useState("");
   const { toast } = useToast();
 
   // Check for cached page data
@@ -49,7 +55,12 @@ const LocationCategory = () => {
         .maybeSingle();
 
       if (error) throw error;
-      return data ? (data as CachedPageData).content : null;
+      
+      if (data) {
+        const typedData = data as DatabaseCachedPage;
+        return typedData.content as unknown as CachedContent;
+      }
+      return null;
     },
   });
 
@@ -83,7 +94,7 @@ const LocationCategory = () => {
           .upsert({
             location: location.toLowerCase(),
             category: category.toLowerCase(),
-            content: pageContent as Json,
+            content: pageContent as unknown as Json,
           });
 
         if (error) {
