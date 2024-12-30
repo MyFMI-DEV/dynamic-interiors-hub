@@ -25,6 +25,21 @@ const Index = () => {
     }
   });
 
+  const { data: locations } = useQuery({
+    queryKey: ['mainLocations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('locations')
+        .select('main_location')
+        .order('main_location');
+      
+      if (error) throw error;
+      
+      // Remove duplicates using Set
+      return [...new Set(data.map(l => l.main_location))];
+    }
+  });
+
   const handleCategoryClick = (category: string) => {
     navigate(`/london/${category.toLowerCase().replace(/\s+/g, '-')}`);
     toast({
@@ -94,7 +109,7 @@ const Index = () => {
         <section className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-8">Available Locations</h2>
           <div className="flex flex-wrap justify-center gap-4">
-            {['London', 'Manchester', 'Birmingham', 'Leeds', 'Liverpool'].map((city) => (
+            {locations?.map((city) => (
               <Button
                 key={city}
                 variant="outline"
