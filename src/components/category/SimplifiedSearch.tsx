@@ -18,34 +18,29 @@ interface SimplifiedSearchProps {
 
 const SimplifiedSearch = ({ 
   locations, 
-  categories, 
   currentLocation, 
   currentCategory 
 }: SimplifiedSearchProps) => {
   const navigate = useNavigate();
   const [selectedMainLocation, setSelectedMainLocation] = useState("");
-  const [selectedSubLocation, setSelectedSubLocation] = useState("");
-  const [selectedMainCategory, setSelectedMainCategory] = useState("");
-  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   const handleLocationChange = (subLocation: string) => {
     const formattedLocation = subLocation.toLowerCase().replace(/\s+/g, '-');
-    const formattedCategory = selectedSubCategory || currentCategory;
-    navigate(`/${formattedLocation}/${formattedCategory}`);
-  };
-
-  const handleCategoryChange = (subCategory: string) => {
-    const formattedCategory = subCategory.toLowerCase().replace(/\s+/g, '-');
-    const formattedLocation = selectedSubLocation.toLowerCase().replace(/\s+/g, '-') || currentLocation;
+    const formattedCategory = currentCategory;
     navigate(`/${formattedLocation}/${formattedCategory}`);
   };
 
   return (
     <Card className="p-6 mt-8">
-      <h2 className="text-2xl font-semibold mb-6">Search Locations & Categories</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-semibold mb-2">Search Locations</h2>
+          <p className="text-muted-foreground mb-4">
+            Read more about {currentCategory.replace(/-/g, ' ')} in your location
+          </p>
+        </div>
+
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Location</h3>
           <Select onValueChange={setSelectedMainLocation}>
             <SelectTrigger>
               <SelectValue placeholder="Select main location" />
@@ -70,39 +65,6 @@ const SimplifiedSearch = ({
                   ?.items.map((subLocation) => (
                     <SelectItem key={subLocation} value={subLocation}>
                       {subLocation}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Category</h3>
-          <Select onValueChange={setSelectedMainCategory}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select main category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((category) => (
-                <SelectItem key={category.heading} value={category.heading}>
-                  {category.heading}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {selectedMainCategory && (
-            <Select onValueChange={handleCategoryChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select sub category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories
-                  .find((cat) => cat.heading === selectedMainCategory)
-                  ?.items.map((subCategory) => (
-                    <SelectItem key={subCategory} value={subCategory}>
-                      {subCategory}
                     </SelectItem>
                   ))}
               </SelectContent>
