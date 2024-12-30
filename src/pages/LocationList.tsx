@@ -45,7 +45,9 @@ const LocationList = () => {
             if (!acc[location.main_location]) {
               acc[location.main_location] = [];
             }
-            acc[location.main_location].push(location.sub_location);
+            if (!acc[location.main_location].includes(location.sub_location)) {
+              acc[location.main_location].push(location.sub_location);
+            }
             return acc;
           }, {});
 
@@ -57,11 +59,6 @@ const LocationList = () => {
             acc[location.main_location].push(location);
             return acc;
           }, {});
-
-          // Remove duplicates from sub-locations
-          Object.keys(grouped).forEach(key => {
-            grouped[key] = Array.from(new Set(grouped[key]));
-          });
 
           const uniqueCategories = categoriesData.filter((category, index, self) =>
             index === self.findIndex((c) => c.sub_category === category.sub_category)
@@ -113,13 +110,15 @@ const LocationList = () => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {categories.map((category) => (
-                    <Link
-                      key={`${mainLocation}-${category.sub_category}`}
-                      to={formatUrl(mainLocation, locationMap[mainLocation][0].sub_location, category.sub_category)}
-                      className="p-3 bg-accent hover:bg-primary hover:text-white rounded-lg transition-colors"
-                    >
-                      {category.sub_category}
-                    </Link>
+                    subLocations.map((subLocation) => (
+                      <Link
+                        key={`${mainLocation}-${subLocation}-${category.sub_category}`}
+                        to={formatUrl(mainLocation, subLocation, category.sub_category)}
+                        className="p-3 bg-accent hover:bg-primary hover:text-white rounded-lg transition-colors"
+                      >
+                        {category.sub_category} in {subLocation}
+                      </Link>
+                    ))
                   ))}
                 </div>
               </div>
