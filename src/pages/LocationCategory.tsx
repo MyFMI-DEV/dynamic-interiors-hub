@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useLocationData } from "@/hooks/useLocationData";
 import { useLocationDescription } from "@/hooks/useLocationDescription";
@@ -26,32 +26,45 @@ const LocationCategory = () => {
   const [subLocation, setSubLocation] = useState("");
   const { toast } = useToast();
 
+  console.log('LocationCategory: Initial render with params:', { location, category });
+
   // Use our custom hooks
   const { data: cachedPage, isLoading: isLoadingCache } = useCachedPage(location, category);
-  useIframeMessage();
-
-  // Handle location parsing
-  const handleLocationParsed = (mainLoc: string, subLoc: string) => {
-    setMainLocation(mainLoc);
-    setSubLocation(subLoc);
-  };
-
   const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
   const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
 
+  useIframeMessage();
+
+  // Handle location parsing
+  const handleLocationParsed = (mainLoc: string, subLoc: string) => {
+    console.log('Location parsed:', { mainLoc, subLoc });
+    setMainLocation(mainLoc);
+    setSubLocation(subLoc);
+  };
+
   // Cache the page data when all content is loaded
   const cachePageData = async () => {
-    if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
-      console.log('Caching new page data');
-      
-      const pageContent = {
-        description,
-        seoMetadata,
-        categoryImage,
-      };
+    if (!description || !seoMetadata || !categoryImage || cachedPage || !location || !category) {
+      console.log('Skipping cache update, missing data:', {
+        hasDescription: !!description,
+        hasSEO: !!seoMetadata,
+        hasImage: !!categoryImage,
+        hasCachedPage: !!cachedPage
+      });
+      return;
+    }
 
+    console.log('Caching new page data');
+    
+    const pageContent = {
+      description,
+      seoMetadata,
+      categoryImage,
+    };
+
+    try {
       const { error } = await supabase
         .from('cached_pages')
         .upsert({
@@ -70,15 +83,29 @@ const LocationCategory = () => {
       } else {
         console.log('Successfully cached page data');
       }
+    } catch (error) {
+      console.error('Exception while caching page:', error);
     }
   };
 
   // Call cachePageData when dependencies change
-  React.useEffect(() => {
+  useEffect(() => {
     cachePageData();
   }, [description, seoMetadata, categoryImage, location, category, cachedPage]);
 
   const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage || isLoadingCache;
+
+  console.log('LocationCategory: Render state', {
+    isLoading,
+    loadingStates: {
+      location: isLoadingLocation,
+      description: isLoadingDescription,
+      seo: isLoadingSEO,
+      categories: loadingCategories,
+      image: isLoadingImage,
+      cache: isLoadingCache
+    }
+  });
 
   if (isLoading) {
     return <LoadingState />;

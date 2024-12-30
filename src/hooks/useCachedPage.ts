@@ -26,24 +26,35 @@ export const useCachedPage = (location: string | undefined, category: string | u
   return useQuery({
     queryKey: ['cached-page', location, category],
     queryFn: async () => {
-      console.log('Checking for cached data:', location, category);
+      if (!location || !category) {
+        console.log('Missing location or category:', { location, category });
+        return null;
+      }
+
+      console.log('Fetching cached page for:', location, category);
       
       const { data, error } = await supabase
         .from('cached_pages')
         .select('*')
-        .eq('location', location?.toLowerCase())
-        .eq('category', category?.toLowerCase())
+        .eq('location', location.toLowerCase())
+        .eq('category', category.toLowerCase())
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching cached page:', error);
+        throw error;
+      }
       
       if (data) {
-        console.log('Found cached data:', data);
+        console.log('Cached page data:', data);
         const typedData = data as DatabaseCachedPage;
         return typedData.content as unknown as CachedContent;
       }
-      console.log('No cached data found');
+
+      console.log('No cached data found for:', location, category);
       return null;
     },
+    retry: 1,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 };
