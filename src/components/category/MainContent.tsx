@@ -92,7 +92,7 @@ const MainContent = ({ location, category }: MainContentProps) => {
 
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
-  const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
+  const { data: categoryImage, isLoading: isLoadingImageState } = useCategoryImage(category);
 
   // Cache the page data when all content is loaded
   React.useEffect(() => {
@@ -112,6 +112,8 @@ const MainContent = ({ location, category }: MainContentProps) => {
             location: location.toLowerCase(),
             category: category.toLowerCase(),
             content: pageContent as unknown as Json,
+          }, {
+            onConflict: 'location,category'
           });
 
         if (error) {
@@ -130,14 +132,10 @@ const MainContent = ({ location, category }: MainContentProps) => {
     cachePageData();
   }, [description, seoMetadata, categoryImage, location, category, cachedPage, toast]);
 
-  const isLoading = isLoadingCache || isLoadingDescription || isLoadingSEO || isLoadingImage;
-
-  if (isLoading) {
-    return <div className="space-y-8 animate-pulse">
-      <div className="h-64 bg-muted rounded-lg" />
-      <div className="h-96 bg-muted rounded-lg" />
-    </div>;
-  }
+  // Define loading states
+  const isLoadingContent = isLoadingCache || isLoadingDescription;
+  const isLoadingImage = isLoadingCache || isLoadingImageState;
+  const isLoadingFAQs = isLoadingCache;
 
   const paragraphs = cachedPage ? 
     cachedPage.description.split('\n\n') : 
@@ -160,6 +158,9 @@ const MainContent = ({ location, category }: MainContentProps) => {
         category={category}
         location={location}
         paragraphs={paragraphs}
+        isLoadingContent={isLoadingContent}
+        isLoadingImage={isLoadingImage}
+        isLoadingFAQs={isLoadingFAQs}
       />
 
       {categoriesData && (
