@@ -5,12 +5,7 @@ export const useLocationData = (location: string | undefined) => {
   return useQuery({
     queryKey: ['location', location],
     queryFn: async () => {
-      if (!location) {
-        console.log('No location provided to useLocationData');
-        return null;
-      }
-
-      console.log('Fetching location data for:', location);
+      if (!location) return null;
 
       // Split location into main and sub location
       const parts = location.split('-');
@@ -24,15 +19,9 @@ export const useLocationData = (location: string | undefined) => {
         .eq('sub_location', subLocation)
         .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching location data:', error);
-        throw error;
-      }
-
-      console.log('Location data result:', data);
+      if (error) throw error;
       return data;
     },
-    retry: 1,
     enabled: !!location,
   });
 };
