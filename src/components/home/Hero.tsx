@@ -20,10 +20,10 @@ const Hero = ({ backgroundImage }: HeroProps) => {
           className="h-20 md:h-24 lg:h-32 mx-auto transition-all duration-300 hover:scale-105"
         />
         <h1 className="text-white text-4xl md:text-5xl lg:text-6xl mt-8 text-center font-bold leading-tight">
-          Discover Premium Home & Interior Solutions Near You
+          Discover Home & Interior Solutions Near You
         </h1>
         <p className="text-white/90 text-xl md:text-2xl mt-4 text-center font-light max-w-2xl mx-auto">
-          Connect with Trusted Suppliers, Retailers, and Service Providers Today
+          Connect with Trusted Suppliers and Service Providers for the Best Deals Today
         </p>
       </div>
     </header>
