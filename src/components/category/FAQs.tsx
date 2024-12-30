@@ -8,44 +8,44 @@ interface FAQsProps {
 const FAQs = ({ category, location }: FAQsProps) => {
   const faqs = [
     {
-      question: `How do I find the best deals on ${category} in ${location}?`,
-      answer: `To find the best deals on ${category} in ${location}, simply browse our listings, filter by location, and compare prices from leading local sellers.`
+      question: `How does Find My Interiors connect buyers and sellers for ${category} in ${location}?`,
+      answer: `Our platform provides a seamless connection between buyers and sellers of ${category} in ${location} through our user-friendly interface, allowing direct communication and easy browsing of local listings.`
     },
     {
-      question: `Can I post my ${category} services or products for sale in ${location}?`,
-      answer: `Yes! Our platform allows you to list your ${category} services or products in ${location} to connect with local buyers.`
+      question: `Can I search specifically for ${category} in ${location}?`,
+      answer: `Yes! Our advanced search features allow you to find exactly what you're looking for in ${category} within ${location}, with filters to refine your search based on your specific needs.`
     },
     {
-      question: `Is it free to browse ${category} listings in ${location}?`,
-      answer: `Absolutely! Browsing ${category} listings in ${location} is completely free. Start exploring now!`
+      question: `How do I post my ${category} products or services in ${location} on the platform?`,
+      answer: `Simply create an account, click on 'Post Free' button, select ${category} as your category and ${location} as your location, then follow the step-by-step process to list your products or services.`
     },
     {
-      question: `How do I contact sellers of ${category} in ${location}?`,
-      answer: `You can contact sellers directly through the platform by messaging them from their listing page in ${location}.`
+      question: `Is there a fee to browse or post ${category} in ${location}?`,
+      answer: `Browsing ${category} listings in ${location} is completely free. We also offer free basic listings to help sellers connect with potential buyers in the local area.`
     },
     {
-      question: `Are the prices for ${category} in ${location} negotiable?`,
-      answer: `Many sellers in ${location} are open to negotiation. Contact them to discuss the price for ${category} products or services.`
+      question: `How can I ensure secure transactions for ${category} purchases in ${location}?`,
+      answer: `We recommend using secure payment methods, meeting in safe public locations for in-person transactions, and thoroughly reviewing seller profiles and ratings before making ${category} purchases in ${location}.`
     },
     {
-      question: `Can I filter ${category} listings in ${location} by price or type?`,
-      answer: `Yes! Use our filters to sort ${category} listings in ${location} by price, type, or other preferences.`
+      question: `Are there ways to find trending ${category} options in ${location}?`,
+      answer: `Yes! Our platform highlights popular and trending ${category} listings in ${location}, helping you stay updated with the latest options and best deals in your area.`
     },
     {
-      question: `How do I know if ${category} sellers in ${location} are trustworthy?`,
-      answer: `Check reviews, ratings, and seller profiles for insights. We also encourage open communication before making a purchase in ${location}.`
+      question: `What types of ${category} services are available in ${location}?`,
+      answer: `You'll find a wide range of ${category} services in ${location}, from professional installations to custom designs, repairs, and consultations, all provided by local experts.`
     },
     {
-      question: `Can I find professional services for ${category} in ${location}?`,
-      answer: `Definitely! Our platform connects you with verified professionals offering ${category} services in ${location}.`
+      question: `How do I edit my ${category} post details in ${location}?`,
+      answer: `Log into your account, navigate to your listings, select your ${category} post in ${location}, and click the 'Edit' button to update any information about your products or services.`
     },
     {
-      question: `How do I get updates on new ${category} listings in ${location}?`,
-      answer: `Sign up for alerts to receive notifications whenever new ${category} listings are added in ${location}.`
+      question: `What are the best practices for maximizing visibility of ${category} posts in ${location}?`,
+      answer: `To maximize visibility for your ${category} listings in ${location}, use high-quality images, write detailed descriptions, keep your pricing competitive, and regularly update your listings with current information.`
     },
     {
-      question: `What payment methods are accepted for ${category} transactions in ${location}?`,
-      answer: `Payment methods depend on the seller. Discuss your options directly with the seller in ${location} to ensure a smooth transaction.`
+      question: `How can I report a suspicious ${category} post in ${location}?`,
+      answer: `If you encounter a suspicious ${category} listing in ${location}, use the 'Report' button on the listing page or contact our support team. We take all reports seriously to maintain a safe marketplace.`
     }
   ];
 
