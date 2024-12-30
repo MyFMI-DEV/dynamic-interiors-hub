@@ -70,12 +70,12 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <ul className="flex justify-center space-x-8">
             <li>
-              <Link to="/how-it-works" className="text-primary-foreground hover:text-primary">
+              <Link to="/how-it-works" className="text-primary hover:text-primary/80 transition-colors">
                 How It Works
               </Link>
             </li>
             <li>
-              <Link to="/why-choose-us" className="text-primary-foreground hover:text-primary">
+              <Link to="/why-choose-us" className="text-primary hover:text-primary/80 transition-colors">
                 Why Choose Us
               </Link>
             </li>
