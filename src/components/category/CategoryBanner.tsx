@@ -4,15 +4,20 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronDown, Check } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface CategoryBannerProps {
   location: string;
@@ -33,6 +38,8 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
   const navigate = useNavigate();
   const formattedLocation = location.replace(/-/g, ' ');
   const formattedCategory = category.replace(/-/g, ' ');
+  const [openLocation, setOpenLocation] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
 
   const { data: locations } = useQuery({
     queryKey: ['locations'],
@@ -44,7 +51,6 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
       
       if (error) throw error;
 
-      // Group locations by main location
       const groupedLocations = data.reduce((acc: { [key: string]: string[] }, curr) => {
         if (!acc[curr.main_location]) {
           acc[curr.main_location] = [];
@@ -53,7 +59,6 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
         return acc;
       }, {});
 
-      // Convert to array format
       return Object.entries(groupedLocations).map(([main, subs]) => ({
         main_location: main,
         sub_locations: subs
@@ -71,7 +76,6 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
       
       if (error) throw error;
 
-      // Group categories by main category
       const groupedCategories = data.reduce((acc: { [key: string]: string[] }, curr) => {
         if (!acc[curr.main_category]) {
           acc[curr.main_category] = [];
@@ -80,7 +84,6 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
         return acc;
       }, {});
 
-      // Convert to array format
       return Object.entries(groupedCategories).map(([main, subs]) => ({
         main_category: main,
         sub_categories: subs
@@ -92,6 +95,8 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
     const formattedLoc = loc.toLowerCase().replace(/\s+/g, '-');
     const formattedCat = cat.toLowerCase().replace(/\s+/g, '-');
     navigate(`/${formattedLoc}/${formattedCat}`);
+    setOpenLocation(false);
+    setOpenCategory(false);
   };
 
   return (
@@ -104,57 +109,70 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
             Post an image, URL, or description free today to find the best deals from Interiors experts in your area!
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" className="min-w-[200px]">
-                  Change Location <ChevronDown className="ml-2 h-4 w-4" />
+            <Popover open={openLocation} onOpenChange={setOpenLocation}>
+              <PopoverTrigger asChild>
+                <Button variant="secondary" className="min-w-[200px] justify-between">
+                  Change Location
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[300px]">
-                <DropdownMenuLabel>Read more about your location and interiors products and services</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {locations?.map((loc: Location) => (
-                  <DropdownMenuGroup key={loc.main_location}>
-                    <DropdownMenuLabel>{loc.main_location}</DropdownMenuLabel>
-                    {loc.sub_locations.map((subLoc) => (
-                      <DropdownMenuItem 
-                        key={subLoc}
-                        onClick={() => handleNavigate(`${loc.main_location}-${subLoc}`, category)}
-                      >
-                        {subLoc}
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuSeparator />
-                  </DropdownMenuGroup>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Search locations..." />
+                  <CommandEmpty>No location found.</CommandEmpty>
+                  {locations?.map((loc) => (
+                    <CommandGroup key={loc.main_location} heading={loc.main_location}>
+                      {loc.sub_locations.map((subLoc) => {
+                        const fullLocation = `${loc.main_location}-${subLoc}`;
+                        const isActive = location === fullLocation.toLowerCase().replace(/\s+/g, '-');
+                        return (
+                          <CommandItem
+                            key={subLoc}
+                            onSelect={() => handleNavigate(fullLocation, category)}
+                            className="flex items-center justify-between"
+                          >
+                            {subLoc}
+                            {isActive && <Check className="h-4 w-4" />}
+                          </CommandItem>
+                        );
+                      })}
+                    </CommandGroup>
+                  ))}
+                </Command>
+              </PopoverContent>
+            </Popover>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" className="min-w-[200px]">
-                  Change Category <ChevronDown className="ml-2 h-4 w-4" />
+            <Popover open={openCategory} onOpenChange={setOpenCategory}>
+              <PopoverTrigger asChild>
+                <Button variant="secondary" className="min-w-[200px] justify-between">
+                  Change Category
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[300px]">
-                <DropdownMenuLabel>Read more about your location and interiors products and services</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {categories?.map((cat: Category) => (
-                  <DropdownMenuGroup key={cat.main_category}>
-                    <DropdownMenuLabel>{cat.main_category}</DropdownMenuLabel>
-                    {cat.sub_categories.map((subCat) => (
-                      <DropdownMenuItem 
-                        key={subCat}
-                        onClick={() => handleNavigate(location, subCat)}
-                      >
-                        {subCat}
-                      </DropdownMenuItem>
-                    ))}
-                    <DropdownMenuSeparator />
-                  </DropdownMenuGroup>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-0" align="start">
+                <Command>
+                  <CommandInput placeholder="Search categories..." />
+                  <CommandEmpty>No category found.</CommandEmpty>
+                  {categories?.map((cat) => (
+                    <CommandGroup key={cat.main_category} heading={cat.main_category}>
+                      {cat.sub_categories.map((subCat) => {
+                        const isActive = category === subCat.toLowerCase().replace(/\s+/g, '-');
+                        return (
+                          <CommandItem
+                            key={subCat}
+                            onSelect={() => handleNavigate(location, subCat)}
+                            className="flex items-center justify-between"
+                          >
+                            {subCat}
+                            {isActive && <Check className="h-4 w-4" />}
+                          </CommandItem>
+                        );
+                      })}
+                    </CommandGroup>
+                  ))}
+                </Command>
+              </PopoverContent>
+            </Popover>
 
             <a 
               href="https://www.findmyinteriors.com" 
