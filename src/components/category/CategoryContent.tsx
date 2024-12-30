@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { marked } from "marked";
 import FAQs from "./FAQs";
 
 interface CategoryContentProps {
@@ -18,15 +19,17 @@ const CategoryContent = ({ categoryImage, category, location, paragraphs }: Cate
               <img 
                 src={categoryImage} 
                 alt={`${category} services in ${location}`}
-                className="w-full max-w-md rounded-lg shadow-lg"
+                className="w-1/2 mx-auto rounded-lg shadow-lg"
               />
             </div>
           )}
           <div className="prose max-w-none space-y-6">
             {paragraphs.map((paragraph, index) => (
-              <p key={index} className="text-lg leading-relaxed">
-                {paragraph}
-              </p>
+              <div 
+                key={index} 
+                className="text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
+              />
             ))}
           </div>
         </div>

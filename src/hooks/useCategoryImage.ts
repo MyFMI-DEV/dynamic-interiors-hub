@@ -14,5 +14,6 @@ export const useCategoryImage = (category: string | undefined) => {
     },
     enabled: !!category,
     staleTime: Infinity, // Cache the image URL indefinitely since it's expensive to generate
+    cacheTime: Infinity, // Never remove from cache
   });
 };
