@@ -16,8 +16,12 @@ interface Category {
   sub_category: string;
 }
 
+interface GroupedLocations {
+  [key: string]: string[];
+}
+
 const LocationList = () => {
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [groupedLocations, setGroupedLocations] = useState<GroupedLocations>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,18 +39,25 @@ const LocationList = () => {
           .select('sub_category');
 
         if (locationsData && categoriesData) {
-          // Remove duplicates
-          const uniqueLocations = locationsData.filter((location, index, self) =>
-            index === self.findIndex((l) => 
-              l.main_location === location.main_location && 
-              l.sub_location === location.sub_location
-            )
-          );
+          // Group locations by main location
+          const grouped = locationsData.reduce((acc: GroupedLocations, location) => {
+            if (!acc[location.main_location]) {
+              acc[location.main_location] = [];
+            }
+            acc[location.main_location].push(location.sub_location);
+            return acc;
+          }, {});
+
+          // Remove duplicates from sub-locations
+          Object.keys(grouped).forEach(key => {
+            grouped[key] = Array.from(new Set(grouped[key]));
+          });
+
           const uniqueCategories = categoriesData.filter((category, index, self) =>
             index === self.findIndex((c) => c.sub_category === category.sub_category)
           );
 
-          setLocations(uniqueLocations);
+          setGroupedLocations(grouped);
           setCategories(uniqueCategories);
         }
       } catch (error) {
@@ -59,8 +70,8 @@ const LocationList = () => {
     fetchData();
   }, []);
 
-  const formatUrl = (location: Location, category: string) => {
-    const locationPath = `${location.main_location.toLowerCase()}-${location.sub_location.toLowerCase()}`.replace(/\s+/g, '-');
+  const formatUrl = (mainLocation: string, category: string) => {
+    const locationPath = `${mainLocation.toLowerCase()}`.replace(/\s+/g, '-');
     const categoryPath = category.toLowerCase().replace(/\s+/g, '-');
     return `/${locationPath}/${categoryPath}`;
   };
@@ -75,20 +86,25 @@ const LocationList = () => {
       <Navigation />
       
       <main className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-center">All Location/Category Combinations</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center">All Locations</h1>
         
         <Card className="p-6">
           <div className="space-y-8">
-            {locations.map((location) => (
-              <div key={`${location.main_location}-${location.sub_location}`} className="space-y-4">
-                <h2 className="text-2xl font-semibold">
-                  {location.main_location} - {location.sub_location}
-                </h2>
+            {Object.entries(groupedLocations).map(([mainLocation, subLocations]) => (
+              <div key={mainLocation} className="space-y-4">
+                <div className="flex flex-col space-y-2">
+                  <h2 className="text-2xl font-semibold">
+                    {mainLocation}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    Including: {subLocations.join(', ')}
+                  </p>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {categories.map((category) => (
                     <Link
-                      key={`${location.main_location}-${location.sub_location}-${category.sub_category}`}
-                      to={formatUrl(location, category.sub_category)}
+                      key={`${mainLocation}-${category.sub_category}`}
+                      to={formatUrl(mainLocation, category.sub_category)}
                       className="p-3 bg-accent hover:bg-primary hover:text-white rounded-lg transition-colors"
                     >
                       {category.sub_category}
