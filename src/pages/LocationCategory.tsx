@@ -47,6 +47,8 @@ const LocationCategory = () => {
   const { data: cachedPage, isLoading: isLoadingCache } = useQuery({
     queryKey: ['cached-page', location, category],
     queryFn: async () => {
+      console.log('Checking for cached data:', location, category);
+      
       const { data, error } = await supabase
         .from('cached_pages')
         .select('*')
@@ -57,9 +59,11 @@ const LocationCategory = () => {
       if (error) throw error;
       
       if (data) {
+        console.log('Found cached data:', data);
         const typedData = data as DatabaseCachedPage;
         return typedData.content as unknown as CachedContent;
       }
+      console.log('No cached data found');
       return null;
     },
   });
@@ -83,6 +87,8 @@ const LocationCategory = () => {
   useEffect(() => {
     const cachePageData = async () => {
       if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
+        console.log('Caching new page data');
+        
         const pageContent: CachedContent = {
           description,
           seoMetadata,
@@ -99,12 +105,19 @@ const LocationCategory = () => {
 
         if (error) {
           console.error('Error caching page:', error);
+          toast({
+            title: "Error",
+            description: "Failed to cache page data.",
+            variant: "destructive",
+          });
+        } else {
+          console.log('Successfully cached page data');
         }
       }
     };
 
     cachePageData();
-  }, [description, seoMetadata, categoryImage, location, category, cachedPage]);
+  }, [description, seoMetadata, categoryImage, location, category, cachedPage, toast]);
 
   useEffect(() => {
     const fetchCategories = async () => {
