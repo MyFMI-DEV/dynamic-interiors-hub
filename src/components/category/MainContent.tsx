@@ -36,6 +36,7 @@ type DatabaseCachedPage = {
 const MainContent = ({ location, category }: MainContentProps) => {
   const { toast } = useToast();
 
+  // Fetch categories for the tabs
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
@@ -64,6 +65,7 @@ const MainContent = ({ location, category }: MainContentProps) => {
     },
   });
 
+  // Check for cached page data
   const { data: cachedPage, isLoading: isLoadingCache } = useQuery({
     queryKey: ['cached-page', location, category],
     queryFn: async () => {
@@ -86,13 +88,13 @@ const MainContent = ({ location, category }: MainContentProps) => {
       console.log('No cached data found');
       return null;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
   const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
 
+  // Cache the page data when all content is loaded
   React.useEffect(() => {
     const cachePageData = async () => {
       if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
@@ -128,9 +130,14 @@ const MainContent = ({ location, category }: MainContentProps) => {
     cachePageData();
   }, [description, seoMetadata, categoryImage, location, category, cachedPage, toast]);
 
-  const isLoadingContent = isLoadingCache || isLoadingDescription;
-  const isLoadingImage = isLoadingCache || isLoadingImage;
-  const isLoadingFAQs = isLoadingCache;
+  const isLoading = isLoadingCache || isLoadingDescription || isLoadingSEO || isLoadingImage;
+
+  if (isLoading) {
+    return <div className="space-y-8 animate-pulse">
+      <div className="h-64 bg-muted rounded-lg" />
+      <div className="h-96 bg-muted rounded-lg" />
+    </div>;
+  }
 
   const paragraphs = cachedPage ? 
     cachedPage.description.split('\n\n') : 
@@ -153,9 +160,6 @@ const MainContent = ({ location, category }: MainContentProps) => {
         category={category}
         location={location}
         paragraphs={paragraphs}
-        isLoadingContent={isLoadingContent}
-        isLoadingImage={isLoadingImage}
-        isLoadingFAQs={isLoadingFAQs}
       />
 
       {categoriesData && (
