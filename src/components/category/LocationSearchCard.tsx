@@ -52,7 +52,7 @@ const LocationSearchCard = ({ currentCategory }: LocationSearchCardProps) => {
 
   return (
     <Card className="p-6 mb-8">
-      <h3 className="text-2xl font-semibold mb-6">Search Locations</h3>
+      <h3 className="text-2xl font-semibold mb-6">Search More Locations</h3>
       <p className="text-muted-foreground mb-6">
         Read more about {currentCategory} in your location
       </p>
