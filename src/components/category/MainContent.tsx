@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocationDescription } from "@/hooks/useLocationDescription";
 import { useSEOMetadata } from "@/hooks/useSEOMetadata";
 import { useCategoryImage } from "@/hooks/useCategoryImage";
@@ -34,6 +35,35 @@ type DatabaseCachedPage = {
 
 const MainContent = ({ location, category }: MainContentProps) => {
   const { toast } = useToast();
+
+  // Fetch categories for the tabs
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('main_category, sub_category')
+        .order('main_category');
+      
+      if (error) throw error;
+
+      // Group categories by main category
+      const groupedCategories = data.reduce((acc: { main_category: string; sub_categories: string[]; }[], curr) => {
+        const existingCategory = acc.find(c => c.main_category === curr.main_category);
+        if (existingCategory) {
+          existingCategory.sub_categories.push(curr.sub_category);
+        } else {
+          acc.push({
+            main_category: curr.main_category,
+            sub_categories: [curr.sub_category],
+          });
+        }
+        return acc;
+      }, []);
+
+      return groupedCategories;
+    },
+  });
 
   // Check for cached page data
   const { data: cachedPage, isLoading: isLoadingCache } = useQuery({
@@ -132,9 +162,11 @@ const MainContent = ({ location, category }: MainContentProps) => {
         paragraphs={paragraphs}
       />
 
-      <div className="mt-8">
-        <CategoryTabs categories={categories} location={location} />
-      </div>
+      {categoriesData && (
+        <div className="mt-8">
+          <CategoryTabs categories={categoriesData} location={location} />
+        </div>
+      )}
     </>
   );
 };
