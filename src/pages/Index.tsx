@@ -46,7 +46,7 @@ const Index = () => {
             Sign up/login to post today <ExternalLink className="h-5 w-5" />
           </Button>
           <p className="mt-4 text-muted-foreground">
-            Join our Find My Interiors Community today and connect with local experts and find the best products, service and deals
+            Join our Find My Interiors Community today and connect with local experts to find the best products, service and deals
           </p>
         </div>
 
