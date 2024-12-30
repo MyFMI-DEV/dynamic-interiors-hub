@@ -37,11 +37,13 @@ const CategoryContent = ({ categoryImage, category, location, paragraphs }: Cate
         {/* Right column - Content */}
         <div className="lg:col-span-8">
           <Card className="p-6">
-            <div className="prose max-w-none space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
               {paragraphs.map((paragraph, index) => (
                 <div 
                   key={index} 
-                  className="text-lg leading-relaxed"
+                  className={`text-lg leading-relaxed ${
+                    index === 0 ? 'md:col-span-2' : ''
+                  }`}
                   dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
                 />
               ))}
