@@ -23,19 +23,20 @@ const WhyChooseUs = () => {
         <div className="grid md:grid-cols-2 gap-12 mb-16">
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold mb-4">Verified Professionals</h3>
+              <h3 className="text-2xl font-semibold mb-4">Verified Providers</h3>
               <p>
-                Every interior designer in our network undergoes a thorough vetting
-                process. We check their qualifications, experience, and past work to
-                ensure you're working with true professionals.
+                Every supplier, retailer, and service provider in our network undergoes
+                a thorough vetting process. We check their credentials, product quality,
+                service standards, and customer feedback to ensure you're working with
+                reliable businesses.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-semibold mb-4">Local Expertise</h3>
               <p>
-                Our designers are familiar with local styles, suppliers, and
-                regulations. This local knowledge ensures your project aligns
-                perfectly with your area's aesthetic while meeting all requirements.
+                Our providers are familiar with local trends, supply chains, and
+                market conditions. This local knowledge ensures you get products
+                and services that perfectly match your area's style and requirements.
               </p>
             </div>
           </div>
@@ -43,17 +44,17 @@ const WhyChooseUs = () => {
             <div>
               <h3 className="text-2xl font-semibold mb-4">Free Consultations</h3>
               <p>
-                Start your journey with a free consultation. This allows you to
-                discuss your vision, understand the designer's approach, and ensure
-                it's the right fit before making any commitments.
+                Start your journey with a free consultation. Discuss your needs,
+                explore product options, and understand service offerings before
+                making any commitments.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-semibold mb-4">Transparent Process</h3>
               <p>
                 We believe in complete transparency. You'll receive detailed
-                proposals, clear pricing, and regular updates throughout your
-                project.
+                product information, clear pricing, and comprehensive service
+                descriptions throughout your journey.
               </p>
             </div>
           </div>
@@ -66,7 +67,7 @@ const WhyChooseUs = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-3">Expert Selection</h3>
-              <p>Only the top 10% of designers make it into our network.</p>
+              <p>Only the top providers make it into our network.</p>
             </div>
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-3">Client Satisfaction</h3>
@@ -74,7 +75,7 @@ const WhyChooseUs = () => {
             </div>
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-3">Project Support</h3>
-              <p>Dedicated support throughout your entire project.</p>
+              <p>Dedicated support throughout your entire journey.</p>
             </div>
           </div>
         </div>
@@ -84,7 +85,7 @@ const WhyChooseUs = () => {
             to="/" 
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           >
-            Find Your Designer
+            Find Your Provider
           </Link>
         </div>
       </main>

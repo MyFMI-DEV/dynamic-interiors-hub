@@ -44,7 +44,7 @@ const Index = () => {
     navigate(`/london/${category.toLowerCase().replace(/\s+/g, '-')}`);
     toast({
       title: "Category Selected",
-      description: `Browsing ${category} services in London.`,
+      description: `Browsing ${category} products and services in London.`,
     });
   };
 
@@ -58,10 +58,10 @@ const Index = () => {
             className="h-24 md:h-32 lg:h-40 mx-auto transition-all duration-300 hover:scale-105"
           />
           <h1 className="text-white text-3xl md:text-4xl lg:text-5xl mt-8 text-center font-bold">
-            Find Top Interior Design Professionals in Your Area
+            Find Top Interior & Home Products and Services in Your Area
           </h1>
           <p className="text-white text-xl md:text-2xl mt-4 text-center font-light">
-            Connect with Trusted Interior Design Experts Today
+            Connect with Trusted Suppliers, Retailers, and Service Providers Today
           </p>
         </div>
       </header>
@@ -86,7 +86,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-12">
         <section className="mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
-            Our Interior Design Services
+            Our Interior & Home Categories
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -98,7 +98,7 @@ const Index = () => {
               >
                 <h3 className="text-xl font-semibold mb-4">{category}</h3>
                 <p className="text-muted-foreground mb-4">
-                  Find expert {category.toLowerCase()} professionals in your area.
+                  Find quality {category.toLowerCase()} products and trusted service providers in your area.
                 </p>
                 <Button className="w-full">Browse {category}</Button>
               </Card>
@@ -126,16 +126,16 @@ const Index = () => {
           <h2 className="text-3xl font-bold text-center mb-6">Why Choose FindMyInteriors?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-3">Verified Professionals</h3>
-              <p>All our interior designers are thoroughly vetted and reviewed.</p>
+              <h3 className="text-xl font-semibold mb-3">Verified Providers</h3>
+              <p>All our suppliers and service providers are thoroughly vetted and reviewed.</p>
             </div>
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-3">Free Consultation</h3>
-              <p>Get a free initial consultation with your chosen designer.</p>
+              <p>Get free initial consultations with your chosen providers.</p>
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-3">Local Experts</h3>
-              <p>Find interior designers who know your area and local style.</p>
+              <h3 className="text-xl font-semibold mb-3">Local Expertise</h3>
+              <p>Find providers who understand your local market and preferences.</p>
             </div>
           </div>
         </section>
