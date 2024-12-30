@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
-    <nav className="bg-accent shadow-sm sticky top-0 z-50">
+    <nav className="bg-accent shadow-sm sticky top-0 z-50 w-full">
       <div className="container mx-auto px-4">
         <ul className="flex flex-wrap justify-center gap-4 py-4 md:py-6 md:gap-8">
           <li className="w-full md:w-auto text-center">
