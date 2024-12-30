@@ -12,6 +12,7 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -26,7 +27,7 @@ serve(async (req) => {
       .select('description')
       .eq('location', location)
       .eq('category', category)
-      .single();
+      .maybeSingle();
 
     if (existingDescription) {
       return new Response(
@@ -35,7 +36,7 @@ serve(async (req) => {
       );
     }
 
-    // Generate new description
+    // Generate new description using OpenAI
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -51,17 +52,23 @@ serve(async (req) => {
           },
           {
             role: 'user',
-            content: `Write a detailed but concise description about ${category} services/products in ${location}. Focus on the local market, trends, and what makes this category special in this location. Keep it under 300 words.`
+            content: `Write a detailed but concise description about ${category} interior design services/products in ${location}. Focus on the local market, trends, and what makes this category special in this location. Keep it under 300 words and write in a professional tone.`
           }
         ],
       }),
     });
 
     const data = await response.json();
+    console.log('OpenAI response:', data);
+    
+    if (!data.choices?.[0]?.message?.content) {
+      throw new Error('Failed to generate description from OpenAI');
+    }
+
     const generatedDescription = data.choices[0].message.content;
 
     // Store the generated description
-    await supabase
+    const { error: insertError } = await supabase
       .from('location_category_descriptions')
       .insert([
         {
@@ -71,12 +78,17 @@ serve(async (req) => {
         }
       ]);
 
+    if (insertError) {
+      console.error('Error inserting description:', insertError);
+      throw insertError;
+    }
+
     return new Response(
       JSON.stringify({ description: generatedDescription }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error in generate-description function:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
