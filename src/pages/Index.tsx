@@ -49,8 +49,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-primary py-12 md:py-24">
-        <div className="container mx-auto px-4">
+      <header className="relative bg-primary py-12 md:py-24">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" 
+            alt="Modern interior design" 
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-primary/80"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <img 
             src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
             alt="FindMyInteriors UK" 
