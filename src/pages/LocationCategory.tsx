@@ -13,6 +13,7 @@ import CategoryTabs from "@/components/category/CategoryTabs";
 import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
 import { useQuery } from "@tanstack/react-query";
+import { Json } from "@/integrations/supabase/types";
 
 interface CachedContent {
   description: string;
@@ -22,6 +23,10 @@ interface CachedContent {
     keywords: string[];
   };
   categoryImage: string;
+}
+
+interface CachedPageData {
+  content: CachedContent;
 }
 
 const LocationCategory = () => {
@@ -44,7 +49,7 @@ const LocationCategory = () => {
         .maybeSingle();
 
       if (error) throw error;
-      return data ? data.content as CachedContent : null;
+      return data ? (data as CachedPageData).content : null;
     },
   });
 
@@ -78,7 +83,7 @@ const LocationCategory = () => {
           .upsert({
             location: location.toLowerCase(),
             category: category.toLowerCase(),
-            content: pageContent,
+            content: pageContent as Json,
           });
 
         if (error) {
