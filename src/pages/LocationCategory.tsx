@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useLocationData } from "@/hooks/useLocationData";
 import { useLocationDescription } from "@/hooks/useLocationDescription";
 import { useSEOMetadata } from "@/hooks/useSEOMetadata";
+import { useCategoryImage } from "@/hooks/useCategoryImage";
 import { SEOHead } from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
@@ -20,6 +21,7 @@ const LocationCategory = () => {
   const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
+  const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -59,7 +61,7 @@ const LocationCategory = () => {
     fetchCategories();
   }, [toast]);
 
-  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories;
+  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage;
 
   if (isLoading) {
     return (
@@ -81,6 +83,9 @@ const LocationCategory = () => {
       </div>
     );
   }
+
+  // Split description into paragraphs
+  const paragraphs = description?.split('\n\n') || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,8 +117,21 @@ const LocationCategory = () => {
         </h1>
 
         <Card className="p-6 mb-8">
-          <div className="prose max-w-none">
-            {description}
+          {categoryImage && (
+            <div className="mb-8">
+              <img 
+                src={categoryImage} 
+                alt={`${category} services in ${location}`}
+                className="w-full h-auto rounded-lg shadow-lg"
+              />
+            </div>
+          )}
+          <div className="prose max-w-none space-y-6">
+            {paragraphs.map((paragraph, index) => (
+              <p key={index} className="text-lg leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </Card>
 
