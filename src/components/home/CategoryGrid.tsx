@@ -37,10 +37,10 @@ const CategoryGrid = ({ categories }: CategoryGridProps) => {
         </p>
         
         <div className="relative w-full max-w-7xl mx-auto px-12">
-          <Carousel className="w-full">
+          <Carousel className="w-full" opts={{ align: "start", loop: true }}>
             <CarouselContent className="-ml-2 md:-ml-4">
               {categories?.map((category) => (
-                <CarouselItem key={category} className="pl-2 md:pl-4 md:basis-1/3 lg:basis-1/3">
+                <CarouselItem key={category} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <Card 
                     className="group p-8 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full"
                     onClick={() => handleCategoryClick(category)}
