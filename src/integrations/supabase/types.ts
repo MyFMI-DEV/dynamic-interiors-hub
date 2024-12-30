@@ -75,6 +75,36 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_metadata: {
+        Row: {
+          category: string
+          created_at: string | null
+          id: string
+          keywords: string[]
+          location: string
+          meta_description: string
+          meta_title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          id?: string
+          keywords?: string[]
+          location: string
+          meta_description: string
+          meta_title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          id?: string
+          keywords?: string[]
+          location?: string
+          meta_description?: string
+          meta_title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

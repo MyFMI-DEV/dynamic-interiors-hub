@@ -18,33 +18,33 @@ serve(async (req) => {
 
   try {
     const { location, category } = await req.json();
-    console.log(`Generating description for ${location}/${category}`);
+    console.log(`Generating SEO metadata for ${location}/${category}`);
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Check if description already exists
-    const { data: existingDescription, error: fetchError } = await supabase
-      .from('location_category_descriptions')
-      .select('description')
+    // Check if SEO metadata already exists
+    const { data: existingSEO, error: fetchError } = await supabase
+      .from('seo_metadata')
+      .select('*')
       .eq('location', location?.toLowerCase())
       .eq('category', category?.toLowerCase())
       .maybeSingle();
 
     if (fetchError) {
-      console.error('Error fetching existing description:', fetchError);
+      console.error('Error fetching existing SEO metadata:', fetchError);
       throw fetchError;
     }
 
-    if (existingDescription) {
-      console.log('Returning existing description');
+    if (existingSEO) {
+      console.log('Returning existing SEO metadata');
       return new Response(
-        JSON.stringify({ description: existingDescription.description }),
+        JSON.stringify(existingSEO),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Generate new description using OpenAI
-    console.log('Generating new description using OpenAI');
+    // Generate new SEO metadata using OpenAI
+    console.log('Generating new SEO metadata using OpenAI');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -56,11 +56,11 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful assistant that generates informative descriptions about interior design services and products in specific locations.'
+            content: 'You are an SEO expert that generates metadata for interior design services and products pages.'
           },
           {
             role: 'user',
-            content: `Write a detailed but concise description about ${category} interior design services/products in ${location}. Focus on the local market, trends, and what makes this category special in this location. Keep it under 300 words and write in a professional tone.`
+            content: `Generate SEO metadata for a page about ${category} interior design services/products in ${location}. Include a title (max 60 chars), meta description (max 160 chars), and 5-7 relevant keywords. Format as JSON with keys: metaTitle, metaDescription, keywords (array).`
           }
         ],
       }),
@@ -70,34 +70,36 @@ serve(async (req) => {
     console.log('OpenAI response received');
     
     if (!data.choices?.[0]?.message?.content) {
-      throw new Error('Failed to generate description from OpenAI');
+      throw new Error('Failed to generate SEO metadata from OpenAI');
     }
 
-    const generatedDescription = data.choices[0].message.content;
+    const seoData = JSON.parse(data.choices[0].message.content);
 
-    // Store the generated description
+    // Store the generated SEO metadata
     const { error: insertError } = await supabase
-      .from('location_category_descriptions')
+      .from('seo_metadata')
       .insert([
         {
           location: location?.toLowerCase(),
           category: category?.toLowerCase(),
-          description: generatedDescription,
+          meta_title: seoData.metaTitle,
+          meta_description: seoData.metaDescription,
+          keywords: seoData.keywords,
         }
       ]);
 
     if (insertError) {
-      console.error('Error inserting description:', insertError);
+      console.error('Error inserting SEO metadata:', insertError);
       throw insertError;
     }
 
-    console.log('Description generated and stored successfully');
+    console.log('SEO metadata generated and stored successfully');
     return new Response(
-      JSON.stringify({ description: generatedDescription }),
+      JSON.stringify(seoData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error in generate-description function:', error);
+    console.error('Error in generate-seo function:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
