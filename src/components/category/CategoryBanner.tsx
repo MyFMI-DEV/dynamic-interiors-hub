@@ -13,10 +13,8 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  // Format category
-  const formattedCategory = category === 'all' 
-    ? 'Interiors Products and Services'
-    : category.charAt(0).toUpperCase() + category.slice(1);
+  // Capitalize category
+  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
 
   return (
     <Card className="bg-primary text-white p-6 mb-8">
