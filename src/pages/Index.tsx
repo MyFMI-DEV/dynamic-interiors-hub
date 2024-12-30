@@ -27,8 +27,8 @@ const Index = () => {
       <Navigation />
       <main>
         <CategoryGrid />
-        <LocationGrid locations={locations} />
         <Features />
+        <LocationGrid locations={locations} />
       </main>
       <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4 text-center">
