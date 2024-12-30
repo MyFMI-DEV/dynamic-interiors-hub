@@ -15,47 +15,59 @@ const WhyChooseUs = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
-          Why Choose FindMyInteriors?
-        </h1>
+      <nav className="bg-accent py-4 shadow-md">
+        <div className="container mx-auto px-4">
+          <ul className="flex justify-center space-x-8">
+            <li>
+              <Link to="/how-it-works" className="text-primary hover:text-primary-light font-medium">
+                How It Works
+              </Link>
+            </li>
+            <li>
+              <Link to="/why-choose-us" className="text-primary hover:text-primary-light font-medium">
+                Why Choose Us
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-16">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Verified Providers</h3>
-              <p>
-                Every supplier, retailer, and service provider in our network undergoes
-                a thorough vetting process. We check their credentials, product quality,
-                service standards, and customer feedback to ensure you're working with
-                reliable businesses.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Local Expertise</h3>
-              <p>
-                Our providers are familiar with local trends, supply chains, and
-                market conditions. This local knowledge ensures you get products
-                and services that perfectly match your area's style and requirements.
-              </p>
-            </div>
+      <main className="container mx-auto px-4 py-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-12">
+              Why Choose FindMyInteriors?
+            </h1>
+            <img 
+              src="/lovable-uploads/bd18e090-6c0c-4e6b-b171-2697b28d3eb8.png"
+              alt="Home Interior Layout"
+              className="w-full rounded-lg shadow-lg mb-8"
+            />
           </div>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Free Consultations</h3>
-              <p>
-                Start your journey with a free consultation. Discuss your needs,
-                explore product options, and understand service offerings before
-                making any commitments.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Transparent Process</h3>
-              <p>
-                We believe in complete transparency. You'll receive detailed
-                product information, clear pricing, and comprehensive service
-                descriptions throughout your journey.
-              </p>
+          <div>
+            <img 
+              src="/lovable-uploads/6af940b2-5b76-4bcd-b7ca-68bf3f4ee3de.png"
+              alt="Modern Interior Design"
+              className="w-full rounded-lg shadow-lg mb-8"
+            />
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Verified Providers</h3>
+                <p>
+                  Every supplier, retailer, and service provider in our network undergoes
+                  a thorough vetting process. We check their credentials, product quality,
+                  service standards, and customer feedback to ensure you're working with
+                  reliable businesses.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Local Expertise</h3>
+                <p>
+                  Our providers are familiar with local trends, supply chains, and
+                  market conditions. This local knowledge ensures you get products
+                  and services that perfectly match your area's style and requirements.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -83,7 +95,7 @@ const WhyChooseUs = () => {
         <div className="text-center">
           <Link 
             to="/" 
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 h-10 px-4 py-2"
           >
             Find Your Provider
           </Link>
