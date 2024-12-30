@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useLocationData } from "@/hooks/useLocationData";
+import { useLocationDescription } from "@/hooks/useLocationDescription";
+import { useSEOMetadata } from "@/hooks/useSEOMetadata";
+import { SEOHead } from "@/components/SEOHead";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Category {
   main_category: string;
@@ -13,14 +17,13 @@ interface Category {
 
 const LocationCategory = () => {
   const { location, category } = useParams();
-  const [content, setContent] = useState<{ title: string; description: string | null }>({
-    title: "",
-    description: null
-  });
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const { toast } = useToast();
+
+  const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
+  const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
+  const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -61,69 +64,9 @@ const LocationCategory = () => {
     fetchCategories();
   }, [toast]);
 
-  useEffect(() => {
-    const fetchDescription = async () => {
-      try {
-        setLoading(true);
-        
-        // First, check if the location exists
-        const { data: existingLocation, error: locationError } = await supabase
-          .from('locations')
-          .select('id')
-          .eq('main_location', location)
-          .eq('sub_location', 'City Centre')
-          .maybeSingle();
+  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories;
 
-        if (locationError) throw locationError;
-
-        // If location doesn't exist in the database, we'll use default content
-        if (!existingLocation) {
-          setContent({
-            title: `${category} in ${location}`,
-            description: `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`
-          });
-          setLoading(false);
-          return;
-        }
-
-        // If location exists, fetch the description
-        const { data: existingDescription, error } = await supabase
-          .from('location_category_descriptions')
-          .select('description')
-          .eq('location', location?.toLowerCase())
-          .eq('category', category?.toLowerCase())
-          .maybeSingle();
-
-        if (error) throw error;
-
-        const description = existingDescription?.description || 
-          `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`;
-
-        setContent({
-          title: `${category} in ${location}`,
-          description: description
-        });
-      } catch (error) {
-        console.error('Error:', error);
-        toast({
-          title: "Note",
-          description: "Using default content while we prepare your personalized description.",
-        });
-        setContent({
-          title: `${category} in ${location}`,
-          description: `Explore ${category} options in ${location}. Browse through our selection of interior design products and services.`
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (location && category) {
-      fetchDescription();
-    }
-  }, [location, category, toast]);
-
-  if (loading || loadingCategories) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
         <header className="bg-primary py-6">
@@ -145,6 +88,16 @@ const LocationCategory = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {seoMetadata && (
+        <SEOHead
+          title={seoMetadata.meta_title}
+          description={seoMetadata.meta_description}
+          keywords={seoMetadata.keywords}
+          location={location || ''}
+          category={category || ''}
+        />
+      )}
+
       <header className="bg-primary py-6">
         <div className="container mx-auto px-4">
           <img 
@@ -157,12 +110,12 @@ const LocationCategory = () => {
 
       <main className="container mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-          {content.title}
+          {category} in {location}
         </h1>
 
         <Card className="p-6 mb-8">
           <div className="prose max-w-none">
-            {content.description}
+            {description}
           </div>
         </Card>
 
