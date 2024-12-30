@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 interface CategoryBannerProps {
   location: string;
@@ -26,7 +25,11 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
             <span className="font-bold">{formattedLocation}</span>?
             Post an image, URL, or description free today to find the best deals from Interiors experts in your area!
           </div>
-          <Link to="/post-free">
+          <a 
+            href="https://www.findmyinteriors.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
             <Button 
               variant="secondary" 
               size="lg"
@@ -34,7 +37,7 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
             >
               Post Free Today
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </Card>
