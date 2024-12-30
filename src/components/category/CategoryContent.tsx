@@ -13,7 +13,19 @@ const CategoryContent = ({ categoryImage, category, location, paragraphs }: Cate
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-8">
+        <Card className="p-6 h-fit order-1 md:order-none">
+          <div className="prose max-w-none space-y-6">
+            {paragraphs.map((paragraph, index) => (
+              <div 
+                key={index} 
+                className="text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
+              />
+            ))}
+          </div>
+        </Card>
+        
+        <div className="space-y-8 order-2 md:order-none">
           {categoryImage && (
             <Card className="p-6">
               <img 
@@ -28,18 +40,6 @@ const CategoryContent = ({ categoryImage, category, location, paragraphs }: Cate
             <FAQs category={category} location={location} />
           </Card>
         </div>
-        
-        <Card className="p-6 h-fit">
-          <div className="prose max-w-none space-y-6">
-            {paragraphs.map((paragraph, index) => (
-              <div 
-                key={index} 
-                className="text-lg leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
-              />
-            ))}
-          </div>
-        </Card>
       </div>
     </div>
   );
