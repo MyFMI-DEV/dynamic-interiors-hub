@@ -54,6 +54,27 @@ export type Database = {
         }
         Relationships: []
       }
+      locations: {
+        Row: {
+          created_at: string | null
+          id: string
+          main_location: string
+          sub_location: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          main_location: string
+          sub_location: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          main_location?: string
+          sub_location?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
