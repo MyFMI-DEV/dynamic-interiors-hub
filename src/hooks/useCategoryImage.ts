@@ -13,7 +13,7 @@ export const useCategoryImage = (category: string | undefined) => {
       return data.imageUrl;
     },
     enabled: !!category,
-    staleTime: Infinity, // Cache the image URL indefinitely since it's expensive to generate
-    gcTime: Infinity, // Never remove from cache
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 };

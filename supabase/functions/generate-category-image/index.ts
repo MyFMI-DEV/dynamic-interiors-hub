@@ -1,62 +1,65 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+};
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { category } = await req.json()
-    console.log('Generating image for category:', category)
-
-    if (!Deno.env.get('OPENAI_API_KEY')) {
-      throw new Error('OPENAI_API_KEY is not set')
+    console.log('Starting category image generation');
+    
+    if (!openAIApiKey) {
+      console.error('OPENAI_API_KEY is not set');
+      throw new Error('OpenAI API key is not configured');
     }
+
+    const { category } = await req.json();
+    console.log(`Generating image for category: ${category}`);
 
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`
       },
       body: JSON.stringify({
         model: "dall-e-3",
-        prompt: `A professional high-quality photo representing ${category} services, showing tools and equipment related to ${category} work. Style: clean, professional, commercial photography`,
+        prompt: `A professional, modern image representing ${category} in interior design. Style: minimalist and elegant. Context: interior design and home decoration.`,
         n: 1,
-        size: "1024x1024"
-      })
-    })
+        size: "1024x1024",
+      }),
+    });
 
     if (!response.ok) {
-      const errorData = await response.json()
-      console.error('OpenAI API error:', errorData)
-      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`)
+      const error = await response.json();
+      console.error('OpenAI API error:', error);
+      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json()
-    console.log('Image generation response received')
+    const data = await response.json();
+    console.log('Image generated successfully');
 
     return new Response(
       JSON.stringify({ imageUrl: data.data[0].url }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    );
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error in generate-category-image function:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message,
-        details: 'Failed to generate image. Please ensure OPENAI_API_KEY is set and valid.'
-      }),
+      JSON.stringify({ error: error.message }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
-        status: 500 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    )
+    );
   }
-})
+});
