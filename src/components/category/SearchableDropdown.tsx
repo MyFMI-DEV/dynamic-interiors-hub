@@ -14,14 +14,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 
-interface Group {
-  heading: string;
-  items: string[];
-}
-
 interface SearchableDropdownProps {
   title: string;
-  groups?: Group[];
+  groups: { heading: string; items: string[] }[];
   value: string;
   onSelect: (value: string) => void;
   isLoading?: boolean;
@@ -49,12 +44,6 @@ const SearchableDropdown = ({
     );
   }
 
-  const safeGroups = groups?.filter(group => 
-    group && 
-    typeof group.heading === 'string' && 
-    Array.isArray(group.items)
-  ) ?? [];
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -70,26 +59,24 @@ const SearchableDropdown = ({
         <Command>
           <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
           <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-          {safeGroups.map((group) => (
+          {groups.map((group) => (
             <CommandGroup key={group.heading} heading={group.heading}>
-              {group.items
-                .filter((item): item is string => typeof item === 'string')
-                .map((item) => {
-                  const isActive = value === item.toLowerCase().replace(/\s+/g, '-');
-                  return (
-                    <CommandItem
-                      key={item}
-                      onSelect={() => {
-                        onSelect(item);
-                        setOpen(false);
-                      }}
-                      className="flex items-center justify-between"
-                    >
-                      {item}
-                      {isActive && <Check className="h-4 w-4" />}
-                    </CommandItem>
-                  );
-                })}
+              {group.items.map((item) => {
+                const isActive = value === item.toLowerCase().replace(/\s+/g, '-');
+                return (
+                  <CommandItem
+                    key={item}
+                    onSelect={() => {
+                      onSelect(item);
+                      setOpen(false);
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    {item}
+                    {isActive && <Check className="h-4 w-4" />}
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           ))}
         </Command>
