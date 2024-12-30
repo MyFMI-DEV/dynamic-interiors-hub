@@ -27,8 +27,8 @@ const HowItWorks = () => {
             </div>
             <h3 className="text-xl font-semibold mb-4">Browse Categories</h3>
             <p>
-              Explore our comprehensive range of interior design services and choose
-              the category that matches your needs.
+              Explore our comprehensive range of home and interior products and services,
+              from furniture to flooring, lighting to home accessories.
             </p>
           </div>
 
@@ -38,8 +38,8 @@ const HowItWorks = () => {
             </div>
             <h3 className="text-xl font-semibold mb-4">Select Your Location</h3>
             <p>
-              Find interior designers in your area who understand local styles and
-              preferences.
+              Find local retailers, suppliers, and service providers who understand
+              your area's needs and preferences.
             </p>
           </div>
 
@@ -49,8 +49,8 @@ const HowItWorks = () => {
             </div>
             <h3 className="text-xl font-semibold mb-4">Get Connected</h3>
             <p>
-              We'll connect you with the best interior design professionals for a
-              free initial consultation.
+              We'll connect you with trusted local businesses offering the products
+              and services you need for your home.
             </p>
           </div>
         </div>
@@ -61,24 +61,24 @@ const HowItWorks = () => {
           </h2>
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold mb-2">Free Initial Consultation</h3>
+              <h3 className="text-xl font-semibold mb-2">Free Initial Contact</h3>
               <p>
-                Every designer offers a free initial consultation to discuss your
-                project, understand your needs, and provide preliminary advice.
+                Connect directly with suppliers, retailers, and service providers to discuss
+                your needs and get detailed product information or service quotes.
               </p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Detailed Proposal</h3>
+              <h3 className="text-xl font-semibold mb-2">Product & Service Details</h3>
               <p>
-                After the consultation, you'll receive a detailed proposal outlining
-                the scope of work, timeline, and costs.
+                Receive comprehensive information about products, pricing, availability,
+                and service options to help you make informed decisions.
               </p>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Project Management</h3>
+              <h3 className="text-xl font-semibold mb-2">Professional Service</h3>
               <p>
-                Your chosen designer will manage the entire project, from concept to
-                completion, ensuring a smooth and stress-free experience.
+                Work with experienced professionals who will ensure you get the right
+                products and services for your home improvement needs.
               </p>
             </div>
           </div>
@@ -89,7 +89,7 @@ const HowItWorks = () => {
             to="/" 
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
           >
-            Start Your Journey
+            Find Products & Services
           </Link>
         </div>
       </main>
