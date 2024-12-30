@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { marked } from "marked";
 import FAQs from "./FAQs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 interface CategoryContentProps {
   categoryImage: string | undefined;
@@ -22,6 +23,13 @@ const CategoryContent = ({
   isLoadingImage = false,
   isLoadingFAQs = false 
 }: CategoryContentProps) => {
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    console.log('Image failed to load, setting error state');
+    setImageError(true);
+  };
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -31,11 +39,14 @@ const CategoryContent = ({
               {isLoadingImage ? (
                 <Skeleton className="w-full aspect-video rounded-lg" />
               ) : (
-                <img 
-                  src={categoryImage} 
-                  alt={`${category} services in ${location}`}
-                  className="w-full rounded-lg shadow-lg"
-                />
+                !imageError && (
+                  <img 
+                    src={categoryImage} 
+                    alt={`${category} services in ${location}`}
+                    className="w-full rounded-lg shadow-lg"
+                    onError={handleImageError}
+                  />
+                )
               )}
             </Card>
           )}
@@ -67,11 +78,14 @@ const CategoryContent = ({
               {isLoadingImage ? (
                 <Skeleton className="w-full aspect-video rounded-lg" />
               ) : (
-                <img 
-                  src={categoryImage} 
-                  alt={`${category} services in ${location}`}
-                  className="w-full rounded-lg shadow-lg"
-                />
+                !imageError && (
+                  <img 
+                    src={categoryImage} 
+                    alt={`${category} services in ${location}`}
+                    className="w-full rounded-lg shadow-lg"
+                    onError={handleImageError}
+                  />
+                )
               )}
             </Card>
           )}
