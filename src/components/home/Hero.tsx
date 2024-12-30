@@ -4,7 +4,7 @@ interface HeroProps {
 
 const Hero = ({ backgroundImage }: HeroProps) => {
   return (
-    <header className="relative bg-primary py-12 md:py-24 w-full">
+    <header className="relative bg-primary py-12 md:py-24">
       <div className="absolute inset-0 z-0">
         <img 
           src={backgroundImage}
@@ -17,7 +17,7 @@ const Hero = ({ backgroundImage }: HeroProps) => {
         <img 
           src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
           alt="FindMyInteriors UK" 
-          className="h-30 md:h-36 lg:h-48 mx-auto transition-all duration-300 hover:scale-105" // Increased from h-20/h-24/h-32 to h-30/h-36/h-48
+          className="h-20 md:h-24 lg:h-32 mx-auto transition-all duration-300 hover:scale-105"
         />
         <h1 className="text-white text-4xl md:text-5xl lg:text-6xl mt-8 text-center font-bold leading-tight">
           Discover Interiors Solutions Near You
