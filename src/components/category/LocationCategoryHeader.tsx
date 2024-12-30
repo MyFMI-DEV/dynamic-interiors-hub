@@ -14,6 +14,11 @@ const LocationCategoryHeader = ({
   location, 
   category 
 }: LocationCategoryHeaderProps) => {
+  // Format strings to capitalize first letter
+  const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  const formattedMainLocation = mainLocation.charAt(0).toUpperCase() + mainLocation.slice(1);
+  const formattedSubLocation = subLocation.charAt(0).toUpperCase() + subLocation.slice(1);
+
   return (
     <>
       <Breadcrumbs 
@@ -25,7 +30,7 @@ const LocationCategoryHeader = ({
       <CategoryBanner location={location} category={category} />
 
       <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-        {category} in {mainLocation} - {subLocation}
+        {formattedCategory} in {formattedMainLocation} {formattedSubLocation}
       </h1>
     </>
   );
