@@ -27,8 +27,8 @@ serve(async (req) => {
     const { data: existingDescription, error: fetchError } = await supabase
       .from('location_category_descriptions')
       .select('description')
-      .eq('location', location)
-      .eq('category', category)
+      .eq('location', location?.toLowerCase())
+      .eq('category', category?.toLowerCase())
       .maybeSingle();
 
     if (fetchError) {
@@ -81,8 +81,8 @@ serve(async (req) => {
       .from('location_category_descriptions')
       .insert([
         {
-          location,
-          category,
+          location: location?.toLowerCase(),
+          category: category?.toLowerCase(),
           description: generatedDescription,
         }
       ]);
