@@ -4,7 +4,9 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h2 className="text-4xl font-bold mb-4">Why Choose FindMyInteriors?</h2>
+            <div className="flex items-center gap-4 mb-4">
+              <h2 className="text-4xl font-bold">Why Choose FindMyInteriors?</h2>
+            </div>
             <p className="text-muted-foreground mb-12 max-w-2xl">
               We're committed to connecting you with the best interior solutions
             </p>
