@@ -14,12 +14,14 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 
+interface Group {
+  heading: string;
+  items: string[];
+}
+
 interface SearchableDropdownProps {
   title: string;
-  groups?: {
-    heading: string;
-    items: string[];
-  }[];
+  groups?: Group[];
   value: string;
   onSelect: (value: string) => void;
   isLoading?: boolean;
@@ -47,6 +49,12 @@ const SearchableDropdown = ({
     );
   }
 
+  const safeGroups = groups?.filter(group => 
+    group && 
+    typeof group.heading === 'string' && 
+    Array.isArray(group.items)
+  ) ?? [];
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -62,18 +70,11 @@ const SearchableDropdown = ({
         <Command>
           <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
           <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-          {groups?.map((group) => {
-            if (!group?.heading || !Array.isArray(group?.items)) {
-              return null;
-            }
-            
-            return (
-              <CommandGroup key={group.heading} heading={group.heading}>
-                {group.items.map((item) => {
-                  if (typeof item !== 'string') {
-                    return null;
-                  }
-
+          {safeGroups.map((group) => (
+            <CommandGroup key={group.heading} heading={group.heading}>
+              {group.items
+                .filter((item): item is string => typeof item === 'string')
+                .map((item) => {
                   const isActive = value === item.toLowerCase().replace(/\s+/g, '-');
                   return (
                     <CommandItem
@@ -89,9 +90,8 @@ const SearchableDropdown = ({
                     </CommandItem>
                   );
                 })}
-              </CommandGroup>
-            );
-          })}
+            </CommandGroup>
+          ))}
         </Command>
       </PopoverContent>
     </Popover>
