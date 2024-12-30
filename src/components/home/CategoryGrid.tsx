@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Carousel,
   CarouselContent,
@@ -10,13 +12,25 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-interface CategoryGridProps {
-  categories: string[] | undefined;
-}
-
-const CategoryGrid = ({ categories }: CategoryGridProps) => {
+const CategoryGrid = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const { data: categories } = useQuery({
+    queryKey: ['mainCategories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('main_category')
+        .order('main_category');
+      
+      if (error) throw error;
+      
+      // Get unique main categories
+      const uniqueCategories = [...new Set(data.map(c => c.main_category))];
+      return uniqueCategories;
+    }
+  });
 
   const handleCategoryClick = (category: string) => {
     navigate(`/london/${category.toLowerCase().replace(/\s+/g, '-')}`);
