@@ -29,7 +29,7 @@ const FAQs = ({ category, location }: FAQsProps) => {
       answer: `Browsing ${displayCategory} listings in ${location} is completely free. We also offer free basic listings to help sellers connect with potential buyers in the local area.`
     },
     {
-      question: `How can I ensure secure transactions for ${displayCategory} purchases in ${location}?`,
+      question: `What safety measures are in place for ${displayCategory} transactions in ${location}?`,
       answer: `We recommend using secure payment methods, meeting in safe public locations for in-person transactions, and thoroughly reviewing seller profiles and ratings before making ${displayCategory} purchases in ${location}.`
     },
     {
