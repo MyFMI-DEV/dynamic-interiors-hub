@@ -9,13 +9,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-primary py-6">
+      <header className="bg-primary py-12 md:py-24">
         <div className="container mx-auto px-4">
           <img 
             src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
             alt="FindMyInteriors UK" 
-            className="h-16 mx-auto"
+            className="h-24 md:h-32 lg:h-40 mx-auto transition-all duration-300 hover:scale-105"
           />
+          <h2 className="text-white text-xl md:text-2xl mt-6 text-center font-light">
+            Your Shortcut to the Best Deals on Home Products and Services
+          </h2>
         </div>
       </header>
 
