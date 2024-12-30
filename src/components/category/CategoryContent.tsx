@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { marked } from "marked";
 import FAQs from "./FAQs";
+import LocationSearchCard from "./LocationSearchCard";
 
 interface CategoryContentProps {
   categoryImage: string | undefined;
@@ -12,6 +13,8 @@ interface CategoryContentProps {
 const CategoryContent = ({ categoryImage, category, location, paragraphs }: CategoryContentProps) => {
   return (
     <div className="space-y-8">
+      <LocationSearchCard currentCategory={category} />
+      
       <Card className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {categoryImage && (
