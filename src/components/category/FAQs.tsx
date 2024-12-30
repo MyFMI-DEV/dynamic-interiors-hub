@@ -30,7 +30,7 @@ const FAQs = ({ category, location }: FAQsProps) => {
     },
     {
       question: `What safety measures are in place for ${displayCategory} transactions in ${location}?`,
-      answer: `We recommend using secure payment methods, meeting in safe public locations for in-person transactions, and thoroughly reviewing seller profiles and ratings before making ${displayCategory} purchases in ${location}.`
+      answer: `We prioritize your safety with verified user profiles, secure messaging, and a comprehensive rating system. For ${displayCategory} transactions in ${location}, we strongly recommend meeting in well-lit public places, bringing a friend when possible, and using our secure payment system to protect both buyers and sellers.`
     },
     {
       question: `Are there ways to find trending ${displayCategory} options in ${location}?`,
