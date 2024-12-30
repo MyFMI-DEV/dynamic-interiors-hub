@@ -4,24 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import LeadForm from "@/components/LeadForm";
 import { useToast } from "@/hooks/use-toast";
+import { ExternalLink } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleBrowseClick = () => {
-    navigate("/london/all"); // Default to London/all categories as starting point
+    navigate("/london/all");
     toast({
       title: "Welcome!",
       description: "Browse our selection of interior products and services.",
     });
   };
 
-  const handleSellerClick = () => {
-    toast({
-      title: "Coming Soon",
-      description: "Seller registration will be available shortly.",
-    });
+  const handlePlatformRedirect = () => {
+    window.open("https://platform.findmyinteriors.co.uk", "_blank");
   };
 
   return (
@@ -40,6 +38,20 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={handlePlatformRedirect}
+            className="gap-2 text-lg"
+          >
+            Sign Up / Login to Platform <ExternalLink className="h-5 w-5" />
+          </Button>
+          <p className="mt-4 text-muted-foreground">
+            Join our platform to post listings and connect with customers
+          </p>
+        </div>
+
         <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
           Find Interior Products & Services in the UK
         </h1>
@@ -58,12 +70,12 @@ const Index = () => {
 
           <Card className="p-6">
             <h2 className="text-2xl font-semibold mb-4">For Sellers</h2>
-            <p className="mb-4">Join for free and only pay for the leads you win through our credit system.</p>
+            <p className="mb-4">Join our platform to list your products and services.</p>
             <Button 
               className="w-full"
-              onClick={handleSellerClick}
+              onClick={handlePlatformRedirect}
             >
-              Post Free Today
+              Post on Platform <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </Card>
         </div>
