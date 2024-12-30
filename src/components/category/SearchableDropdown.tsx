@@ -1,18 +1,12 @@
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import SearchContent from "./search/SearchContent";
 
 interface SearchableDropdownProps {
   title: string;
@@ -56,30 +50,13 @@ const SearchableDropdown = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
-          <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-          {groups.map((group) => (
-            <CommandGroup key={group.heading} heading={group.heading}>
-              {group.items.map((item) => {
-                const isActive = value === item.toLowerCase().replace(/\s+/g, '-');
-                return (
-                  <CommandItem
-                    key={item}
-                    onSelect={() => {
-                      onSelect(item);
-                      setOpen(false);
-                    }}
-                    className="flex items-center justify-between"
-                  >
-                    {item}
-                    {isActive && <Check className="h-4 w-4" />}
-                  </CommandItem>
-                );
-              })}
-            </CommandGroup>
-          ))}
-        </Command>
+        <SearchContent
+          title={title}
+          groups={groups}
+          value={value}
+          onSelect={onSelect}
+          onClose={() => setOpen(false)}
+        />
       </PopoverContent>
     </Popover>
   );
