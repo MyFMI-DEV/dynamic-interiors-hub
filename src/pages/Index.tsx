@@ -17,7 +17,7 @@ const Index = () => {
   };
 
   const handlePlatformRedirect = () => {
-    window.open("https://platform.findmyinteriors.co.uk", "_blank");
+    window.open("https://www.findmyinteriors.com", "_blank");
   };
 
   return (
@@ -43,10 +43,10 @@ const Index = () => {
             onClick={handlePlatformRedirect}
             className="gap-2 text-lg"
           >
-            Sign Up / Login to Platform <ExternalLink className="h-5 w-5" />
+            Sign up/login to post today <ExternalLink className="h-5 w-5" />
           </Button>
           <p className="mt-4 text-muted-foreground">
-            Join our platform to post listings and connect with customers
+            Join our Find My Interiors Community today and connect with local experts and find the best products, service and deals
           </p>
         </div>
 
