@@ -1,10 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,6 +17,8 @@ serve(async (req) => {
     const { location, category } = await req.json();
     console.log(`Generating SEO metadata for ${location}/${category}`);
     
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Check if SEO metadata already exists
@@ -38,7 +37,11 @@ serve(async (req) => {
     if (existingSEO) {
       console.log('Returning existing SEO metadata');
       return new Response(
-        JSON.stringify(existingSEO),
+        JSON.stringify({
+          meta_title: existingSEO.meta_title,
+          meta_description: existingSEO.meta_description,
+          keywords: existingSEO.keywords,
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -56,24 +59,39 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are an SEO expert that generates metadata for interior design services and products pages.'
+            content: 'You are an SEO expert. Generate metadata in JSON format with these fields: meta_title (max 60 chars), meta_description (max 160 chars), and keywords (array of 5-7 relevant terms).'
           },
           {
             role: 'user',
-            content: `Generate SEO metadata for a page about ${category} interior design services/products in ${location}. Include a title (max 60 chars), meta description (max 160 chars), and 5-7 relevant keywords. Format as JSON with keys: metaTitle, metaDescription, keywords (array).`
+            content: `Generate SEO metadata for ${category} interior design services/products in ${location}.`
           }
         ],
+        temperature: 0.7,
       }),
     });
 
-    const data = await response.json();
-    console.log('OpenAI response received');
+    const openAIData = await response.json();
+    console.log('OpenAI response received:', openAIData);
     
-    if (!data.choices?.[0]?.message?.content) {
+    if (!openAIData.choices?.[0]?.message?.content) {
       throw new Error('Failed to generate SEO metadata from OpenAI');
     }
 
-    const seoData = JSON.parse(data.choices[0].message.content);
+    let seoData;
+    try {
+      // Extract the JSON object from the response, handling potential markdown formatting
+      const content = openAIData.choices[0].message.content;
+      const jsonStr = content.replace(/```json\n|\n```/g, '').trim();
+      seoData = JSON.parse(jsonStr);
+      
+      // Validate the required fields
+      if (!seoData.meta_title || !seoData.meta_description || !Array.isArray(seoData.keywords)) {
+        throw new Error('Invalid SEO data structure');
+      }
+    } catch (error) {
+      console.error('Error parsing OpenAI response:', error);
+      throw new Error('Failed to parse SEO metadata from OpenAI response');
+    }
 
     // Store the generated SEO metadata
     const { error: insertError } = await supabase
@@ -82,8 +100,8 @@ serve(async (req) => {
         {
           location: location?.toLowerCase(),
           category: category?.toLowerCase(),
-          meta_title: seoData.metaTitle,
-          meta_description: seoData.metaDescription,
+          meta_title: seoData.meta_title,
+          meta_description: seoData.meta_description,
           keywords: seoData.keywords,
         }
       ]);
