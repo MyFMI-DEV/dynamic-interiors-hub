@@ -24,6 +24,7 @@ const LocationList = () => {
   const [groupedLocations, setGroupedLocations] = useState<GroupedLocations>({});
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [locationMap, setLocationMap] = useState<Record<string, Location[]>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +49,15 @@ const LocationList = () => {
             return acc;
           }, {});
 
+          // Create a map of main locations to their full location objects
+          const locMap = locationsData.reduce((acc: Record<string, Location[]>, location) => {
+            if (!acc[location.main_location]) {
+              acc[location.main_location] = [];
+            }
+            acc[location.main_location].push(location);
+            return acc;
+          }, {});
+
           // Remove duplicates from sub-locations
           Object.keys(grouped).forEach(key => {
             grouped[key] = Array.from(new Set(grouped[key]));
@@ -58,6 +68,7 @@ const LocationList = () => {
           );
 
           setGroupedLocations(grouped);
+          setLocationMap(locMap);
           setCategories(uniqueCategories);
         }
       } catch (error) {
@@ -70,8 +81,8 @@ const LocationList = () => {
     fetchData();
   }, []);
 
-  const formatUrl = (mainLocation: string, category: string) => {
-    const locationPath = `${mainLocation.toLowerCase()}`.replace(/\s+/g, '-');
+  const formatUrl = (mainLocation: string, subLocation: string, category: string) => {
+    const locationPath = `${mainLocation.toLowerCase()}-${subLocation.toLowerCase()}`.replace(/\s+/g, '-');
     const categoryPath = category.toLowerCase().replace(/\s+/g, '-');
     return `/${locationPath}/${categoryPath}`;
   };
@@ -104,7 +115,7 @@ const LocationList = () => {
                   {categories.map((category) => (
                     <Link
                       key={`${mainLocation}-${category.sub_category}`}
-                      to={formatUrl(mainLocation, category.sub_category)}
+                      to={formatUrl(mainLocation, locationMap[mainLocation][0].sub_location, category.sub_category)}
                       className="p-3 bg-accent hover:bg-primary hover:text-white rounded-lg transition-colors"
                     >
                       {category.sub_category}
