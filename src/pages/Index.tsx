@@ -20,7 +20,7 @@ const Index = () => {
       
       if (error) throw error;
       
-      // Remove duplicates
+      // Remove duplicates using Set
       return [...new Set(data.map(c => c.main_category))];
     }
   });
