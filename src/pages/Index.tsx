@@ -3,9 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import LeadForm from "@/components/LeadForm";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleBrowseClick = () => {
+    navigate("/london/all"); // Default to London/all categories as starting point
+    toast({
+      title: "Welcome!",
+      description: "Browse our selection of interior products and services.",
+    });
+  };
+
+  const handleSellerClick = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Seller registration will be available shortly.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +50,7 @@ const Index = () => {
             <p className="mb-4">Access the best deals on home products and services, completely free!</p>
             <Button 
               className="w-full"
-              onClick={() => window.location.href = "https://www.findmyinteriors.com"}
+              onClick={handleBrowseClick}
             >
               Start Browsing
             </Button>
@@ -44,7 +61,7 @@ const Index = () => {
             <p className="mb-4">Join for free and only pay for the leads you win through our credit system.</p>
             <Button 
               className="w-full"
-              onClick={() => window.location.href = "https://www.findmyinteriors.com"}
+              onClick={handleSellerClick}
             >
               Post Free Today
             </Button>

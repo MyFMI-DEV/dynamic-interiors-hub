@@ -13,16 +13,21 @@ const LeadForm = () => {
     interest: ""
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     try {
-      // Here we'll add Supabase integration later
+      // Store the lead information (we'll integrate with Supabase later)
+      // For now, we'll just show a success message
       toast({
         title: "Success!",
-        description: "We'll be in touch soon.",
+        description: "Thank you for your interest. We'll be in touch soon.",
       });
       
+      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -35,6 +40,8 @@ const LeadForm = () => {
         description: "Something went wrong. Please try again.",
         variant: "destructive"
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -49,6 +56,7 @@ const LeadForm = () => {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
+            disabled={isSubmitting}
           />
         </div>
         
@@ -59,6 +67,7 @@ const LeadForm = () => {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
+            disabled={isSubmitting}
           />
         </div>
         
@@ -69,6 +78,7 @@ const LeadForm = () => {
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             required
+            disabled={isSubmitting}
           />
         </div>
         
@@ -78,11 +88,12 @@ const LeadForm = () => {
             value={formData.interest}
             onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
             required
+            disabled={isSubmitting}
           />
         </div>
 
-        <Button type="submit" className="w-full">
-          Submit
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Card>
