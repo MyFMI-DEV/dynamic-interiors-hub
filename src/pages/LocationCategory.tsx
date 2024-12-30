@@ -1,130 +1,35 @@
-import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useLocationData } from "@/hooks/useLocationData";
-import { useLocationDescription } from "@/hooks/useLocationDescription";
-import { useSEOMetadata } from "@/hooks/useSEOMetadata";
-import { useCategoryImage } from "@/hooks/useCategoryImage";
-import { useCachedPage } from "@/hooks/useCachedPage";
 import { useIframeMessage } from "@/hooks/useIframeMessage";
-import { SEOHead } from "@/components/SEOHead";
-import { useToast } from "@/hooks/use-toast";
-import CategoryContent from "@/components/category/CategoryContent";
-import CategoryTabs from "@/components/category/CategoryTabs";
-import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
 import LocationParser from "@/components/category/LocationParser";
 import CategoryDataLoader from "@/components/category/CategoryDataLoader";
 import LoadingProgress from "@/components/category/LoadingProgress";
 import CacheManager from "@/components/category/CacheManager";
+import ErrorHandler from "@/components/category/ErrorHandler";
+import LocationCategoryContent from "@/components/category/LocationCategoryContent";
+import { useLocationCategoryData } from "@/components/category/hooks/useLocationCategoryData";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
-  const { toast } = useToast();
-  const [categories, setCategories] = useState([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [mainLocation, setMainLocation] = useState("");
-  const [subLocation, setSubLocation] = useState("");
-
-  console.log('LocationCategory: Initial render', { location, category });
-
-  const { 
-    data: cachedPage, 
-    isLoading: isLoadingCache,
-    error: cacheError 
-  } = useCachedPage(location, category);
-
-  const { 
-    data: locationData, 
-    isLoading: isLoadingLocation,
-    error: locationError 
-  } = useLocationData(location);
-
-  const { 
-    data: description, 
-    isLoading: isLoadingDescription,
-    error: descriptionError 
-  } = useLocationDescription(location, category);
-
-  const { 
-    data: seoMetadata, 
-    isLoading: isLoadingSEO,
-    error: seoError 
-  } = useSEOMetadata(location, category);
-
-  const { 
-    data: categoryImage, 
-    isLoading: isLoadingImage,
-    error: imageError 
-  } = useCategoryImage(category);
+  
+  const {
+    data,
+    loading: { isLoading, loadingCategories },
+    errors,
+    handlers: {
+      setCategories,
+      setLoadingCategories,
+      handleLocationParsed,
+    }
+  } = useLocationCategoryData(location, category);
   
   useIframeMessage();
 
-  console.log('LocationCategory: Loading states', {
-    isLoadingCache,
-    isLoadingLocation,
-    isLoadingDescription,
-    isLoadingSEO,
-    isLoadingImage,
-    loadingCategories
-  });
-
-  console.log('LocationCategory: Data states', {
-    cachedPage: !!cachedPage,
-    locationData: !!locationData,
-    description: !!description,
-    seoMetadata: !!seoMetadata,
-    categoryImage: !!categoryImage,
-    categories: categories.length
-  });
-
-  const handleLocationParsed = (mainLoc: string, subLoc: string) => {
-    console.log('LocationCategory: Location parsed', { mainLoc, subLoc });
-    setMainLocation(mainLoc);
-    setSubLocation(subLoc);
-  };
-
-  // Handle errors with toast notifications
-  React.useEffect(() => {
-    const errors = [
-      { error: cacheError, message: "Error loading cached data" },
-      { error: locationError, message: "Error verifying location" },
-      { error: descriptionError, message: "Error loading description" },
-      { error: seoError, message: "Error loading SEO data" },
-      { error: imageError, message: "Error loading images" }
-    ];
-
-    errors.forEach(({ error, message }) => {
-      if (error) {
-        console.error('LocationCategory: Error occurred:', { message, error });
-        toast({
-          title: "Error",
-          description: `${message}. Please try refreshing the page.`,
-          variant: "destructive",
-        });
-      }
-    });
-  }, [cacheError, locationError, descriptionError, seoError, imageError, toast]);
-
-  const loadingSteps = {
-    cache: !isLoadingCache,
-    location: !isLoadingLocation,
-    description: !isLoadingDescription,
-    seo: !isLoadingSEO,
-    image: !isLoadingImage
-  };
-
-  const totalSteps = Object.keys(loadingSteps).length;
-  const completedSteps = Object.values(loadingSteps).filter(Boolean).length;
-  const loadingProgress = (completedSteps / totalSteps) * 100;
-
-  const isLoading = isLoadingCache || isLoadingLocation || isLoadingDescription || 
-                    isLoadingSEO || loadingCategories || isLoadingImage;
-
-  console.log('LocationCategory: Final render state', {
+  console.log('LocationCategory: Render state', {
     isLoading,
-    loadingProgress,
-    completedSteps,
-    totalSteps
+    loadingProgress: data.loadingProgress,
+    location,
+    category
   });
 
   if (isLoading) {
@@ -132,15 +37,11 @@ const LocationCategory = () => {
       <LoadingProgress 
         category={category} 
         location={location} 
-        progress={loadingProgress}
-        loadingSteps={loadingSteps}
+        progress={data.loadingProgress}
+        loadingSteps={data.loadingSteps}
       />
     );
   }
-
-  const paragraphs = cachedPage ? 
-    cachedPage.description.split('\n\n') : 
-    description?.split('\n\n') || [];
 
   return (
     <LocationCategoryLayout>
@@ -157,39 +58,19 @@ const LocationCategory = () => {
       <CacheManager
         location={location}
         category={category}
-        description={description}
-        seoMetadata={seoMetadata}
-        categoryImage={categoryImage}
-        cachedPage={cachedPage}
+        description={data.description}
+        seoMetadata={data.seoMetadata}
+        categoryImage={data.categoryImage}
+        cachedPage={data.cachedPage}
       />
 
-      {(cachedPage?.seoMetadata || seoMetadata) && (
-        <SEOHead
-          title={cachedPage?.seoMetadata?.meta_title || seoMetadata.meta_title}
-          description={cachedPage?.seoMetadata?.meta_description || seoMetadata.meta_description}
-          keywords={cachedPage?.seoMetadata?.keywords || seoMetadata.keywords}
-          location={location || ''}
-          category={category || ''}
-        />
-      )}
+      <ErrorHandler errors={errors} />
 
-      <LocationCategoryHeader
-        mainLocation={mainLocation}
-        subLocation={subLocation}
-        location={location || ''}
-        category={category || ''}
+      <LocationCategoryContent 
+        data={data}
+        location={location}
+        category={category}
       />
-
-      <CategoryContent 
-        categoryImage={cachedPage?.categoryImage || categoryImage}
-        category={category || ''}
-        location={location || ''}
-        paragraphs={paragraphs}
-      />
-
-      <div className="mt-8">
-        <CategoryTabs categories={categories} location={location || ''} />
-      </div>
     </LocationCategoryLayout>
   );
 };
