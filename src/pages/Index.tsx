@@ -41,13 +41,11 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
       <Navigation />
-
-      <main className="container mx-auto px-4 py-12">
+      <main>
         <CategoryGrid categories={categories} />
         <LocationGrid locations={locations} />
         <Features />
       </main>
-
       <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p>© {new Date().getFullYear()} FindMyInteriors UK. All rights reserved.</p>
