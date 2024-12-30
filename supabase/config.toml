@@ -13,9 +13,9 @@ enabled = true
 port = 54323
 
 [[functions]]
-name = "generate-description"
 verify_jwt = false
+slug = "generate-description"
 
 [[functions]]
-name = "generate-seo"
 verify_jwt = false
+slug = "generate-seo"

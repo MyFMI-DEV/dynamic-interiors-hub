@@ -1,6 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
@@ -60,7 +60,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are an SEO expert. Generate metadata in JSON format with these fields: meta_title (max 60 chars), meta_description (max 160 chars), and keywords (array of 5-7 relevant terms).'
+            content: 'You are an SEO expert. Generate metadata for the given location and category. Return ONLY a JSON object with these fields: meta_title (max 60 chars), meta_description (max 160 chars), and keywords (array of 5-7 relevant terms). Do not include any markdown formatting or explanation.'
           },
           {
             role: 'user',
@@ -80,10 +80,7 @@ serve(async (req) => {
 
     let seoData;
     try {
-      // Extract the JSON object from the response, handling potential markdown formatting
-      const content = openAIData.choices[0].message.content;
-      const jsonStr = content.replace(/```json\n|\n```/g, '').trim();
-      seoData = JSON.parse(jsonStr);
+      seoData = JSON.parse(openAIData.choices[0].message.content);
       
       // Validate the required fields
       if (!seoData.meta_title || !seoData.meta_description || !Array.isArray(seoData.keywords)) {
