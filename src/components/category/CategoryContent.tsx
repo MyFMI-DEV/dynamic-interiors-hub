@@ -2,7 +2,8 @@ import { Card } from "@/components/ui/card";
 import { marked } from "marked";
 import FAQs from "./FAQs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCategoryImage } from "@/hooks/useCategoryImage";
 
 interface CategoryContentProps {
   categoryImage: string | undefined;
@@ -24,11 +25,20 @@ const CategoryContent = ({
   isLoadingFAQs = false 
 }: CategoryContentProps) => {
   const [imageError, setImageError] = useState(false);
+  const { data: fallbackImage, isLoading: isLoadingFallback } = useCategoryImage(category);
+
+  // Reset image error state when categoryImage changes
+  useEffect(() => {
+    setImageError(false);
+  }, [categoryImage]);
 
   const handleImageError = () => {
-    console.log('Image failed to load, setting error state');
+    console.log('Image failed to load, falling back to new image');
     setImageError(true);
   };
+
+  const displayImage = imageError ? fallbackImage : categoryImage;
+  const isImageLoading = isLoadingImage || (imageError && isLoadingFallback);
 
   return (
     <div className="space-y-8">
@@ -36,17 +46,15 @@ const CategoryContent = ({
         <div className="space-y-8 order-1 md:order-none">
           {categoryImage && (
             <Card className="p-6 md:hidden">
-              {isLoadingImage ? (
+              {isImageLoading ? (
                 <Skeleton className="w-full aspect-video rounded-lg" />
-              ) : (
-                !imageError && (
-                  <img 
-                    src={categoryImage} 
-                    alt={`${category} services in ${location}`}
-                    className="w-full rounded-lg shadow-lg"
-                    onError={handleImageError}
-                  />
-                )
+              ) : displayImage && (
+                <img 
+                  src={displayImage} 
+                  alt={`${category} services in ${location}`}
+                  className="w-full rounded-lg shadow-lg"
+                  onError={handleImageError}
+                />
               )}
             </Card>
           )}
@@ -75,17 +83,15 @@ const CategoryContent = ({
         <div className="space-y-8 order-2">
           {categoryImage && (
             <Card className="p-6 hidden md:block">
-              {isLoadingImage ? (
+              {isImageLoading ? (
                 <Skeleton className="w-full aspect-video rounded-lg" />
-              ) : (
-                !imageError && (
-                  <img 
-                    src={categoryImage} 
-                    alt={`${category} services in ${location}`}
-                    className="w-full rounded-lg shadow-lg"
-                    onError={handleImageError}
-                  />
-                )
+              ) : displayImage && (
+                <img 
+                  src={displayImage} 
+                  alt={`${category} services in ${location}`}
+                  className="w-full rounded-lg shadow-lg"
+                  onError={handleImageError}
+                />
               )}
             </Card>
           )}
