@@ -9,15 +9,11 @@ import { useLocationDescription } from "@/hooks/useLocationDescription";
 import { useSEOMetadata } from "@/hooks/useSEOMetadata";
 import { SEOHead } from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
-
-interface Category {
-  main_category: string;
-  sub_categories: string[];
-}
+import Navigation from "@/components/Navigation";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const { toast } = useToast();
 
@@ -35,8 +31,7 @@ const LocationCategory = () => {
 
         if (error) throw error;
 
-        // Group by main category
-        const groupedCategories = data.reduce((acc: Category[], curr) => {
+        const groupedCategories = data.reduce((acc, curr) => {
           const existingCategory = acc.find(c => c.main_category === curr.main_category);
           if (existingCategory) {
             existingCategory.sub_categories.push(curr.sub_category);
@@ -78,6 +73,7 @@ const LocationCategory = () => {
             />
           </div>
         </header>
+        <Navigation />
         <main className="container mx-auto px-4 py-12">
           <Skeleton className="h-12 w-3/4 mx-auto mb-8" />
           <Skeleton className="h-[200px] w-full" />
@@ -107,6 +103,8 @@ const LocationCategory = () => {
           />
         </div>
       </header>
+
+      <Navigation />
 
       <main className="container mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">

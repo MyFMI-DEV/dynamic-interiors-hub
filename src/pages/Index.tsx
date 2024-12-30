@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import Navigation from "@/components/Navigation";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -64,35 +65,7 @@ const Index = () => {
         </div>
       </header>
 
-      <nav className="bg-secondary py-4">
-        <div className="container mx-auto px-4">
-          <ul className="flex justify-center space-x-8">
-            <li>
-              <Link to="/" className="text-primary hover:text-primary/80 transition-colors">
-                Homepage
-              </Link>
-            </li>
-            <li>
-              <Link to="/how-it-works" className="text-primary hover:text-primary/80 transition-colors">
-                How It Works
-              </Link>
-            </li>
-            <li>
-              <Link to="/why-choose-us" className="text-primary hover:text-primary/80 transition-colors">
-                Why Choose Us
-              </Link>
-            </li>
-            <li>
-              <Link 
-                to="/post-free" 
-                className="text-primary font-semibold hover:text-primary/80 transition-colors"
-              >
-                Post Free Today
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-12">
         <section className="mb-16">

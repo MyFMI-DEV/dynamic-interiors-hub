@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const WhyChooseUs = () => {
   return (
@@ -15,22 +16,7 @@ const WhyChooseUs = () => {
         </div>
       </header>
 
-      <nav className="bg-accent py-4 shadow-md">
-        <div className="container mx-auto px-4">
-          <ul className="flex justify-center space-x-8">
-            <li>
-              <Link to="/how-it-works" className="text-primary hover:text-primary-light font-medium">
-                How It Works
-              </Link>
-            </li>
-            <li>
-              <Link to="/why-choose-us" className="text-primary hover:text-primary-light font-medium">
-                Why Choose Us
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 mb-12">

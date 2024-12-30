@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const HowItWorks = () => {
   return (
@@ -14,6 +15,8 @@ const HowItWorks = () => {
           </Link>
         </div>
       </header>
+
+      <Navigation />
 
       <main className="container mx-auto px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
