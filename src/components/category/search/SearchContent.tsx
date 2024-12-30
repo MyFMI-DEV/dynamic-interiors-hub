@@ -14,14 +14,17 @@ interface SearchContentProps {
   onClose: () => void;
 }
 
-const SearchContent = ({ title, groups, value, onSelect, onClose }: SearchContentProps) => {
+const SearchContent = ({ title, groups = [], value, onSelect, onClose }: SearchContentProps) => {
+  // Ensure groups is always an array
+  const safeGroups = Array.isArray(groups) ? groups : [];
+  
   return (
     <Command>
       <CommandInput placeholder={`Search ${title.toLowerCase()}...`} />
       <CommandEmpty>No {title.toLowerCase()} found.</CommandEmpty>
-      {groups.map((group) => (
+      {safeGroups.map((group) => (
         <CommandGroup key={group.heading} heading={group.heading}>
-          {group.items.map((item) => (
+          {(group.items || []).map((item) => (
             <SearchItem
               key={item}
               item={item}

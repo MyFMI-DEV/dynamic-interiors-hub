@@ -10,7 +10,7 @@ import SearchContent from "./search/SearchContent";
 
 interface SearchableDropdownProps {
   title: string;
-  groups: { heading: string; items: string[] }[];
+  groups?: { heading: string; items: string[] }[];
   value: string;
   onSelect: (value: string) => void;
   isLoading?: boolean;
