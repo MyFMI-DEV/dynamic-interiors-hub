@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { useLocationCategories } from "@/hooks/useLocationCategories";
 import BannerMessage from "./BannerMessage";
 import PostButton from "./PostButton";
+import SimplifiedSearch from "./SimplifiedSearch";
 
 interface CategoryBannerProps {
   location: string;
