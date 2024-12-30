@@ -15,7 +15,7 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
   const formattedLocation = location.replace(/-/g, ' ');
   const formattedCategory = category.replace(/-/g, ' ');
 
-  const { data: locations } = useQuery({
+  const { data: locations, isLoading: isLoadingLocations } = useQuery({
     queryKey: ['locations'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -40,7 +40,7 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
     }
   });
 
-  const { data: categories } = useQuery({
+  const { data: categories, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -90,12 +90,14 @@ const CategoryBanner = ({ location, category }: CategoryBannerProps) => {
               groups={locations || []}
               value={location}
               onSelect={handleLocationSelect}
+              isLoading={isLoadingLocations}
             />
             <SearchableDropdown
               title="Change Category"
               groups={categories || []}
               value={category}
               onSelect={handleCategorySelect}
+              isLoading={isLoadingCategories}
             />
             <PostButton />
           </div>
