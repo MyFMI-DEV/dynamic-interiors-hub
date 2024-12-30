@@ -14,6 +14,7 @@ import Footer from "@/components/layout/Footer";
 import LoadingState from "@/components/ui/LoadingState";
 import CategoryContent from "@/components/category/CategoryContent";
 import CategoryTabs from "@/components/category/CategoryTabs";
+import CategoryBanner from "@/components/category/CategoryBanner";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
@@ -83,7 +84,6 @@ const LocationCategory = () => {
     return <LoadingState />;
   }
 
-  // Split description into paragraphs
   const paragraphs = description?.split('\n\n') || [];
 
   return (
@@ -107,6 +107,8 @@ const LocationCategory = () => {
           subLocation={subLocation}
           category={category}
         />
+
+        <CategoryBanner location={location || ''} category={category || ''} />
 
         <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
           {category} in {mainLocation} - {subLocation}
