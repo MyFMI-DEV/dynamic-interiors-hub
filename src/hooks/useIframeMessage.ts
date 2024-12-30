@@ -3,19 +3,17 @@ import { useEffect } from 'react';
 export const useIframeMessage = () => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      const allowedOrigins = [
-        window.location.origin,
-        'http://localhost:5173',
-        'http://localhost:3000'
-      ];
-      
-      if (!allowedOrigins.includes(event.origin)) {
-        console.log('Ignored message from unauthorized origin:', event.origin);
+      // Only accept messages from the same origin
+      if (event.origin !== window.location.origin) {
+        console.log('Unauthorized origin:', event.origin);
         return;
       }
-      
-      if (event.data && event.data.type === 'iframe-height') {
-        // Handle iframe height adjustment if needed
+
+      if (event.data?.type === 'iframe-height') {
+        const iframe = document.querySelector('iframe');
+        if (iframe) {
+          iframe.style.height = `${event.data.height}px`;
+        }
       }
     };
 
