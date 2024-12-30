@@ -6,15 +6,12 @@ import { useLocationDescription } from "@/hooks/useLocationDescription";
 import { useSEOMetadata } from "@/hooks/useSEOMetadata";
 import { useCategoryImage } from "@/hooks/useCategoryImage";
 import { SEOHead } from "@/components/SEOHead";
-import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { supabase } from "@/integrations/supabase/client";
-import Navigation from "@/components/Navigation";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import LoadingState from "@/components/ui/LoadingState";
 import CategoryContent from "@/components/category/CategoryContent";
 import CategoryTabs from "@/components/category/CategoryTabs";
-import CategoryBanner from "@/components/category/CategoryBanner";
+import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
+import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
@@ -25,7 +22,6 @@ const LocationCategory = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Parse location parameter to extract main and sub location
     if (location) {
       const parts = location.split('-');
       const mainLoc = parts[0];
@@ -87,7 +83,7 @@ const LocationCategory = () => {
   const paragraphs = description?.split('\n\n') || [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <LocationCategoryLayout>
       {seoMetadata && (
         <SEOHead
           title={seoMetadata.meta_title}
@@ -98,36 +94,24 @@ const LocationCategory = () => {
         />
       )}
 
-      <Header />
-      <Navigation />
+      <LocationCategoryHeader
+        mainLocation={mainLocation}
+        subLocation={subLocation}
+        location={location || ''}
+        category={category || ''}
+      />
 
-      <main className="container mx-auto px-4 py-12">
-        <Breadcrumbs 
-          location={mainLocation} 
-          subLocation={subLocation}
-          category={category}
-        />
+      <CategoryContent 
+        categoryImage={categoryImage}
+        category={category || ''}
+        location={location || ''}
+        paragraphs={paragraphs}
+      />
 
-        <CategoryBanner location={location || ''} category={category || ''} />
-
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-          {category} in {mainLocation} - {subLocation}
-        </h1>
-
-        <CategoryContent 
-          categoryImage={categoryImage}
-          category={category || ''}
-          location={location || ''}
-          paragraphs={paragraphs}
-        />
-
-        <div className="mt-8">
-          <CategoryTabs categories={categories} location={location || ''} />
-        </div>
-      </main>
-
-      <Footer />
-    </div>
+      <div className="mt-8">
+        <CategoryTabs categories={categories} location={location || ''} />
+      </div>
+    </LocationCategoryLayout>
   );
 };
 
