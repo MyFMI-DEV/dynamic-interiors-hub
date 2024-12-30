@@ -7,22 +7,6 @@ import LocationGrid from "@/components/home/LocationGrid";
 import Features from "@/components/home/Features";
 
 const Index = () => {
-  const { data: categories } = useQuery({
-    queryKey: ['mainCategories'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('main_category')
-        .order('main_category');
-      
-      if (error) throw error;
-      
-      // Get unique main categories
-      const uniqueCategories = [...new Set(data.map(c => c.main_category))];
-      return uniqueCategories;
-    }
-  });
-
   const { data: locations } = useQuery({
     queryKey: ['mainLocations'],
     queryFn: async () => {
@@ -42,7 +26,7 @@ const Index = () => {
       <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
       <Navigation />
       <main>
-        <CategoryGrid categories={categories} />
+        <CategoryGrid />
         <LocationGrid locations={locations} />
         <Features />
       </main>
