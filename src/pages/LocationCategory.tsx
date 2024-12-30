@@ -7,17 +7,14 @@ import { useCategoryImage } from "@/hooks/useCategoryImage";
 import { useCachedPage } from "@/hooks/useCachedPage";
 import { useIframeMessage } from "@/hooks/useIframeMessage";
 import { SEOHead } from "@/components/SEOHead";
-import { supabase } from "@/integrations/supabase/client";
-import LoadingState from "@/components/ui/LoadingState";
 import CategoryContent from "@/components/category/CategoryContent";
 import CategoryTabs from "@/components/category/CategoryTabs";
 import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
 import LocationParser from "@/components/category/LocationParser";
 import CategoryDataLoader from "@/components/category/CategoryDataLoader";
-import { useToast } from "@/hooks/use-toast";
-import { Json } from "@/integrations/supabase/types";
-import { Progress } from "@/components/ui/progress";
+import LoadingProgress from "@/components/category/LoadingProgress";
+import CacheManager from "@/components/category/CacheManager";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
@@ -25,9 +22,7 @@ const LocationCategory = () => {
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [mainLocation, setMainLocation] = useState("");
   const [subLocation, setSubLocation] = useState("");
-  const { toast } = useToast();
 
-  // Use our custom hooks with better caching
   const { data: cachedPage, isLoading: isLoadingCache } = useCachedPage(location, category);
   const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
@@ -36,14 +31,12 @@ const LocationCategory = () => {
   
   useIframeMessage();
 
-  // Handle location parsing
   const handleLocationParsed = (mainLoc: string, subLoc: string) => {
     setMainLocation(mainLoc);
     setSubLocation(subLoc);
   };
 
-  // Calculate loading progress
-  const totalSteps = 5; // Total number of loading steps
+  const totalSteps = 5;
   const completedSteps = [
     !isLoadingCache,
     !isLoadingLocation,
@@ -53,55 +46,15 @@ const LocationCategory = () => {
   ].filter(Boolean).length;
   const loadingProgress = (completedSteps / totalSteps) * 100;
 
-  // Cache the page data when all content is loaded
-  const cachePageData = async () => {
-    if (description && seoMetadata && categoryImage && !cachedPage && location && category) {
-      console.log('Caching new page data');
-      
-      const pageContent = {
-        description,
-        seoMetadata,
-        categoryImage,
-      };
-
-      const { error } = await supabase
-        .from('cached_pages')
-        .upsert({
-          location: location.toLowerCase(),
-          category: category.toLowerCase(),
-          content: pageContent as unknown as Json,
-        });
-
-      if (error) {
-        console.error('Error caching page:', error);
-        toast({
-          title: "Error",
-          description: "Failed to cache page data.",
-          variant: "destructive",
-        });
-      } else {
-        console.log('Successfully cached page data');
-      }
-    }
-  };
-
-  // Call cachePageData when dependencies change
-  React.useEffect(() => {
-    cachePageData();
-  }, [description, seoMetadata, categoryImage, location, category, cachedPage]);
-
-  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage || isLoadingCache;
+  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || 
+                    loadingCategories || isLoadingImage || isLoadingCache;
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
-        <Progress value={loadingProgress} className="w-full max-w-md mb-4" />
-        <p className="text-muted-foreground text-sm">
-          Loading {category} services in {location}...
-        </p>
-        <LoadingState />
-      </div>
-    );
+    return <LoadingProgress 
+      category={category} 
+      location={location} 
+      progress={loadingProgress} 
+    />;
   }
 
   const paragraphs = cachedPage ? 
@@ -118,6 +71,15 @@ const LocationCategory = () => {
       <CategoryDataLoader 
         onCategoriesLoaded={setCategories}
         onLoadingChange={setLoadingCategories}
+      />
+
+      <CacheManager
+        location={location}
+        category={category}
+        description={description}
+        seoMetadata={seoMetadata}
+        categoryImage={categoryImage}
+        cachedPage={cachedPage}
       />
 
       {(cachedPage?.seoMetadata || seoMetadata) && (
