@@ -12,6 +12,7 @@ import CategoryContent from "@/components/category/CategoryContent";
 import CategoryTabs from "@/components/category/CategoryTabs";
 import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
+import { useQuery } from "@tanstack/react-query";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
@@ -20,6 +21,22 @@ const LocationCategory = () => {
   const [mainLocation, setMainLocation] = useState("");
   const [subLocation, setSubLocation] = useState("");
   const { toast } = useToast();
+
+  // Check for cached page data
+  const { data: cachedPage, isLoading: isLoadingCache } = useQuery({
+    queryKey: ['cached-page', location, category],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cached_pages')
+        .select('*')
+        .eq('location', location?.toLowerCase())
+        .eq('category', category?.toLowerCase())
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   useEffect(() => {
     if (location) {
@@ -35,6 +52,33 @@ const LocationCategory = () => {
   const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
   const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
+
+  // Cache the page data when all content is loaded
+  useEffect(() => {
+    const cachePageData = async () => {
+      if (description && seoMetadata && categoryImage && !cachedPage) {
+        const pageContent = {
+          description,
+          seoMetadata,
+          categoryImage,
+        };
+
+        const { error } = await supabase
+          .from('cached_pages')
+          .upsert({
+            location: location?.toLowerCase(),
+            category: category?.toLowerCase(),
+            content: pageContent,
+          });
+
+        if (error) {
+          console.error('Error caching page:', error);
+        }
+      }
+    };
+
+    cachePageData();
+  }, [description, seoMetadata, categoryImage, location, category, cachedPage]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -74,21 +118,30 @@ const LocationCategory = () => {
     fetchCategories();
   }, [toast]);
 
-  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage;
+  // Use cached data if available
+  useEffect(() => {
+    if (cachedPage) {
+      console.log('Using cached page data');
+    }
+  }, [cachedPage]);
+
+  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || loadingCategories || isLoadingImage || isLoadingCache;
 
   if (isLoading) {
     return <LoadingState />;
   }
 
-  const paragraphs = description?.split('\n\n') || [];
+  const paragraphs = cachedPage ? 
+    cachedPage.content.description?.split('\n\n') : 
+    description?.split('\n\n') || [];
 
   return (
     <LocationCategoryLayout>
-      {seoMetadata && (
+      {(cachedPage?.content.seoMetadata || seoMetadata) && (
         <SEOHead
-          title={seoMetadata.meta_title}
-          description={seoMetadata.meta_description}
-          keywords={seoMetadata.keywords}
+          title={cachedPage?.content.seoMetadata?.meta_title || seoMetadata.meta_title}
+          description={cachedPage?.content.seoMetadata?.meta_description || seoMetadata.meta_description}
+          keywords={cachedPage?.content.seoMetadata?.keywords || seoMetadata.keywords}
           location={location || ''}
           category={category || ''}
         />
@@ -102,7 +155,7 @@ const LocationCategory = () => {
       />
 
       <CategoryContent 
-        categoryImage={categoryImage}
+        categoryImage={cachedPage?.content.categoryImage || categoryImage}
         category={category || ''}
         location={location || ''}
         paragraphs={paragraphs}

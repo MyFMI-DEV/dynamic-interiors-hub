@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      cached_pages: {
+        Row: {
+          category: string
+          content: Json
+          id: string
+          last_updated: string | null
+          location: string
+        }
+        Insert: {
+          category: string
+          content: Json
+          id?: string
+          last_updated?: string | null
+          location: string
+        }
+        Update: {
+          category?: string
+          content?: Json
+          id?: string
+          last_updated?: string | null
+          location?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string | null
