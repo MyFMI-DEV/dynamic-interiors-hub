@@ -26,7 +26,12 @@ export const useCachedPage = (location: string | undefined, category: string | u
   return useQuery({
     queryKey: ['cached-page', location, category],
     queryFn: async () => {
-      if (!location || !category) return null;
+      console.log('Fetching cached page for:', location, category);
+      
+      if (!location || !category) {
+        console.log('Missing location or category');
+        return null;
+      }
       
       const { data, error } = await supabase
         .from('cached_pages')
@@ -35,15 +40,23 @@ export const useCachedPage = (location: string | undefined, category: string | u
         .eq('category', category.toLowerCase())
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching cached page:', error);
+        throw error;
+      }
+      
+      console.log('Cached page data:', data);
       
       if (data) {
         const typedData = data as DatabaseCachedPage;
         return typedData.content as unknown as CachedContent;
       }
+      
+      console.log('No cached page found');
       return null;
     },
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     gcTime: 1000 * 60 * 60, // Keep in garbage collection for 1 hour
+    retry: 2, // Retry failed requests twice
   });
 };

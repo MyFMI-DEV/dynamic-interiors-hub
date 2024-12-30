@@ -7,6 +7,7 @@ import { useCategoryImage } from "@/hooks/useCategoryImage";
 import { useCachedPage } from "@/hooks/useCachedPage";
 import { useIframeMessage } from "@/hooks/useIframeMessage";
 import { SEOHead } from "@/components/SEOHead";
+import { useToast } from "@/hooks/use-toast";
 import CategoryContent from "@/components/category/CategoryContent";
 import CategoryTabs from "@/components/category/CategoryTabs";
 import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
@@ -18,16 +19,43 @@ import CacheManager from "@/components/category/CacheManager";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
+  const { toast } = useToast();
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [mainLocation, setMainLocation] = useState("");
   const [subLocation, setSubLocation] = useState("");
 
-  const { data: cachedPage, isLoading: isLoadingCache } = useCachedPage(location, category);
-  const { data: locationData, isLoading: isLoadingLocation } = useLocationData(location);
-  const { data: description, isLoading: isLoadingDescription } = useLocationDescription(location, category);
-  const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
-  const { data: categoryImage, isLoading: isLoadingImage } = useCategoryImage(category);
+  console.log('Rendering LocationCategory with:', { location, category });
+
+  const { 
+    data: cachedPage, 
+    isLoading: isLoadingCache,
+    error: cacheError 
+  } = useCachedPage(location, category);
+
+  const { 
+    data: locationData, 
+    isLoading: isLoadingLocation,
+    error: locationError 
+  } = useLocationData(location);
+
+  const { 
+    data: description, 
+    isLoading: isLoadingDescription,
+    error: descriptionError 
+  } = useLocationDescription(location, category);
+
+  const { 
+    data: seoMetadata, 
+    isLoading: isLoadingSEO,
+    error: seoError 
+  } = useSEOMetadata(location, category);
+
+  const { 
+    data: categoryImage, 
+    isLoading: isLoadingImage,
+    error: imageError 
+  } = useCategoryImage(category);
   
   useIframeMessage();
 
@@ -36,25 +64,52 @@ const LocationCategory = () => {
     setSubLocation(subLoc);
   };
 
-  const totalSteps = 5;
-  const completedSteps = [
-    !isLoadingCache,
-    !isLoadingLocation,
-    !isLoadingDescription,
-    !isLoadingSEO,
-    !isLoadingImage
-  ].filter(Boolean).length;
+  // Handle errors with toast notifications
+  React.useEffect(() => {
+    const errors = [
+      { error: cacheError, message: "Error loading cached data" },
+      { error: locationError, message: "Error verifying location" },
+      { error: descriptionError, message: "Error loading description" },
+      { error: seoError, message: "Error loading SEO data" },
+      { error: imageError, message: "Error loading images" }
+    ];
+
+    errors.forEach(({ error, message }) => {
+      if (error) {
+        console.error(message, error);
+        toast({
+          title: "Error",
+          description: `${message}. Please try again.`,
+          variant: "destructive",
+        });
+      }
+    });
+  }, [cacheError, locationError, descriptionError, seoError, imageError, toast]);
+
+  const loadingSteps = {
+    cache: !isLoadingCache,
+    location: !isLoadingLocation,
+    description: !isLoadingDescription,
+    seo: !isLoadingSEO,
+    image: !isLoadingImage
+  };
+
+  const totalSteps = Object.keys(loadingSteps).length;
+  const completedSteps = Object.values(loadingSteps).filter(Boolean).length;
   const loadingProgress = (completedSteps / totalSteps) * 100;
 
-  const isLoading = isLoadingLocation || isLoadingDescription || isLoadingSEO || 
-                    loadingCategories || isLoadingImage || isLoadingCache;
+  const isLoading = isLoadingCache || isLoadingLocation || isLoadingDescription || 
+                    isLoadingSEO || loadingCategories || isLoadingImage;
 
   if (isLoading) {
-    return <LoadingProgress 
-      category={category} 
-      location={location} 
-      progress={loadingProgress} 
-    />;
+    return (
+      <LoadingProgress 
+        category={category} 
+        location={location} 
+        progress={loadingProgress}
+        loadingSteps={loadingSteps}
+      />
+    );
   }
 
   const paragraphs = cachedPage ? 
