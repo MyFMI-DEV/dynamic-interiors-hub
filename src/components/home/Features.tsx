@@ -32,7 +32,7 @@ const Features = () => {
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-primary">Free Consultation</h3>
                   <p className="text-muted-foreground">
-                    Get free initial consultations with your chosen providers to discuss your project needs.
+                    Get free initial consultations with sellers to discuss your project or product needs.
                   </p>
                 </div>
               </div>
