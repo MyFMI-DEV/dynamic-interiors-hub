@@ -21,12 +21,7 @@ const LocationCategoryHeader = ({
         subLocation={subLocation}
         category={category}
       />
-
       <CategoryBanner location={location} category={category} />
-
-      <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
-        {category} in {mainLocation} - {subLocation}
-      </h1>
     </>
   );
 };
