@@ -2,26 +2,98 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const LocationCategory = () => {
   const { location, category } = useParams();
-  const [content, setContent] = useState<any>(null);
+  const [content, setContent] = useState<{ title: string; description: string | null }>({
+    title: "",
+    description: null
+  });
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Here we'll add the content generation logic with OpenAI and Pixabay
-    // For now, we'll just simulate loading
-    setTimeout(() => {
-      setLoading(false);
-      setContent({
-        title: `${category} in ${location}`,
-        description: "Sample description...",
-      });
-    }, 1000);
-  }, [location, category]);
+    const fetchDescription = async () => {
+      try {
+        setLoading(true);
+        
+        // First try to fetch from Supabase
+        const { data: existingDescription } = await supabase
+          .from('location_category_descriptions')
+          .select('description')
+          .eq('location', location)
+          .eq('category', category)
+          .single();
+
+        if (existingDescription) {
+          setContent({
+            title: `${category} in ${location}`,
+            description: existingDescription.description
+          });
+          setLoading(false);
+          return;
+        }
+
+        // If not found, generate new description
+        const response = await fetch('/functions/v1/generate-description', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ location, category }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to generate description');
+        }
+
+        const data = await response.json();
+        setContent({
+          title: `${category} in ${location}`,
+          description: data.description
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load content. Please try again later.",
+          variant: "destructive",
+        });
+        setContent({
+          title: `${category} in ${location}`,
+          description: "We're having trouble loading this content right now. Please check back later."
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (location && category) {
+      fetchDescription();
+    }
+  }, [location, category, toast]);
 
   if (loading) {
-    return <Skeleton className="h-[200px] w-full" />;
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="bg-primary py-6">
+          <div className="container mx-auto px-4">
+            <img 
+              src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
+              alt="FindMyInteriors UK" 
+              className="h-16 mx-auto"
+            />
+          </div>
+        </header>
+        <main className="container mx-auto px-4 py-12">
+          <Skeleton className="h-12 w-3/4 mx-auto mb-8" />
+          <Skeleton className="h-[200px] w-full" />
+        </main>
+      </div>
+    );
   }
 
   return (
