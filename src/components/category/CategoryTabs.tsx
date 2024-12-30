@@ -12,6 +12,10 @@ interface CategoryTabsProps {
 }
 
 const CategoryTabs = ({ categories, location }: CategoryTabsProps) => {
+  const formatUrl = (location: string, category: string) => {
+    return `/${location.toLowerCase().replace(/\s+/g, '-')}/${category.toLowerCase().replace(/\s+/g, '-')}`;
+  };
+
   return (
     <Tabs defaultValue={categories[0]?.main_category} className="w-full">
       <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
@@ -27,11 +31,11 @@ const CategoryTabs = ({ categories, location }: CategoryTabsProps) => {
       </TabsList>
       {categories.map((cat) => (
         <TabsContent key={cat.main_category} value={cat.main_category}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {cat.sub_categories.map((subCat) => (
               <Link
                 key={subCat}
-                to={`/${location}/${subCat.toLowerCase().replace(/\s+/g, '-')}`}
+                to={formatUrl(location, subCat)}
                 className="p-4 bg-accent rounded-lg hover:bg-primary hover:text-white transition-colors"
               >
                 {subCat}
