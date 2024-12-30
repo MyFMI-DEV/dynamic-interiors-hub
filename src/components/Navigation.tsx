@@ -30,12 +30,14 @@ const Navigation = () => {
             </Link>
           </li>
           <li>
-            <Link 
-              to="/post-free" 
+            <a 
+              href="https://www.findmyinteriors.com" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-primary text-white hover:bg-primary/90 transition-colors font-semibold px-6 py-2 rounded-full"
             >
               Post Free Today
-            </Link>
+            </a>
           </li>
         </ul>
       </div>
