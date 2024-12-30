@@ -31,7 +31,7 @@ const SimplifiedSearch = ({
   };
 
   return (
-    <Card className="p-6 mt-8">
+    <Card className="p-6 mb-8">
       <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-semibold mb-2">Search Locations</h2>

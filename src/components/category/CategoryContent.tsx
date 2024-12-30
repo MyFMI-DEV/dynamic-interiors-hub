@@ -12,6 +12,10 @@ interface CategoryContentProps {
 const CategoryContent = ({ categoryImage, category, location, paragraphs }: CategoryContentProps) => {
   return (
     <div className="space-y-8">
+      <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
+        {category.replace(/-/g, ' ')} in {location.replace(/-/g, ' ')}
+      </h1>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left column - Image and Search Card */}
         <div className="lg:col-span-4 space-y-8">
