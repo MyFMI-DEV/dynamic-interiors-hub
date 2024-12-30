@@ -27,6 +27,6 @@ export const useLocationDescription = (location: string | undefined, category: s
     },
     enabled: !!location && !!category,
     staleTime: 1000 * 60 * 60, // Cache for 1 hour
-    cacheTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
+    gcTime: 1000 * 60 * 60 * 24, // Keep in cache for 24 hours
   });
 };

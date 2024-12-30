@@ -7,12 +7,14 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
     const { category } = await req.json()
+    console.log('Generating image for category:', category)
 
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -29,6 +31,7 @@ serve(async (req) => {
     })
 
     const data = await response.json()
+    console.log('Image generation response received')
 
     return new Response(
       JSON.stringify({ imageUrl: data.data[0].url }),
