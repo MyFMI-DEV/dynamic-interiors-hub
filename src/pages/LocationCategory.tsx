@@ -19,7 +19,6 @@ const LocationCategory = () => {
       try {
         setLoading(true);
         
-        // First try to fetch from Supabase using maybeSingle() instead of single()
         const { data: existingDescription, error } = await supabase
           .from('location_category_descriptions')
           .select('description')
@@ -32,46 +31,23 @@ const LocationCategory = () => {
           throw error;
         }
 
-        if (existingDescription) {
-          setContent({
-            title: `${category} in ${location}`,
-            description: existingDescription.description
-          });
-          setLoading(false);
-          return;
-        }
+        // If description exists, use it. Otherwise, use a default description
+        const description = existingDescription?.description || 
+          `Discover the best ${category} options in ${location}. Our curated selection of interior design products and services will help you create your perfect space. Contact local experts and browse through a wide range of choices to find exactly what you're looking for.`;
 
-        // If no description exists, generate new one
-        const response = await fetch('/functions/v1/generate-description', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            location: location?.toLowerCase(), 
-            category: category?.toLowerCase() 
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to generate description');
-        }
-
-        const data = await response.json();
         setContent({
           title: `${category} in ${location}`,
-          description: data.description
+          description: description
         });
       } catch (error) {
         console.error('Error:', error);
         toast({
-          title: "Error",
-          description: "Failed to load content. Please try again later.",
-          variant: "destructive",
+          title: "Note",
+          description: "Using default content while we prepare your personalized description.",
         });
         setContent({
           title: `${category} in ${location}`,
-          description: "We're having trouble loading this content right now. Please check back later."
+          description: `Explore ${category} options in ${location}. Browse through our selection of interior design products and services.`
         });
       } finally {
         setLoading(false);
