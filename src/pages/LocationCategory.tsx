@@ -19,13 +19,18 @@ const LocationCategory = () => {
       try {
         setLoading(true);
         
-        // First try to fetch from Supabase
-        const { data: existingDescription } = await supabase
+        // First try to fetch from Supabase using maybeSingle() instead of single()
+        const { data: existingDescription, error } = await supabase
           .from('location_category_descriptions')
           .select('description')
-          .eq('location', location)
-          .eq('category', category)
-          .single();
+          .eq('location', location?.toLowerCase())
+          .eq('category', category?.toLowerCase())
+          .maybeSingle();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
+        }
 
         if (existingDescription) {
           setContent({
@@ -36,14 +41,16 @@ const LocationCategory = () => {
           return;
         }
 
-        // If not found, generate new description
+        // If no description exists, generate new one
         const response = await fetch('/functions/v1/generate-description', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify({ location, category }),
+          body: JSON.stringify({ 
+            location: location?.toLowerCase(), 
+            category: category?.toLowerCase() 
+          }),
         });
 
         if (!response.ok) {
