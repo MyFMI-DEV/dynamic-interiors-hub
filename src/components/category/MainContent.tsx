@@ -26,45 +26,35 @@ const MainContent = ({ location, category }: MainContentProps) => {
   const { data: seoMetadata, isLoading: isLoadingSEO } = useSEOMetadata(location, category);
   const { data: categoryImage, isLoading: isLoadingImageState } = useCategoryImage(category);
 
-  // Handle caching
-  const shouldCache = !isLoadingCache && !isLoadingDescription && !isLoadingSEO && !isLoadingImageState;
-  
-  if (shouldCache) {
-    return (
-      <CacheManager
-        location={location}
-        category={category}
-        description={description}
-        seoMetadata={seoMetadata}
-        categoryImage={categoryImage}
-        cachedPage={cachedPage}
-      />
-    );
-  }
-
   // Define loading states
   const isLoadingContent = isLoadingCache || isLoadingDescription;
   const isLoadingImage = isLoadingCache || isLoadingImageState;
   const isLoadingFAQs = isLoadingCache;
 
-  const paragraphs = cachedPage ? 
+  // Get content from cache or fresh data
+  const paragraphs = cachedPage?.description ? 
     cachedPage.description.split('\n\n') : 
     description?.split('\n\n') || [];
 
+  const currentSEO = cachedPage?.seoMetadata || seoMetadata;
+  const currentImage = cachedPage?.categoryImage || categoryImage;
+
   return (
     <>
-      {(cachedPage?.seoMetadata || seoMetadata) && (
+      {/* Handle SEO */}
+      {currentSEO && (
         <SEOHead
-          title={cachedPage?.seoMetadata?.meta_title || seoMetadata.meta_title}
-          description={cachedPage?.seoMetadata?.meta_description || seoMetadata.meta_description}
-          keywords={cachedPage?.seoMetadata?.keywords || seoMetadata.keywords}
+          title={currentSEO.meta_title}
+          description={currentSEO.meta_description}
+          keywords={currentSEO.keywords}
           location={location}
           category={category}
         />
       )}
 
+      {/* Render main content */}
       <CategoryContent 
-        categoryImage={cachedPage?.categoryImage || categoryImage}
+        categoryImage={currentImage}
         category={category}
         location={location}
         paragraphs={paragraphs}
@@ -73,10 +63,23 @@ const MainContent = ({ location, category }: MainContentProps) => {
         isLoadingFAQs={isLoadingFAQs}
       />
 
+      {/* Render category tabs */}
       {categoriesData && (
         <div className="mt-8">
           <CategoryTabs categories={categoriesData} location={location} />
         </div>
+      )}
+
+      {/* Handle caching */}
+      {!isLoadingCache && !isLoadingDescription && !isLoadingSEO && !isLoadingImageState && (
+        <CacheManager
+          location={location}
+          category={category}
+          description={description}
+          seoMetadata={seoMetadata}
+          categoryImage={categoryImage}
+          cachedPage={cachedPage}
+        />
       )}
     </>
   );
