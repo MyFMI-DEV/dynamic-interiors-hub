@@ -5,6 +5,7 @@ import Hero from "@/components/home/Hero";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import LocationGrid from "@/components/home/LocationGrid";
 import Features from "@/components/home/Features";
+import Footer from "@/components/layout/Footer";
 
 const Index = () => {
   const { data: locations } = useQuery({
@@ -30,11 +31,7 @@ const Index = () => {
         <Features />
         <LocationGrid locations={locations} />
       </main>
-      <footer className="bg-primary text-white py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p>© {new Date().getFullYear()} FindMyInteriors UK. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
