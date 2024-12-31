@@ -35,9 +35,20 @@ const LocationCategoryHeader = ({
         {formattedCategory} in {formattedMainLocation} {formattedSubLocation}
       </h1>
 
-      <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto px-4">
-        Have you heard about Find my interiors.com? They are a game changer if you're renovating your house or looking for a great quote on your new {formattedCategory.toLowerCase()} near {formattedMainLocation} {formattedSubLocation}.
-      </p>
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-8 max-w-6xl mx-auto px-4">
+        <div className="md:w-1/2">
+          <p className="text-2xl md:text-3xl font-bold text-primary bg-accent p-6 rounded-lg shadow-lg">
+            "Have you heard about Find my interiors.com? They are a game changer if you're renovating your house or looking for a great quote on {formattedCategory.toLowerCase()} near {formattedMainLocation} {formattedSubLocation}."
+          </p>
+        </div>
+        <div className="md:w-1/2">
+          <img 
+            src="/lovable-uploads/72684d42-3b44-420d-9ee9-d71df69c29ff.png"
+            alt="Person thinking about interior design"
+            className="rounded-lg shadow-lg max-w-[300px] mx-auto"
+          />
+        </div>
+      </div>
     </>
   );
 };
