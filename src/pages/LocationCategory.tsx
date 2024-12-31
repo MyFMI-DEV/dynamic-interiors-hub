@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useLocationData } from "@/hooks/useLocationData";
 import LocationCategoryHeader from "@/components/category/LocationCategoryHeader";
 import LocationCategoryLayout from "@/components/category/LocationCategoryLayout";
-import LocationSearchCard from "@/components/category/LocationSearchCard";
 import MainContent from "@/components/category/MainContent";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -36,8 +35,6 @@ const LocationCategory = () => {
         location={location}
         category={category}
       />
-
-      <LocationSearchCard currentCategory={category} />
 
       {isLoadingLocation ? (
         <div className="mt-8">
