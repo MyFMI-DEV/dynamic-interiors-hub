@@ -32,6 +32,15 @@ const Index = () => {
         location="UK"
         category="All Services"
       />
+      <div className="bg-white w-full py-6">
+        <div className="container mx-auto px-4">
+          <img 
+            src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
+            alt="FindMyInteriors UK" 
+            className="h-24 md:h-28 lg:h-36 mx-auto transition-all duration-300 hover:scale-105"
+          />
+        </div>
+      </div>
       <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
       <Navigation />
       <main>
