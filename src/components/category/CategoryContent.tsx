@@ -28,7 +28,6 @@ const CategoryContent = ({
   const [imageError, setImageError] = useState(false);
   const { data: fallbackImage, isLoading: isLoadingFallback } = useCategoryImage(category);
 
-  // Reset image error state when categoryImage changes
   useEffect(() => {
     setImageError(false);
   }, [categoryImage]);
@@ -42,40 +41,42 @@ const CategoryContent = ({
   const isImageLoading = isLoadingImage || (imageError && isLoadingFallback);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-8 order-1 md:order-none">
           {categoryImage && (
-            <Card className="p-6 md:hidden">
+            <Card className="overflow-hidden shadow-lg md:hidden">
               {isImageLoading ? (
-                <Skeleton className="w-full aspect-video rounded-lg" />
+                <Skeleton className="w-full aspect-video" />
               ) : displayImage && (
                 <img 
                   src={displayImage} 
                   alt={`${category} services in ${location}`}
-                  className="w-full rounded-lg shadow-lg"
+                  className="w-full h-full object-cover"
                   onError={handleImageError}
                 />
               )}
             </Card>
           )}
-          <Card className="p-6 h-fit">
+          <Card className="overflow-hidden shadow-lg bg-white">
             {isLoadingContent ? (
-              <div className="space-y-6">
+              <div className="p-8 space-y-6">
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-24 w-full" />
                 <Skeleton className="h-24 w-full" />
                 <Skeleton className="h-24 w-full" />
               </div>
             ) : (
-              <div className="prose max-w-none space-y-6">
-                {paragraphs.map((paragraph, index) => (
-                  <div 
-                    key={index} 
-                    className="text-lg leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
-                  />
-                ))}
+              <div className="p-8">
+                <div className="prose prose-lg max-w-none space-y-6">
+                  {paragraphs.map((paragraph, index) => (
+                    <div 
+                      key={index} 
+                      className="text-gray-700 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: marked(paragraph) }}
+                    />
+                  ))}
+                </div>
               </div>
             )}
           </Card>
@@ -83,35 +84,41 @@ const CategoryContent = ({
         
         <div className="space-y-8 order-2">
           {categoryImage && (
-            <Card className="p-6 hidden md:block">
+            <Card className="overflow-hidden shadow-lg hidden md:block">
               {isImageLoading ? (
-                <Skeleton className="w-full aspect-video rounded-lg" />
+                <Skeleton className="w-full aspect-video" />
               ) : displayImage && (
                 <img 
                   src={displayImage} 
                   alt={`${category} services in ${location}`}
-                  className="w-full rounded-lg shadow-lg"
+                  className="w-full h-full object-cover"
                   onError={handleImageError}
                 />
               )}
             </Card>
           )}
-          <Card className="p-6">
-            <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-            {isLoadingFAQs ? (
-              <div className="space-y-4">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-              </div>
-            ) : (
-              <FAQs category={category} location={location} />
-            )}
+          <Card className="overflow-hidden shadow-lg bg-white">
+            <div className="p-8">
+              <h2 className="text-2xl font-bold text-primary mb-6">
+                Frequently Asked Questions
+              </h2>
+              {isLoadingFAQs ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              ) : (
+                <FAQs category={category} location={location} />
+              )}
+            </div>
           </Card>
         </div>
       </div>
-      <LocationSearchCard currentCategory={category} />
+      <div className="mt-12">
+        <LocationSearchCard currentCategory={category} />
+      </div>
     </div>
   );
 };
