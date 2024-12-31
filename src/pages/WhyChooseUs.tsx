@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 
 const WhyChooseUs = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Why Choose FindMyInteriors - Your Trusted Interior Design Directory"
+        description="Discover why FindMyInteriors is the UK's leading platform for finding quality interior design services. Verified providers, local expertise, and exceptional customer service."
+        keywords={["interior design directory", "trusted providers", "local experts", "quality assurance", "UK interiors", "verified services"]}
+        location="UK"
+        category="About Us"
+      />
       <header className="bg-primary py-8">
         <div className="container mx-auto px-4">
           <Link to="/">
@@ -19,7 +27,6 @@ const WhyChooseUs = () => {
       <Navigation />
 
       <main className="container mx-auto px-4 py-16">
-        {/* Hero Section */}
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
             Why Choose FindMyInteriors?
@@ -29,7 +36,6 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid md:grid-cols-2 gap-12 mb-16">
           <div className="space-y-8">
             <div className="bg-accent rounded-lg p-8 shadow-sm">
@@ -83,7 +89,6 @@ const WhyChooseUs = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
         <div className="text-center bg-accent rounded-lg p-12">
           <h2 className="text-3xl font-bold text-primary mb-6">
             Ready to Transform Your Space?

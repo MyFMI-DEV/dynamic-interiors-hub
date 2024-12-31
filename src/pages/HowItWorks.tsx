@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 
 const HowItWorks = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="How FindMyInteriors Works - Find Local Interior Services"
+        description="Learn how to use FindMyInteriors UK to connect with local interior designers, suppliers, and home improvement specialists. Simple steps to find the perfect professionals for your project."
+        keywords={["how it works", "find designers", "interior services", "local suppliers", "home improvement process", "UK interiors"]}
+        location="UK"
+        category="Process Guide"
+      />
       <header className="bg-primary py-8">
         <div className="container mx-auto px-4">
           <Link to="/">

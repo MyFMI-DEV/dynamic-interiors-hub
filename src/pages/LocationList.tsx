@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { SEOHead } from "@/components/SEOHead";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/layout/Header";
@@ -90,6 +91,13 @@ const LocationList = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="All Locations - FindMyInteriors UK Service Directory"
+        description="Browse interior design services across all UK locations. Find local interior designers, suppliers, and home improvement specialists in your area."
+        keywords={["UK locations", "local services", "interior design", "home improvement", "area directory", "find services"]}
+        location="UK"
+        category="Locations Directory"
+      />
       <Header />
       <Navigation />
       

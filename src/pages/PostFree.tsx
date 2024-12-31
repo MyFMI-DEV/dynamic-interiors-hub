@@ -1,17 +1,17 @@
-import { Helmet } from "react-helmet";
+import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 
 const PostFree = () => {
   return (
     <>
-      <Helmet>
-        <title>Post Free - FindMyInteriors UK</title>
-        <meta 
-          name="description" 
-          content="Post your interior design services, products, or solutions for free on FindMyInteriors UK. Connect with potential customers in your area."
-        />
-      </Helmet>
+      <SEOHead
+        title="Post Your Interior Services - Free Listing on FindMyInteriors UK"
+        description="List your interior design services, products, or solutions for free on FindMyInteriors UK. Connect with potential customers in your local area and grow your business."
+        keywords={["post services", "free listing", "interior business", "local marketing", "UK directory", "business promotion"]}
+        location="UK"
+        category="Business Services"
+      />
       <Navigation />
       <main className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8">
