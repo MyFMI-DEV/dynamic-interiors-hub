@@ -31,9 +31,13 @@ const LocationCategoryHeader = ({
 
       <CategoryBanner location={location} category={category} />
 
-      <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-8">
+      <h1 className="text-4xl md:text-5xl font-bold text-center text-text mb-4">
         {formattedCategory} in {formattedMainLocation} {formattedSubLocation}
       </h1>
+
+      <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto px-4">
+        Have you heard about Find my interiors.com? They are a game changer if you're renovating your house or looking for a great quote on your new {formattedCategory.toLowerCase()} near {formattedMainLocation} {formattedSubLocation}.
+      </p>
     </>
   );
 };
