@@ -4,6 +4,7 @@ import FAQs from "./FAQs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { useCategoryImage } from "@/hooks/useCategoryImage";
+import LocationSearchCard from "./LocationSearchCard";
 
 interface CategoryContentProps {
   categoryImage: string | undefined;
@@ -110,6 +111,7 @@ const CategoryContent = ({
           </Card>
         </div>
       </div>
+      <LocationSearchCard currentCategory={category} />
     </div>
   );
 };
