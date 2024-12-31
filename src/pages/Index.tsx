@@ -41,8 +41,8 @@ const Index = () => {
           />
         </div>
       </div>
-      <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
       <Navigation />
+      <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
       <main>
         <CategoryGrid />
         <Features />
