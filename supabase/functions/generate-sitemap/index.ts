@@ -7,7 +7,7 @@ const corsHeaders = {
   'Content-Type': 'application/xml',
 };
 
-const DOMAIN = 'https://lovable.dev'; // Update this to your actual domain
+const DOMAIN = 'https://www.findmyinteriors.co.uk'; // Updated domain name
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
