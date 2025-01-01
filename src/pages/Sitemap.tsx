@@ -1,29 +1,40 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 
 const Sitemap = () => {
+  const [xmlContent, setXmlContent] = useState<string>('');
+
   useEffect(() => {
     const fetchSitemap = async () => {
-      const { data } = await supabase.functions.invoke('generate-sitemap');
-      
-      // Create a Blob from the XML data
-      const blob = new Blob([data], { type: 'application/xml' });
-      const url = window.URL.createObjectURL(blob);
-      
-      // Download the sitemap
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'sitemap.xml';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      try {
+        const { data } = await supabase.functions.invoke('generate-sitemap');
+        if (data) {
+          // Create a new document with the XML content
+          const doc = document.implementation.createHTMLDocument('');
+          doc.documentElement.innerHTML = data;
+          
+          // Set the content type to XML
+          const meta = document.createElement('meta');
+          meta.httpEquiv = 'Content-Type';
+          meta.content = 'application/xml';
+          document.head.appendChild(meta);
+          
+          // Display the XML content
+          setXmlContent(data);
+        }
+      } catch (error) {
+        console.error('Error fetching sitemap:', error);
+      }
     };
 
     fetchSitemap();
   }, []);
 
-  return null;
+  return (
+    <pre style={{ whiteSpace: 'pre-wrap' }}>
+      {xmlContent}
+    </pre>
+  );
 };
 
 export default Sitemap;
