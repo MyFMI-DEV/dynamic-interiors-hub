@@ -4,10 +4,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Content-Type': 'application/xml',
+  'Content-Type': 'application/xml; charset=UTF-8',
 };
 
-const DOMAIN = 'https://www.findmyinteriors.co.uk'; // Updated domain name
+const DOMAIN = 'https://www.findmyinteriors.co.uk';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -71,10 +71,7 @@ serve(async (req) => {
 </urlset>`;
 
     return new Response(sitemap, {
-      headers: {
-        ...corsHeaders,
-        'Content-Type': 'application/xml',
-      }
+      headers: corsHeaders,
     });
 
   } catch (error) {
