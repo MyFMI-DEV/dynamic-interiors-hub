@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Facebook, Instagram, Pinterest, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -58,6 +59,46 @@ const Footer = () => {
               United Kingdom
             </address>
           </div>
+        </div>
+
+        {/* Social Media Links */}
+        <div className="flex justify-center space-x-6 mt-8 mb-8">
+          <a
+            href="https://www.facebook.com/findmyinteriors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/80 transition-colors"
+            aria-label="Follow us on Facebook"
+          >
+            <Facebook size={24} />
+          </a>
+          <a
+            href="https://www.instagram.com/findmyinteriors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/80 transition-colors"
+            aria-label="Follow us on Instagram"
+          >
+            <Instagram size={24} />
+          </a>
+          <a
+            href="https://www.pinterest.com/findmyinteriors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/80 transition-colors"
+            aria-label="Follow us on Pinterest"
+          >
+            <Pinterest size={24} />
+          </a>
+          <a
+            href="https://twitter.com/findmyinteriors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/80 transition-colors"
+            aria-label="Follow us on X (formerly Twitter)"
+          >
+            <Twitter size={24} />
+          </a>
         </div>
 
         <div className="border-t border-white/20 mt-8 pt-8 text-center">
