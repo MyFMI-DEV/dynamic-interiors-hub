@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Pinterest, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter, Share2 } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -88,7 +88,7 @@ const Footer = () => {
             className="hover:text-white/80 transition-colors"
             aria-label="Follow us on Pinterest"
           >
-            <Pinterest size={24} />
+            <Share2 size={24} />
           </a>
           <a
             href="https://twitter.com/findmyinteriors"
