@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter, Share2 } from "lucide-react";
+import { Facebook, Instagram, Share2, X } from "lucide-react";
 
 const SocialLinks = () => {
   return (
@@ -37,7 +37,7 @@ const SocialLinks = () => {
         className="hover:text-white/80 transition-colors"
         aria-label="Follow us on X (formerly Twitter)"
       >
-        <Twitter size={24} />
+        <X size={24} />
       </a>
     </div>
   );
