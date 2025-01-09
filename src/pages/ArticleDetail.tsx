@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
-import ArticleContent from "@/components/articles/ArticleContent";
+import { ArticleTemplate } from "@/components/articles/ArticleTemplate";
 import LoadingState from "@/components/ui/LoadingState";
 
 const ArticleDetail = () => {
@@ -33,6 +33,26 @@ const ArticleDetail = () => {
   if (isLoading) return <LoadingState />;
   if (!article) return <div>Article not found</div>;
 
+  // Prepare the data for ArticleTemplate
+  const images = article.image_url ? [
+    {
+      url: article.image_url,
+      alt: article.title
+    }
+  ] : [];
+
+  const faqs = article.article_faqs?.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })) || [];
+
+  const keyPoints = article.keywords || [];
+
+  const tableData = [
+    { key: "Location", value: article.article_locations?.[0]?.location || "All Locations" },
+    { key: "Category", value: article.article_categories?.[0]?.category || "General" }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -44,9 +64,14 @@ const ArticleDetail = () => {
       />
       <Navigation />
       <main className="container mx-auto px-4 py-8">
-        <article className="max-w-4xl mx-auto">
-          <ArticleContent content={article.content} />
-        </article>
+        <ArticleTemplate
+          title={article.title}
+          content={article.content}
+          keyPoints={keyPoints}
+          tableData={tableData}
+          images={images}
+          faqs={faqs}
+        />
       </main>
       <Footer />
     </div>
