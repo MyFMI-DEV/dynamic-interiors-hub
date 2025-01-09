@@ -6,11 +6,13 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 import { ArticleTemplate } from "@/components/articles/ArticleTemplate";
 import LoadingState from "@/components/ui/LoadingState";
+import { useToast } from "@/hooks/use-toast";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
+  const { toast } = useToast();
 
-  const { data: article, isLoading } = useQuery({
+  const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -23,16 +25,44 @@ const ArticleDetail = () => {
           article_images (*)
         `)
         .eq('slug', slug)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load article. Please try again later.",
+        });
+        throw error;
+      }
+      
+      if (!data) {
+        toast({
+          variant: "destructive",
+          title: "Not Found",
+          description: "The article you're looking for doesn't exist.",
+        });
+        return null;
+      }
+      
       return data;
     },
     enabled: !!slug
   });
 
   if (isLoading) return <LoadingState />;
-  if (!article) return <div>Article not found</div>;
+  if (!article) return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <main className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-primary mb-4">Article Not Found</h1>
+          <p className="text-gray-600">The article you're looking for doesn't exist or has been removed.</p>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
 
   // Extract key points from content (only from the first ul element)
   const keyPointsMatch = article.content.match(/<ul>[\s\S]*?<\/ul>/);
