@@ -77,16 +77,16 @@ serve(async (req) => {
         const response = await fetch(url);
         const blob = await response.blob();
         
-        const { data, error } = await supabase.storage
+        const { data, error: uploadError } = await supabase.storage
           .from('article-images')
           .upload(filenames[index], blob, {
             contentType: 'image/jpeg',
             upsert: true
-          });
+          })
 
-        if (error) {
-          console.error(`Error uploading ${filenames[index]}:`, error);
-          return { success: false, filename: filenames[index], error };
+        if (uploadError) {
+          console.error(`Error uploading ${filenames[index]}:`, uploadError);
+          return { success: false, filename: filenames[index], error: uploadError };
         }
 
         return { success: true, filename: filenames[index], data };
