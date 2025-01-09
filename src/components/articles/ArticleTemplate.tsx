@@ -1,15 +1,35 @@
 import { marked } from "marked";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ArticleTemplateProps {
   title: string;
   content: string;
   imageUrl?: string;
+  articleId: string;
 }
 
 export const ArticleTemplate = ({
   content,
+  articleId,
 }: ArticleTemplateProps) => {
+  // Fetch article images
+  const { data: articleImages } = useQuery({
+    queryKey: ['article-images', articleId],
+    queryFn: async () => {
+      const { data: images, error } = await supabase
+        .from('article_images')
+        .select('*')
+        .eq('article_id', articleId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      return images;
+    },
+    enabled: !!articleId
+  });
+
   useEffect(() => {
     // Add custom styles for the minimalist chart
     const style = document.createElement('style');
@@ -108,13 +128,22 @@ export const ArticleTemplate = ({
     };
   }, []);
 
-  // Configure marked to handle HTML content
+  // Configure marked to handle HTML content and image replacement
   marked.use({
     renderer: {
       html(html: string) {
         return html;
       },
-      image(href, title, text) {
+      image(href: string, title: string, text: string) {
+        // Find the corresponding article image
+        const articleImage = articleImages?.find(img => 
+          img.url.includes(href.split('/').pop() || '')
+        );
+
+        if (articleImage) {
+          return `<img src="${articleImage.url}" alt="${articleImage.alt || text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
+        }
+
         return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }

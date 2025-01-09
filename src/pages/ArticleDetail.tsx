@@ -75,6 +75,7 @@ const ArticleDetail = () => {
           title={article.title}
           content={article.content}
           imageUrl={article.image_url}
+          articleId={article.id}
         />
       </main>
       <Footer />
