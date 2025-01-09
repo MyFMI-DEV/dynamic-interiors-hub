@@ -137,8 +137,16 @@ export const ArticleTemplate = ({
       image(href: string, title: string, text: string) {
         // Check if we have a matching image from the database
         const matchingImage = articleImages?.find(img => img.alt === text);
-        // Use the database URL if available, otherwise use the href from markdown
-        const imageUrl = matchingImage?.url || href;
+        
+        // If the URL is already a full URL (starts with http or https), use it directly
+        if (href.startsWith('http://') || href.startsWith('https://')) {
+          return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
+        }
+        
+        // Use the database URL if available, otherwise construct the Supabase storage URL
+        const imageUrl = matchingImage?.url || 
+          `https://lyyhynjlgebsrdrmnjhk.supabase.co/storage/v1/object/public/article-images/${href}`;
+        
         return `<img src="${imageUrl}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
