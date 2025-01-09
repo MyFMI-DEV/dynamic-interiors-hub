@@ -19,9 +19,14 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
-  const getLocalImageUrl = (url: string) => {
-    // Remove the domain if it exists and keep only the path
-    return url.replace('https://www.findmyinteriors.co.uk', '');
+  const getImageUrl = (url: string) => {
+    // If it's already a relative path starting with /lovable-uploads, use it as is
+    if (url.startsWith('/lovable-uploads')) {
+      return url;
+    }
+    // If it's a full URL, extract just the filename
+    const filename = url.split('/').pop();
+    return `/lovable-uploads/${filename}`;
   };
 
   return (
@@ -68,7 +73,7 @@ export const ArticleTemplate = ({
           {images.map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
               <img
-                src={getLocalImageUrl(image.url)}
+                src={getImageUrl(image.url)}
                 alt={image.alt}
                 className="w-full h-64 object-cover"
                 onError={(e) => {
