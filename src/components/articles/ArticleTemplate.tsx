@@ -58,21 +58,19 @@ export const ArticleTemplate = ({
       )}
 
       <div className="mb-8">
-        <ArticleContent content={content} />
+        <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
       </div>
 
       {images.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {images.map((image, index) => (
-            <a key={index} href="https://www.findmyinteriors.co.uk" className="block group">
-              <div className="relative overflow-hidden rounded-lg shadow-md">
-                <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="w-full aspect-video object-cover transform group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            </a>
+            <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
+              <img
+                src={image.url}
+                alt={image.alt}
+                className="w-full aspect-video object-cover"
+              />
+            </div>
           ))}
         </div>
       )}
