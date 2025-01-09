@@ -23,7 +23,7 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
   return (
     <MarkdownRenderer 
       content={htmlContent}
-      className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-gray-700"
+      className="prose prose-lg max-w-none prose-headings:text-primary prose-p:text-gray-700 prose-img:mx-auto prose-img:block"
     />
   );
 };

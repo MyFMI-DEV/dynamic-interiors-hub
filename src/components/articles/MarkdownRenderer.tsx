@@ -1,5 +1,3 @@
-import { marked } from 'marked';
-
 interface MarkdownRendererProps {
   content: string;
   className?: string;
