@@ -14,21 +14,19 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
   marked.use({
     renderer: {
       image(href, title, text) {
-        // Use the same image handling logic as ArticlesList
+        // Exactly match the ArticlesList image URL handling
         const imageUrl = href?.startsWith('http') 
           ? href 
-          : href?.startsWith('/lovable-uploads/') 
-            ? href 
-            : `/lovable-uploads/${href}`;
+          : `/lovable-uploads/${href?.replace('/lovable-uploads/', '')}`;
 
         return `
           <div class="my-8">
             <img 
               src="${imageUrl}" 
               alt="${text || title || 'Article image'}" 
-              class="w-full h-auto rounded-lg shadow-md object-cover"
+              class="w-full h-auto rounded-lg shadow-md"
               loading="lazy"
-              onerror="this.onerror=null; console.error('Failed to load image:', this.src);"
+              onerror="this.onerror=null; this.src='/placeholder.svg'; console.error('Failed to load image:', imageUrl);"
             />
             ${title ? `<p class="text-center text-sm text-gray-600 mt-2">${title}</p>` : ''}
           </div>
