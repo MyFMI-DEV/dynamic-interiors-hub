@@ -43,11 +43,31 @@ const Articles = () => {
             answer: "A great starting point is to explore local directories and websites, such as Find My Interiors and Houzz."
           }
         ],
-        trends: [
-          { label: "Timeless Designs", value: 42 },
-          { label: "Indoor Swings", value: 35 },
-          { label: "Curved Edges", value: 23 },
-          { label: "Bold Colors", value: 45 }
+        images: [
+          { url: "https://www.findmyinteriors.co.uk/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png", alt: "Interior Design Services" },
+          { url: "https://www.findmyinteriors.co.uk/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png", alt: "Local Expertise" },
+          { url: "https://www.findmyinteriors.co.uk/lovable-uploads/b47542a6-4411-407e-8cb4-28a1ca0f5371.png", alt: "Architectural Styles" },
+          { alt: "Home Categories" },
+          { alt: "Climate-Responsive Design" },
+          { alt: "Sustainable Solutions" },
+          { alt: "Spa-Inspired Interiors" },
+          { alt: "Luxury Home Design" },
+          { alt: "Eco-Friendly Design" },
+          { alt: "Sustainable Home Solutions" },
+          { alt: "Luxury Home Design" },
+          { alt: "High-End Interiors" },
+          { alt: "Local Architects" },
+          { alt: "Architectural Services" },
+          { alt: "Design Trends" },
+          { alt: "Home Styling" },
+          { alt: "Planning Permissions" },
+          { alt: "Local Regulations" },
+          { alt: "Home Renovation" },
+          { alt: "Remodeling Services" },
+          { alt: "Cultural Influences in Design" },
+          { alt: "Local Art Integration" },
+          { alt: "Future Design Trends" },
+          { alt: "Sustainable Home Solutions" }
         ]
       });
 
