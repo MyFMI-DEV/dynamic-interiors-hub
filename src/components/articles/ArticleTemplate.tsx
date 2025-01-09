@@ -136,7 +136,20 @@ export const ArticleTemplate = ({
         return html;
       },
       image(href: string, title: string, text: string) {
-        // Just use the original href instead of trying to find a matching image in Supabase
+        // Try to find a matching image from articleImages first
+        if (articleImages && articleImages.length > 0) {
+          const filename = href.split('/').pop()?.toLowerCase();
+          const matchingImage = articleImages.find(img => {
+            const imgFilename = img.url.split('/').pop()?.toLowerCase();
+            return imgFilename === filename;
+          });
+
+          if (matchingImage) {
+            return `<img src="${matchingImage.url}" alt="${matchingImage.alt || text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
+          }
+        }
+
+        // If no matching image is found in articleImages, use the original href
         return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
