@@ -36,14 +36,14 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
           isFromFindMyInteriors: href?.includes('findmyinteriors.co.uk')
         });
 
-        // Return the image with proper styling
+        // Return the image with updated sizing
         return `
           <div class="my-8">
             <img 
               src="${imageUrl}" 
               alt="${text || title || 'Article image'}" 
-              class="w-full h-[400px] object-cover rounded-lg shadow-md"
-              style="max-height: 600px; min-height: 300px;"
+              class="w-full object-cover rounded-lg shadow-md"
+              style="max-height: 800px; min-height: 400px; height: 600px;"
               loading="lazy"
               onerror="this.onerror=null; this.src='/placeholder.svg'; console.log('Image failed to load:', '${imageUrl}');"
             />
