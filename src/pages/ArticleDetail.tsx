@@ -19,7 +19,8 @@ const ArticleDetail = () => {
           *,
           article_faqs (*),
           article_locations (*),
-          article_categories (*)
+          article_categories (*),
+          article_images (*)
         `)
         .eq('slug', slug)
         .single();
@@ -33,26 +34,17 @@ const ArticleDetail = () => {
   if (isLoading) return <LoadingState />;
   if (!article) return <div>Article not found</div>;
 
-  // Extract all image URLs from the content using regex
-  const imgRegex = /<a[^>]+><img[^>]+src="([^">]+)"[^>]+alt="([^">]+)"[^>]+><\/a>/g;
-  const contentImages = Array.from(article.content.matchAll(imgRegex)).map(match => ({
-    url: match[1],
-    alt: match[2]
-  }));
-
-  // Combine article.image_url with content images if it exists
-  const images = article.image_url 
-    ? [{ url: article.image_url, alt: article.title }, ...contentImages]
-    : contentImages;
-
-  // Extract key points from content
+  // Extract key points from content (only from the first ul element)
   const keyPointsMatch = article.content.match(/<ul>[\s\S]*?<\/ul>/);
   const keyPoints = keyPointsMatch
     ? Array.from(keyPointsMatch[0].matchAll(/<li>(.*?)<\/li>/g)).map(match => match[1])
     : [];
 
+  // Remove the key points section from the content to avoid duplication
+  const contentWithoutKeyPoints = article.content.replace(/<ul>[\s\S]*?<\/ul>/, '');
+
   // Extract table data from content
-  const tableMatch = article.content.match(/<table>[\s\S]*?<\/table>/);
+  const tableMatch = contentWithoutKeyPoints.match(/<table>[\s\S]*?<\/table>/);
   const tableData = tableMatch
     ? Array.from(tableMatch[0].matchAll(/<tr>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<\/tr>/g))
         .map(match => ({
@@ -60,6 +52,12 @@ const ArticleDetail = () => {
           value: match[2]
         }))
     : [];
+
+  // Combine main article image with article_images
+  const images = [
+    ...(article.image_url ? [{ url: article.image_url, alt: article.title }] : []),
+    ...(article.article_images || [])
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,7 +72,7 @@ const ArticleDetail = () => {
       <main className="container mx-auto px-4 py-8">
         <ArticleTemplate
           title={article.title}
-          content={article.content}
+          content={contentWithoutKeyPoints}
           keyPoints={keyPoints}
           tableData={tableData}
           images={images}

@@ -24,17 +24,19 @@ export const ArticleTemplate = ({
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
 
-      <div className="bg-accent rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold text-primary mb-4">What You Need to Know</h2>
-        <ul className="space-y-2 text-gray-700">
-          {keyPoints.map((point, index) => (
-            <li key={index} className="flex items-start">
-              <span className="text-primary mr-2">•</span>
-              {point}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {keyPoints.length > 0 && (
+        <div className="bg-accent rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-semibold text-primary mb-4">What You Need to Know</h2>
+          <ul className="space-y-2 text-gray-700">
+            {keyPoints.map((point, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-primary mr-2">•</span>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {tableData.length > 0 && (
         <div className="overflow-x-auto mb-8">
