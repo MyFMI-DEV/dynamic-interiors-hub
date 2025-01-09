@@ -1,68 +1,98 @@
 import { useCreateArticle } from "@/hooks/useCreateArticle";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/layout/Footer";
 
 const CreateHarrogateArticle = () => {
-  const { mutate: createArticle } = useCreateArticle();
-  const navigate = useNavigate();
+  const { createArticle, isLoading } = useCreateArticle();
 
-  const handleCreateArticle = () => {
-    createArticle({
+  const handleCreateArticle = async () => {
+    const article = {
       title: "Harrogate Home Design: A Perfect Blend of Style",
       slug: "harrogate-home-design-perfect-blend-style",
-      description: "Discover the unique charm of Harrogate home design, where traditional elegance meets contemporary style. Learn about local architectural trends, sustainable practices, and luxury elements that make Harrogate homes special.",
-      content: `<h1>Harrogate Home Design: A Perfect Blend of Style</h1>
+      description: "Discover the unique charm of Harrogate home design, where traditional elegance meets modern comfort. Learn about local design trends, expert tips, and how to create your perfect Harrogate home.",
+      content: `
+# Harrogate Home Design: A Perfect Blend of Style
 
-<p>Harrogate, voted the "happiest place to live" in Britain for three years, is a town that radiates charm. Its lush greenery and historical architecture inspire contemporary home designs. The unique character of Harrogate not only shapes the buildings but also adds a special touch to the interiors.</p>
+Harrogate, known for its elegant spa town heritage, has developed a distinctive home design style that perfectly balances traditional charm with contemporary comfort. This comprehensive guide explores the key elements of Harrogate home design and provides expert insights into creating your ideal living space.
 
-<h2>The Essence of Harrogate Home Design</h2>
+## The Essence of Harrogate Style
 
-<p>In this historical town, home design trends blend the old with the new. Residents strive for a balance between traditional charm and modern functionality, creating spaces that are both elegant and inviting. Local interior designers and furniture suppliers work tirelessly to turn these visions into reality, ensuring that each home reflects the character of its owners.</p>
+Harrogate's home design aesthetic is characterized by its harmonious blend of period features and modern amenities. The town's architectural heritage, influenced by Victorian and Georgian styles, continues to inspire contemporary interior design choices. Homeowners in Harrogate often seek to preserve original features while incorporating modern comforts and sustainable solutions.
 
-<p>From minimalist chic to luxurious opulence, interior design services cater to a range of tastes. The essence of Harrogate home design lies in harmonizing historical elements with contemporary aesthetics. Designers in the area possess valuable insights into local architectural styles and materials, making them key players in creating beautiful homes.</p>
+## Key Design Elements
 
-<h2>Architectural Styles in Harrogate</h2>
+### 1. Classic Architecture with Modern Touches
+- High ceilings with ornate cornicing
+- Large sash windows for natural light
+- Modern lighting systems that complement period features
+- Contemporary extensions that respect historical elements
 
-<p>Harrogate's architectural landscape is diverse, akin to a painter's palette filled with vibrant colors. The town, home to about 89,060 residents, showcases a mix of Victorian, Edwardian, and contemporary designs. This variety allows homeowners to personalize their spaces while honoring the town's historical context.</p>
+### 2. Interior Color Palettes
+- Neutral base colors inspired by Yorkshire stone
+- Accent colors reflecting the town's spa heritage
+- Subtle patterns that add depth without overwhelming spaces
 
-<p>Interior designers in Harrogate specialize in these various styles, enabling residents to choose designs that resonate with their personal tastes. From traditional stonework to sleek modern lines, the options are as varied as the community itself. Utilizing local materials adds authenticity to each design, making homes feel connected to their roots.</p>`,
-      imageUrl: "https://www.findmyinteriors.co.uk/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png",
-      metaTitle: "Harrogate Home Design Guide - Interior Design Trends & Tips",
-      metaDescription: "Explore Harrogate's unique home design landscape, from traditional architecture to modern interior trends. Get expert insights on local design practices and inspiration.",
-      keywords: ["harrogate interior design", "home design", "architectural styles", "sustainable design", "luxury homes", "local architects", "renovation tips", "cultural influence"],
-      location: "Harrogate",
-      category: "Interior Design",
+### 3. Materials and Textures
+- Natural stone and wood finishes
+- High-quality fabrics for upholstery
+- Mixed metals in lighting and hardware
+- Sustainable materials for modern additions
+
+## Creating Your Harrogate Home
+
+Whether you're renovating a period property or designing a new space, consider these essential aspects:
+
+1. Preserve Original Features
+2. Maximize Natural Light
+3. Choose Quality Materials
+4. Balance Old and New
+5. Focus on Sustainability
+
+## Modern Amenities in Historical Settings
+
+Today's Harrogate homes successfully integrate modern technology and comfort features while maintaining their historical charm. Smart home systems, energy-efficient solutions, and contemporary kitchen designs can all be thoughtfully incorporated into traditional settings.`,
+      image_url: "/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png",
+      meta_title: "Harrogate Home Design Guide: Blending Traditional & Modern Styles",
+      meta_description: "Expert guide to Harrogate home design. Learn how to combine traditional elegance with modern comfort in your Harrogate home. Get local design insights and professional tips.",
+      keywords: ["Harrogate home design", "interior design Harrogate", "traditional home renovation", "modern home design", "Yorkshire interior design"],
+      locations: ["Harrogate"],
+      categories: ["Interior Design"],
       faqs: [
         {
-          question: "What are the key characteristics of Harrogate home design?",
-          answer: "Harrogate home design is characterized by a blend of historical and contemporary styles, a focus on sustainability, and an influence from the local cultural scene."
+          question: "What characterizes Harrogate home design?",
+          answer: "Harrogate home design is characterized by a blend of traditional elegance and modern comfort, featuring high ceilings, period details, and contemporary amenities while maintaining historical charm."
         },
         {
-          question: "How do I incorporate sustainable design elements in my Harrogate home?",
-          answer: "To incorporate sustainable elements, consider using eco-friendly materials, energy-efficient appliances, and designs that maximize natural light and ventilation."
+          question: "How can I modernize a period property in Harrogate?",
+          answer: "Focus on preserving original features while integrating modern amenities, using quality materials, and incorporating sustainable solutions that complement the historical elements."
         },
         {
-          question: "What should I consider when seeking planning permission for a home renovation in Harrogate?",
-          answer: "It's crucial to understand local regulations, engage with local authorities early, and ensure that your project complies with planning guidelines."
-        },
-        {
-          question: "How does Harrogate's climate influence local home design trends?",
-          answer: "Harrogate's climate, with its moderate temperatures and rainfall, encourages designs that prioritize insulation, natural light, and energy efficiency."
+          question: "What colors work best in Harrogate homes?",
+          answer: "Neutral base colors inspired by Yorkshire stone work well, complemented by accent colors that reflect the town's spa heritage and subtle patterns that add depth to spaces."
         }
       ]
-    });
+    };
 
-    navigate("/articles");
+    await createArticle(article);
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Create Harrogate Article</h1>
-      <button
-        onClick={handleCreateArticle}
-        className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/80"
-      >
-        Create Article
-      </button>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <main className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-center mb-8">Create Harrogate Article</h1>
+        <div className="flex justify-center">
+          <Button 
+            onClick={handleCreateArticle}
+            disabled={isLoading}
+            className="w-64"
+          >
+            {isLoading ? "Creating Article..." : "Create Article"}
+          </Button>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 };
