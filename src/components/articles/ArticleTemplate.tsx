@@ -5,7 +5,7 @@ interface ArticleTemplateProps {
   content: string;
   keyPoints: string[];
   tableData: Array<{ key: string; value: string }>;
-  images: Array<{ url: string; alt: string }>;
+  images: Array<{ url: string; alt: string; title?: string }>;
   faqs: Array<{ question: string; answer: string }>;
   trends?: Array<{ label: string; value: number }>;
 }
@@ -70,7 +70,7 @@ export const ArticleTemplate = ({
             <figure key={index} className="relative overflow-hidden rounded-lg shadow-md">
               <img
                 src={image.url}
-                alt={image.alt || `Article image ${index + 1}`}
+                alt={image.alt || image.title || `Article image ${index + 1}`}
                 className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
                 loading="lazy"
                 onError={(e) => {
@@ -79,7 +79,7 @@ export const ArticleTemplate = ({
                 }}
               />
               <figcaption className="text-center text-sm text-gray-600 mt-2 px-4">
-                {image.alt}
+                {image.title || image.alt}
               </figcaption>
             </figure>
           ))}

@@ -15,7 +15,7 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
           <figure class="my-8">
             <img 
               src="${imageUrl}" 
-              alt="${text || 'Article image'}" 
+              alt="${text || title || 'Article image'}" 
               class="w-full h-auto rounded-lg shadow-md"
               loading="lazy"
             />
