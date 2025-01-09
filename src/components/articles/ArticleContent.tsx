@@ -17,10 +17,12 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         // Process the image URL
         let imageUrl = href;
         
-        // Remove the domain if it exists and extract just the filename
+        // If it's a findmyinteriors.co.uk URL, extract just the filename
         if (href?.includes('findmyinteriors.co.uk')) {
-          const urlParts = href.split('/');
-          imageUrl = urlParts[urlParts.length - 1];
+          const filename = href.split('/').pop(); // Get just the filename
+          if (filename) {
+            imageUrl = filename;
+          }
         }
         
         // Clean the path and ensure proper structure
@@ -30,7 +32,8 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         console.log('Processing image URL:', { 
           original: href, 
           cleaned: cleanPath, 
-          final: finalUrl 
+          final: finalUrl,
+          isFromFindMyInteriors: href?.includes('findmyinteriors.co.uk')
         });
 
         return `
