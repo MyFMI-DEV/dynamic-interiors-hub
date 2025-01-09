@@ -5,10 +5,23 @@ interface ArticleContentProps {
 }
 
 const ArticleContent = ({ content }: ArticleContentProps) => {
+  // Configure marked to handle images with proper styling
   marked.use({
     renderer: {
       image(href, title, text) {
-        return `<img src="${href}" alt="${text}" class="w-full h-auto rounded-lg shadow-md my-4" />`;
+        // Handle both absolute and relative URLs
+        const imageUrl = href?.startsWith('http') ? href : `/lovable-uploads/${href}`;
+        return `
+          <figure class="my-8">
+            <img 
+              src="${imageUrl}" 
+              alt="${text || 'Article image'}" 
+              class="w-full h-auto rounded-lg shadow-md"
+              loading="lazy"
+            />
+            ${title ? `<figcaption class="text-center text-sm text-gray-600 mt-2">${title}</figcaption>` : ''}
+          </figure>
+        `;
       }
     }
   });
