@@ -25,7 +25,6 @@ export const ArticleTemplate = ({
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      console.log('Fetched images:', images);
       return images;
     },
     enabled: !!articleId
@@ -136,8 +135,11 @@ export const ArticleTemplate = ({
         return html;
       },
       image(href: string, title: string, text: string) {
-        // Use the original href directly
-        return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
+        // Check if we have a matching image from the database
+        const matchingImage = articleImages?.find(img => img.alt === text);
+        // Use the database URL if available, otherwise use the href from markdown
+        const imageUrl = matchingImage?.url || href;
+        return `<img src="${imageUrl}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
   });
