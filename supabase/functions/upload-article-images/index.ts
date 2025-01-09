@@ -7,11 +7,14 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
+    console.log('Starting image upload process');
+    
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -71,45 +74,51 @@ serve(async (req) => {
       'harrogate-future-2.jpg'
     ]
 
+    console.log('Starting to process images');
     const results = await Promise.all(
       imageUrls.map(async (url, index) => {
         try {
-          const response = await fetch(url)
+          console.log(`Fetching image from ${url}`);
+          const response = await fetch(url);
           if (!response.ok) {
-            throw new Error(`Failed to fetch image: ${response.statusText}`)
+            throw new Error(`Failed to fetch image: ${response.statusText}`);
           }
           
-          const blob = await response.blob()
+          const blob = await response.blob();
+          console.log(`Successfully fetched image ${index + 1}/${imageUrls.length}`);
           
+          console.log(`Uploading ${filenames[index]} to storage`);
           const { data, error: uploadError } = await supabase.storage
             .from('article-images')
             .upload(filenames[index], blob, {
               contentType: 'image/jpeg',
               upsert: true
-            })
+            });
 
           if (uploadError) {
-            console.error(`Error uploading ${filenames[index]}:`, uploadError)
-            return { success: false, filename: filenames[index], error: uploadError }
+            console.error(`Error uploading ${filenames[index]}:`, uploadError);
+            return { success: false, filename: filenames[index], error: uploadError };
           }
 
-          return { success: true, filename: filenames[index], data }
+          console.log(`Successfully uploaded ${filenames[index]}`);
+          return { success: true, filename: filenames[index], data };
         } catch (error) {
-          console.error(`Error processing ${url}:`, error)
-          return { success: false, filename: filenames[index], error: error.message }
+          console.error(`Error processing ${url}:`, error);
+          return { success: false, filename: filenames[index], error: error.message };
         }
       })
-    )
+    );
 
+    console.log('Finished processing all images');
     return new Response(
       JSON.stringify({ message: 'Images processed', results }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-    )
+    );
   } catch (error) {
-    console.error('Function error:', error)
+    console.error('Function error:', error);
     return new Response(
       JSON.stringify({ error: 'Failed to process images', details: error.message }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-    )
+    );
   }
-})
+});
