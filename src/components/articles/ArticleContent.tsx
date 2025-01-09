@@ -22,12 +22,6 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
           if (filename) {
             imageUrl = `/lovable-uploads/${filename}`;
           }
-        } else if (href === 'harrogate-luxury-home.jpg') {
-          imageUrl = '/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png';
-        } else if (href === 'harrogate-interior.jpg') {
-          imageUrl = '/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png';
-        } else if (href === 'harrogate-architecture.jpg') {
-          imageUrl = '/lovable-uploads/b47542a6-4411-407e-8cb4-28a1ca0f5371.png';
         }
         
         console.log('Processing image URL:', { 
@@ -36,14 +30,14 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
           isFromFindMyInteriors: href?.includes('findmyinteriors.co.uk')
         });
 
-        // Return the image with updated sizing
+        // Return the image with updated sizing and styling
         return `
           <div class="my-8">
             <img 
               src="${imageUrl}" 
               alt="${text || title || 'Article image'}" 
-              class="w-full object-cover rounded-lg shadow-md"
-              style="max-height: 800px; min-height: 400px; height: 600px;"
+              class="w-full object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              style="max-height: 800px; min-height: 400px;"
               loading="lazy"
               onerror="this.onerror=null; this.src='/placeholder.svg'; console.log('Image failed to load:', '${imageUrl}');"
             />
@@ -54,11 +48,11 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
       table(header, body) {
         return `
           <div class="overflow-x-auto my-8">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-200 bg-white shadow-sm rounded-lg overflow-hidden">
+              <thead class="bg-primary text-white">
                 ${header}
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody class="divide-y divide-gray-200">
                 ${body}
               </tbody>
             </table>
@@ -66,13 +60,13 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         `;
       },
       tablerow(content) {
-        return `<tr class="hover:bg-gray-50">${content}</tr>`;
+        return `<tr class="hover:bg-accent transition-colors">${content}</tr>`;
       },
       tablecell(content, { header }) {
         if (header) {
-          return `<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">${content}</th>`;
+          return `<th class="px-6 py-3 text-left text-sm font-medium tracking-wider">${content}</th>`;
         }
-        return `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${content}</td>`;
+        return `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${content}</td>`;
       },
       list(body, ordered) {
         const type = ordered ? 'ol' : 'ul';
@@ -81,6 +75,20 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
       },
       listitem(text) {
         return `<li class="text-gray-700">${text}</li>`;
+      },
+      heading(text, level) {
+        const sizes = {
+          1: 'text-4xl',
+          2: 'text-3xl',
+          3: 'text-2xl',
+          4: 'text-xl',
+          5: 'text-lg',
+          6: 'text-base'
+        };
+        return `<h${level} class="${sizes[level as keyof typeof sizes]} font-bold text-primary my-4">${text}</h${level}>`;
+      },
+      paragraph(text) {
+        return `<p class="text-gray-700 mb-4 leading-relaxed">${text}</p>`;
       }
     }
   });

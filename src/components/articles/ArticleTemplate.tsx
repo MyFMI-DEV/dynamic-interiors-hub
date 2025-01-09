@@ -26,7 +26,7 @@ export const ArticleTemplate = ({
   }));
 
   return (
-    <article className="max-w-4xl mx-auto">
+    <article className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
 
       <div className="bg-accent rounded-lg p-6 mb-8">
@@ -111,10 +111,10 @@ export const ArticleTemplate = ({
               <div key={index} className="text-center">
                 <div className="relative h-32 bg-accent rounded">
                   <div
-                    className="absolute bottom-0 w-full bg-primary rounded-t"
+                    className="absolute bottom-0 w-full bg-primary rounded-t transition-all duration-500 ease-in-out"
                     style={{ height: `${trend.value}%` }}
                   >
-                    <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-sm">
+                    <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-sm font-medium">
                       {trend.value}%
                     </span>
                   </div>
