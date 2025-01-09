@@ -14,7 +14,64 @@ const Articles = () => {
         title: "Harrogate Home Design: A Perfect Blend of Style",
         slug: "harrogate-home-design-perfect-blend-style",
         description: "Discover the unique charm of Harrogate home design, where historical architecture meets contemporary style. Learn about sustainable practices, luxury elements, and local design trends.",
-        content: `[Your provided HTML content]`,
+        content: `
+# Harrogate Home Design: A Perfect Blend of Style
+
+Harrogate, a charming spa town in North Yorkshire, is renowned for its distinctive architectural heritage and contemporary design sensibilities. This comprehensive guide explores the unique aspects of home design in Harrogate, from historical influences to modern trends.
+
+## Historical Context
+
+Harrogate's architectural landscape is shaped by its Victorian and Edwardian heritage. The town's development as a spa destination in the 19th century led to the construction of elegant buildings that continue to influence local design aesthetics today.
+
+## Contemporary Design Trends
+
+### Sustainable Living
+Sustainability is at the forefront of Harrogate's modern home design. Homeowners are increasingly incorporating:
+- Solar panels and energy-efficient systems
+- Sustainable building materials
+- Natural lighting solutions
+- Water conservation features
+
+### Luxury Elements
+Harrogate's reputation for luxury is reflected in its interior design choices:
+- High-end finishes and materials
+- Bespoke furniture pieces
+- Smart home technology integration
+- Spa-inspired bathrooms
+
+### Local Influences
+The local environment plays a crucial role in shaping design decisions:
+- Integration with Yorkshire landscape
+- Use of local materials
+- Weather-appropriate design features
+- Connection to outdoor spaces
+
+## Working with Local Professionals
+
+### Finding the Right Team
+- Research local architects and designers
+- Check portfolios and references
+- Understand local planning requirements
+- Consider sustainability expertise
+
+### Planning and Permissions
+- Familiarize yourself with local regulations
+- Engage with planning authorities early
+- Consider conservation area requirements
+- Work with experienced local professionals
+
+## Future Trends
+
+### Emerging Design Directions
+- Increased focus on home offices
+- Flexible living spaces
+- Smart home integration
+- Sustainable technology adoption
+
+## Conclusion
+
+Harrogate home design successfully combines historical charm with modern functionality. Whether renovating a period property or building a new home, understanding local design principles helps create spaces that are both beautiful and practical.
+        `,
         imageUrl: "https://www.findmyinteriors.co.uk/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png",
         metaTitle: "Harrogate Home Design Guide: Interior Design Trends & Tips",
         metaDescription: "Explore Harrogate's home design trends, from sustainable practices to luxury elements. Get expert insights on local architecture and interior design services.",
@@ -45,7 +102,7 @@ const Articles = () => {
         ],
         images: [
           { url: "https://www.findmyinteriors.co.uk/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png", alt: "Interior Design Services" },
-          { url: "https://www.findmyinteriors.co.uk/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png", alt: "Local Expertise" },
+          { url: "https://www.findmyinteriors.co.uk/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5371.png", alt: "Local Expertise" },
           { url: "https://www.findmyinteriors.co.uk/lovable-uploads/b47542a6-4411-407e-8cb4-28a1ca0f5371.png", alt: "Architectural Styles" },
           { alt: "Home Categories" },
           { alt: "Climate-Responsive Design" },
