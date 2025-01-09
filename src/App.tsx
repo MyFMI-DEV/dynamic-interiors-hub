@@ -10,7 +10,6 @@ import PostFree from "./pages/PostFree";
 import Sitemap from "./pages/Sitemap";
 import Articles from "./pages/Articles";
 import ArticleDetail from "./pages/ArticleDetail";
-import CreateHarrogateArticle from "./pages/CreateHarrogateArticle";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +27,6 @@ function App() {
           <Route path="/articles" element={<Articles />} />
           <Route path="/articles/:slug" element={<ArticleDetail />} />
           <Route path="/:location/:category" element={<LocationCategory />} />
-          <Route path="/create-harrogate-article" element={<CreateHarrogateArticle />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
