@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 
 const CreateHarrogateArticle = () => {
-  const { createArticle, isLoading } = useCreateArticle();
+  const mutation = useCreateArticle();
 
   const handleCreateArticle = async () => {
     const article = {
@@ -52,12 +52,12 @@ Whether you're renovating a period property or designing a new space, consider t
 ## Modern Amenities in Historical Settings
 
 Today's Harrogate homes successfully integrate modern technology and comfort features while maintaining their historical charm. Smart home systems, energy-efficient solutions, and contemporary kitchen designs can all be thoughtfully incorporated into traditional settings.`,
-      image_url: "/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png",
-      meta_title: "Harrogate Home Design Guide: Blending Traditional & Modern Styles",
-      meta_description: "Expert guide to Harrogate home design. Learn how to combine traditional elegance with modern comfort in your Harrogate home. Get local design insights and professional tips.",
+      imageUrl: "/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png",
+      metaTitle: "Harrogate Home Design Guide: Blending Traditional & Modern Styles",
+      metaDescription: "Expert guide to Harrogate home design. Learn how to combine traditional elegance with modern comfort in your Harrogate home. Get local design insights and professional tips.",
       keywords: ["Harrogate home design", "interior design Harrogate", "traditional home renovation", "modern home design", "Yorkshire interior design"],
-      locations: ["Harrogate"],
-      categories: ["Interior Design"],
+      location: "Harrogate",
+      category: "Interior Design",
       faqs: [
         {
           question: "What characterizes Harrogate home design?",
@@ -74,7 +74,7 @@ Today's Harrogate homes successfully integrate modern technology and comfort fea
       ]
     };
 
-    await createArticle(article);
+    await mutation.mutateAsync(article);
   };
 
   return (
@@ -85,10 +85,10 @@ Today's Harrogate homes successfully integrate modern technology and comfort fea
         <div className="flex justify-center">
           <Button 
             onClick={handleCreateArticle}
-            disabled={isLoading}
+            disabled={mutation.isPending}
             className="w-64"
           >
-            {isLoading ? "Creating Article..." : "Create Article"}
+            {mutation.isPending ? "Creating Article..." : "Create Article"}
           </Button>
         </div>
       </main>
