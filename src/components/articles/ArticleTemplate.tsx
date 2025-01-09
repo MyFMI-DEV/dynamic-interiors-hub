@@ -60,7 +60,7 @@ export const ArticleTemplate = ({
       )}
 
       <div className="mb-8">
-        <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
+        <ArticleContent content={content} />
       </div>
 
       {images.length > 0 && (
