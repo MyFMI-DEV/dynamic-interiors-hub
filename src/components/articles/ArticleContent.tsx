@@ -11,9 +11,13 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
     breaks: true
   });
 
-  // Convert markdown to HTML
+  // Convert markdown to HTML, ensuring content is a string
   const htmlContent = marked(content || '');
   
+  // For debugging
+  console.log('Raw content:', content);
+  console.log('HTML content:', htmlContent);
+
   return (
     <div 
       className="prose prose-lg max-w-none"
