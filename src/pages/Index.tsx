@@ -8,7 +8,6 @@ import LocationGrid from "@/components/home/LocationGrid";
 import Features from "@/components/home/Features";
 import Footer from "@/components/layout/Footer";
 import { getFullImageUrl } from "@/lib/image-utils";
-import ArticleImageList from "@/components/articles/ArticleImageList";
 
 const Index = () => {
   const { data: locations } = useQuery({
@@ -46,7 +45,6 @@ const Index = () => {
       <Navigation />
       <Hero backgroundImage={getFullImageUrl("/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png")} />
       <main>
-        <ArticleImageList />
         <CategoryGrid />
         <Features />
         <LocationGrid locations={locations} />
