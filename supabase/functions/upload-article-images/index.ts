@@ -7,18 +7,36 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  console.log('Edge Function started');
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('Handling CORS preflight request');
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
     console.log('Starting image upload process');
+    console.log('Supabase URL:', Deno.env.get('SUPABASE_URL'));
     
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
+
+    console.log('Supabase client initialized');
+
+    // Test Supabase connection
+    const { data: testData, error: testError } = await supabase
+      .from('articles')
+      .select('id')
+      .limit(1);
+
+    if (testError) {
+      console.error('Supabase connection test failed:', testError);
+      throw new Error('Failed to connect to Supabase');
+    }
+    console.log('Supabase connection test successful');
 
     const imageUrls = [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c',
@@ -74,18 +92,21 @@ serve(async (req) => {
       'harrogate-future-2.jpg'
     ]
 
-    console.log('Starting to process images');
+    console.log(`Starting to process ${imageUrls.length} images`);
+    
     const results = await Promise.all(
       imageUrls.map(async (url, index) => {
         try {
-          console.log(`Fetching image from ${url}`);
+          console.log(`[${index + 1}/${imageUrls.length}] Fetching image from ${url}`);
           const response = await fetch(`${url}?w=1200&q=80`);
+          
           if (!response.ok) {
+            console.error(`Failed to fetch image ${index + 1}: ${response.statusText}`);
             throw new Error(`Failed to fetch image: ${response.statusText}`);
           }
           
           const blob = await response.blob();
-          console.log(`Successfully fetched image ${index + 1}/${imageUrls.length}`);
+          console.log(`Successfully fetched image ${index + 1}/${imageUrls.length} (${blob.size} bytes)`);
           
           console.log(`Uploading ${filenames[index]} to storage`);
           const { data, error: uploadError } = await supabase.storage
@@ -105,7 +126,7 @@ serve(async (req) => {
             .from('article-images')
             .getPublicUrl(filenames[index]);
 
-          console.log(`Successfully uploaded ${filenames[index]}`);
+          console.log(`Successfully uploaded ${filenames[index]} to ${publicUrl}`);
           return { 
             success: true, 
             filename: filenames[index], 
@@ -123,8 +144,10 @@ serve(async (req) => {
     
     // Insert image records into the article_images table
     const successfulUploads = results.filter(result => result.success);
+    console.log(`${successfulUploads.length} successful uploads out of ${results.length} total`);
     
     for (const upload of successfulUploads) {
+      console.log(`Inserting record for ${upload.filename} into article_images table`);
       const { error: dbError } = await supabase
         .from('article_images')
         .insert({
@@ -135,9 +158,12 @@ serve(async (req) => {
 
       if (dbError) {
         console.error(`Error inserting image record for ${upload.filename}:`, dbError);
+      } else {
+        console.log(`Successfully inserted record for ${upload.filename}`);
       }
     }
 
+    console.log('All operations completed successfully');
     return new Response(
       JSON.stringify({ 
         message: 'Images processed', 
