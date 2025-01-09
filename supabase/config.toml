@@ -8,6 +8,3 @@ verify_jwt = false
 
 [functions.generate-category-image]
 verify_jwt = false
-
-[functions.upload-article-images]
-verify_jwt = false

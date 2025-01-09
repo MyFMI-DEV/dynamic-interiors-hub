@@ -31,61 +31,25 @@ export const useCreateArticle = () => {
       category,
       faqs,
     }: CreateArticleParams) => {
-      // First check if article exists
-      const { data: existingArticle } = await supabase
+      // Insert the main article
+      const { data: article, error: articleError } = await supabase
         .from('articles')
-        .select('id')
-        .eq('slug', slug)
+        .insert({
+          title,
+          slug,
+          description,
+          content,
+          image_url: imageUrl,
+          meta_title: metaTitle,
+          meta_description: metaDescription,
+          keywords,
+        })
+        .select()
         .single();
 
-      let article;
-      
-      if (existingArticle) {
-        // Update existing article
-        const { data: updatedArticle, error: updateError } = await supabase
-          .from('articles')
-          .update({
-            title,
-            description,
-            content,
-            image_url: imageUrl,
-            meta_title: metaTitle,
-            meta_description: metaDescription,
-            keywords,
-          })
-          .eq('id', existingArticle.id)
-          .select()
-          .single();
+      if (articleError) throw articleError;
 
-        if (updateError) throw updateError;
-        article = updatedArticle;
-
-        // Delete existing relationships to update them
-        await supabase.from('article_locations').delete().eq('article_id', article.id);
-        await supabase.from('article_categories').delete().eq('article_id', article.id);
-        await supabase.from('article_faqs').delete().eq('article_id', article.id);
-      } else {
-        // Insert new article
-        const { data: newArticle, error: articleError } = await supabase
-          .from('articles')
-          .insert({
-            title,
-            slug,
-            description,
-            content,
-            image_url: imageUrl,
-            meta_title: metaTitle,
-            meta_description: metaDescription,
-            keywords,
-          })
-          .select()
-          .single();
-
-        if (articleError) throw articleError;
-        article = newArticle;
-      }
-
-      // Insert or update location
+      // Insert location
       const { error: locationError } = await supabase
         .from('article_locations')
         .insert({
@@ -95,7 +59,7 @@ export const useCreateArticle = () => {
 
       if (locationError) throw locationError;
 
-      // Insert or update category
+      // Insert category
       const { error: categoryError } = await supabase
         .from('article_categories')
         .insert({
@@ -105,7 +69,7 @@ export const useCreateArticle = () => {
 
       if (categoryError) throw categoryError;
 
-      // Insert or update FAQs
+      // Insert FAQs
       const { error: faqsError } = await supabase
         .from('article_faqs')
         .insert(
@@ -123,7 +87,7 @@ export const useCreateArticle = () => {
     onSuccess: () => {
       toast({
         title: "Success",
-        description: "Article updated successfully",
+        description: "Article created successfully",
       });
     },
     onError: (error) => {
