@@ -5,7 +5,15 @@ interface ArticleContentProps {
 }
 
 const ArticleContent = ({ content }: ArticleContentProps) => {
-  const htmlContent = marked(content);
+  // Configure marked to handle GitHub Flavored Markdown
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    headerIds: true,
+  });
+
+  // Convert markdown to HTML
+  const htmlContent = marked(content || '');
   
   return (
     <div 
