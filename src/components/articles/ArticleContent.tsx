@@ -8,8 +8,7 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
   // Configure marked to handle GitHub Flavored Markdown
   marked.setOptions({
     gfm: true,
-    breaks: true,
-    headerIds: true,
+    breaks: true
   });
 
   // Convert markdown to HTML
