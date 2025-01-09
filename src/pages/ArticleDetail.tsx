@@ -33,8 +33,8 @@ const ArticleDetail = () => {
           article_categories (*),
           article_images (*)
         `)
-        .eq('slug', slug)  // Use the slug from URL parameters
-        .maybeSingle();
+        .eq('slug', slug)
+        .single();
 
       console.log("Query result:", { articles, queryError });
 
