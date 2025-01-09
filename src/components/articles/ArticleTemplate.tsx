@@ -19,6 +19,11 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
+  const getLocalImageUrl = (url: string) => {
+    // Remove the domain if it exists and keep only the path
+    return url.replace('https://www.findmyinteriors.co.uk', '');
+  };
+
   return (
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
@@ -63,7 +68,7 @@ export const ArticleTemplate = ({
           {images.map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
               <img
-                src={image.url}
+                src={getLocalImageUrl(image.url)}
                 alt={image.alt}
                 className="w-full h-64 object-cover"
                 onError={(e) => {
