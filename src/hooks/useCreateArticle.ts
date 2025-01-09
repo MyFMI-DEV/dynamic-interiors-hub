@@ -14,6 +14,7 @@ interface CreateArticleParams {
   location: string;
   category: string;
   faqs: Array<{ question: string; answer: string }>;
+  images: Array<{ url?: string; alt: string }>;
 }
 
 export const useCreateArticle = () => {
