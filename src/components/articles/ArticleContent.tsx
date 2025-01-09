@@ -5,7 +5,6 @@ interface ArticleContentProps {
 }
 
 const ArticleContent = ({ content }: ArticleContentProps) => {
-  // Configure marked to handle images with proper styling
   marked.setOptions({
     breaks: true,
     gfm: true
@@ -19,10 +18,16 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         
         // If it's a findmyinteriors.co.uk URL, extract just the filename
         if (href?.includes('findmyinteriors.co.uk/lovable-uploads/')) {
-          const filename = href.split('lovable-uploads/').pop(); // Get just the filename
+          const filename = href.split('lovable-uploads/').pop();
           if (filename) {
             imageUrl = `/lovable-uploads/${filename}`;
           }
+        } else if (href === 'harrogate-luxury-home.jpg') {
+          imageUrl = '/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png';
+        } else if (href === 'harrogate-interior.jpg') {
+          imageUrl = '/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png';
+        } else if (href === 'harrogate-architecture.jpg') {
+          imageUrl = '/lovable-uploads/b47542a6-4411-407e-8cb4-28a1ca0f5371.png';
         }
         
         console.log('Processing image URL:', { 
