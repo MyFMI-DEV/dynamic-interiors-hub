@@ -30,6 +30,14 @@ const Navigation = () => {
             </Link>
           </li>
           <li className="w-full md:w-auto text-center">
+            <Link 
+              to="/articles" 
+              className="text-primary hover:text-primary/80 transition-colors font-medium px-3 py-2 block"
+            >
+              Articles
+            </Link>
+          </li>
+          <li className="w-full md:w-auto text-center">
             <a 
               href="https://www.findmyinteriors.com" 
               target="_blank"
