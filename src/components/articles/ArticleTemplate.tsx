@@ -58,23 +58,25 @@ export const ArticleTemplate = ({
 
       <div className="prose prose-lg max-w-none mb-8" dangerouslySetInnerHTML={{ __html: content }} />
 
-      {images.length > 0 && (
+      {images && images.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {images.map((image, index) => (
-            <a key={index} href="https://www.findmyinteriors.co.uk" className="block group">
-              <div className="relative overflow-hidden rounded-lg shadow-md">
-                <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="w-full aspect-video object-cover transform group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            </a>
+            <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
+              <img
+                src={image.url}
+                alt={image.alt}
+                className="w-full h-64 object-cover"
+                onError={(e) => {
+                  console.error(`Failed to load image: ${image.url}`);
+                  e.currentTarget.src = '/placeholder.svg';
+                }}
+              />
+            </div>
           ))}
         </div>
       )}
 
-      {faqs.length > 0 && (
+      {faqs && faqs.length > 0 && (
         <div className="bg-accent rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-semibold text-primary mb-4">FAQ Section</h2>
           <div className="space-y-4">

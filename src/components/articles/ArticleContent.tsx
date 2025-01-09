@@ -5,6 +5,15 @@ interface ArticleContentProps {
 }
 
 const ArticleContent = ({ content }: ArticleContentProps) => {
+  // Configure marked to properly handle images
+  marked.use({
+    renderer: {
+      image(href, title, text) {
+        return `<img src="${href}" alt="${text}" class="w-full h-auto rounded-lg shadow-md my-4" />`;
+      }
+    }
+  });
+  
   const htmlContent = marked(content);
   
   return (
