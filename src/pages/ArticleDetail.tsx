@@ -45,6 +45,14 @@ const ArticleDetail = () => {
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <article className="max-w-4xl mx-auto">
+          <div className="mb-4 p-4 bg-accent rounded-lg">
+            <h3 className="font-bold text-primary mb-2">Article Debug Information:</h3>
+            <p className="mb-2"><strong>Article ID:</strong> {article.id}</p>
+            <p className="mb-2"><strong>Slug:</strong> {article.slug}</p>
+            <p className="mb-2"><strong>Title:</strong> {article.title}</p>
+            <p className="mb-2"><strong>Full article object:</strong> {JSON.stringify(article, null, 2)}</p>
+          </div>
+          
           <h1 className="text-4xl font-bold mb-8 text-primary">{article.title}</h1>
           <ArticleContent content={article.content || ''} />
         </article>
