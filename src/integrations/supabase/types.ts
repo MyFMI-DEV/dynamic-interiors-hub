@@ -9,6 +9,138 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      article_categories: {
+        Row: {
+          article_id: string
+          category: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          article_id: string
+          category: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          article_id?: string
+          category?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_categories_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_faqs: {
+        Row: {
+          answer: string
+          article_id: string
+          created_at: string | null
+          id: string
+          question: string
+        }
+        Insert: {
+          answer: string
+          article_id: string
+          created_at?: string | null
+          id?: string
+          question: string
+        }
+        Update: {
+          answer?: string
+          article_id?: string
+          created_at?: string | null
+          id?: string
+          question?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_faqs_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      article_locations: {
+        Row: {
+          article_id: string
+          created_at: string | null
+          id: string
+          location: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string | null
+          id?: string
+          location: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string | null
+          id?: string
+          location?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_locations_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      articles: {
+        Row: {
+          content: string
+          created_at: string | null
+          description: string
+          id: string
+          image_url: string
+          keywords: string[]
+          meta_description: string
+          meta_title: string
+          published_at: string | null
+          slug: string
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          description: string
+          id?: string
+          image_url: string
+          keywords?: string[]
+          meta_description: string
+          meta_title: string
+          published_at?: string | null
+          slug: string
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          image_url?: string
+          keywords?: string[]
+          meta_description?: string
+          meta_title?: string
+          published_at?: string | null
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       cached_pages: {
         Row: {
           category: string

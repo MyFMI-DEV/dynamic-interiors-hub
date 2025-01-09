@@ -1,24 +1,21 @@
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { useArticles } from "@/hooks/useArticles";
+import { LoadingState } from "@/components/ui/LoadingState";
 
 const ArticlesList = () => {
-  // This is a placeholder for the articles that will be added
-  const articles = [
-    {
-      id: 1,
-      title: "Welcome to Our Interior Design Articles",
-      description: "Discover expert insights, tips, and guides for transforming your home with professional interior design advice.",
-      image: "/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png",
-      slug: "welcome-to-interior-design-articles"
-    }
-  ];
+  const { data: articles, isLoading, error } = useArticles();
+
+  if (isLoading) return <LoadingState />;
+  if (error) return <div>Error loading articles</div>;
+  if (!articles?.length) return <div>No articles found</div>;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {articles.map((article) => (
         <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
           <img
-            src={article.image}
+            src={article.image_url}
             alt={article.title}
             className="w-full h-48 object-cover"
           />
