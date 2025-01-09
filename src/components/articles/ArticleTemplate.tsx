@@ -19,10 +19,10 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
-  // Format image URLs to ensure they have the correct prefix
+  // Format image URLs - only add prefix if URL doesn't start with /lovable-uploads/
   const formattedImages = images.map(image => ({
     ...image,
-    url: image.url.startsWith('http') ? image.url : `/lovable-uploads/${image.url}`
+    url: image.url.startsWith('/lovable-uploads/') ? image.url : `/lovable-uploads/${image.url}`
   }));
 
   return (
