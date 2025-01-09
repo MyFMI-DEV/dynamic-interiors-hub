@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface ArticleTemplateProps {
   title: string;
@@ -19,6 +21,49 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
+  const [processedImages, setProcessedImages] = useState(images);
+
+  useEffect(() => {
+    const generateMissingImages = async () => {
+      const updatedImages = await Promise.all(
+        images.map(async (image) => {
+          if (!image.url && image.alt) {
+            try {
+              const response = await fetch('/api/generate-article-image', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  title: image.alt,
+                  description: `Interior design image related to ${image.alt}`,
+                }),
+              });
+
+              if (!response.ok) {
+                throw new Error('Failed to generate image');
+              }
+
+              const data = await response.json();
+              return { ...image, url: data.imageUrl };
+            } catch (error) {
+              console.error('Error generating image:', error);
+              toast.error(`Failed to generate image for ${image.alt}`);
+              return image;
+            }
+          }
+          return image;
+        })
+      );
+
+      setProcessedImages(updatedImages);
+    };
+
+    if (images.some(img => !img.url && img.alt)) {
+      generateMissingImages();
+    }
+  }, [images]);
+
   return (
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
@@ -58,18 +103,20 @@ export const ArticleTemplate = ({
 
       <div className="prose prose-lg max-w-none mb-8" dangerouslySetInnerHTML={{ __html: content }} />
 
-      {images.length > 0 && (
+      {processedImages.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {images.map((image, index) => (
-            <a key={index} href="https://www.findmyinteriors.co.uk" className="block group">
-              <div className="relative overflow-hidden rounded-lg shadow-md">
-                <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="w-full aspect-video object-cover transform group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            </a>
+          {processedImages.map((image, index) => (
+            image.url ? (
+              <a key={index} href="https://www.findmyinteriors.co.uk" className="block group">
+                <div className="relative overflow-hidden rounded-lg shadow-md">
+                  <img
+                    src={image.url}
+                    alt={image.alt}
+                    className="w-full aspect-video object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </a>
+            ) : null
           ))}
         </div>
       )}
