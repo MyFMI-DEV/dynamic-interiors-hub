@@ -14,10 +14,10 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
   marked.use({
     renderer: {
       image(href, title, text) {
-        // Exactly match the ArticlesList image URL handling
+        // Ensure we're not double-prefixing the URL
         const imageUrl = href?.startsWith('http') 
           ? href 
-          : `/lovable-uploads/${href?.replace('/lovable-uploads/', '')}`;
+          : `/lovable-uploads/${href?.replace(/^\/lovable-uploads\//, '')}`;
 
         return `
           <div class="my-8 max-w-3xl mx-auto">
@@ -27,7 +27,7 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
               class="w-full h-[400px] object-cover rounded-lg shadow-md mx-auto"
               style="max-height: 600px; min-height: 300px;"
               loading="lazy"
-              onerror="this.onerror=null; this.src='/placeholder.svg'; console.error('Failed to load image:', imageUrl);"
+              onerror="this.onerror=null; this.src='/placeholder.svg'; console.error('Failed to load image:', '${imageUrl}');"
             />
             ${title ? `<p class="text-center text-sm text-gray-600 mt-2">${title}</p>` : ''}
           </div>
