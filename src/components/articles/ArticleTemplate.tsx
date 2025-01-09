@@ -25,7 +25,7 @@ export const ArticleTemplate = ({
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      console.log('Fetched images:', images); // Debug log
+      console.log('Fetched images:', images);
       return images;
     },
     enabled: !!articleId
@@ -136,32 +136,13 @@ export const ArticleTemplate = ({
         return html;
       },
       image(href: string, title: string, text: string) {
-        console.log('Processing image with href:', href); // Debug log
-        console.log('Available article images:', articleImages); // Debug log
-
-        // Extract filename from href
-        const hrefFilename = href.split('/').pop()?.toLowerCase();
-        
-        // Find the corresponding article image
-        const articleImage = articleImages?.find(img => {
-          const imgFilename = img.url.split('/').pop()?.toLowerCase();
-          console.log('Comparing:', hrefFilename, 'with:', imgFilename); // Debug log
-          return imgFilename === hrefFilename;
-        });
-
-        if (articleImage) {
-          console.log('Found matching image:', articleImage); // Debug log
-          return `<img src="${articleImage.url}" alt="${articleImage.alt || text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
-        }
-
-        console.log('No matching image found, using original href:', href); // Debug log
+        // Just use the original href instead of trying to find a matching image in Supabase
         return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
   });
 
   const htmlContent = marked(content);
-  console.log('Final HTML content:', htmlContent); // Debug log
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
