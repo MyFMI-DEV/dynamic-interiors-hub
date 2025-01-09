@@ -276,7 +276,7 @@ export async function insertHarrogateArticle() {
     }
   }
 
-  // Insert images into article_images table
+  // Insert images into article_images table if needed
   const images = [
     { filename: 'harrogate-interior-1.jpg', alt: 'Interior Design Services' },
     { filename: 'harrogate-interior-2.jpg', alt: 'Local Expertise' },
@@ -285,7 +285,23 @@ export async function insertHarrogateArticle() {
     { filename: 'harrogate-climate-1.jpg', alt: 'Climate-Responsive Design' },
     { filename: 'harrogate-climate-2.jpg', alt: 'Sustainable Solutions' },
     { filename: 'harrogate-spa-1.jpg', alt: 'Spa-Inspired Interiors' },
-    { filename: 'harrogate-spa-2.jpg', alt: 'Luxury Home Design' }
+    { filename: 'harrogate-spa-2.jpg', alt: 'Luxury Home Design' },
+    { filename: 'harrogate-eco-1.jpg', alt: 'Eco-Friendly Design' },
+    { filename: 'harrogate-eco-2.jpg', alt: 'Sustainable Home Solutions' },
+    { filename: 'harrogate-luxury-1.jpg', alt: 'Luxury Home Design' },
+    { filename: 'harrogate-luxury-2.jpg', alt: 'High-End Interiors' },
+    { filename: 'harrogate-architect-1.jpg', alt: 'Local Architects' },
+    { filename: 'harrogate-architect-2.jpg', alt: 'Architectural Services' },
+    { filename: 'harrogate-trend-1.jpg', alt: 'Design Trends' },
+    { filename: 'harrogate-trend-2.jpg', alt: 'Home Styling' },
+    { filename: 'harrogate-planning-1.jpg', alt: 'Planning Permissions' },
+    { filename: 'harrogate-planning-2.jpg', alt: 'Local Regulations' },
+    { filename: 'harrogate-renovation-1.jpg', alt: 'Home Renovation' },
+    { filename: 'harrogate-renovation-2.jpg', alt: 'Remodeling Services' },
+    { filename: 'harrogate-culture-1.jpg', alt: 'Cultural Influences in Design' },
+    { filename: 'harrogate-culture-2.jpg', alt: 'Local Art Integration' },
+    { filename: 'harrogate-future-1.jpg', alt: 'Future Design Trends' },
+    { filename: 'harrogate-future-2.jpg', alt: 'Sustainable Home Solutions' },
   ];
 
   for (const image of images) {
