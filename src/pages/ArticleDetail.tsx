@@ -12,9 +12,13 @@ const ArticleDetail = () => {
   const { slug } = useParams();
   const { toast } = useToast();
 
+  console.log("Current slug:", slug); // Add logging to debug
+
   const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
     queryFn: async () => {
+      console.log("Fetching article with slug:", slug); // Add logging to debug
+      
       const { data, error } = await supabase
         .from('articles')
         .select(`
@@ -26,6 +30,8 @@ const ArticleDetail = () => {
         `)
         .eq('slug', slug)
         .maybeSingle();
+
+      console.log("Query result:", { data, error }); // Add logging to debug
 
       if (error) {
         toast({
@@ -47,7 +53,8 @@ const ArticleDetail = () => {
       
       return data;
     },
-    enabled: !!slug
+    enabled: !!slug,
+    retry: false // Disable retries to avoid multiple toasts
   });
 
   if (isLoading) return <LoadingState />;
@@ -86,7 +93,10 @@ const ArticleDetail = () => {
   // Combine main article image with article_images
   const images = [
     ...(article.image_url ? [{ url: article.image_url, alt: article.title }] : []),
-    ...(article.article_images || [])
+    ...(article.article_images || []).map(img => ({
+      url: img.url,
+      alt: img.alt || article.title
+    }))
   ];
 
   return (
