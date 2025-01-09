@@ -7,6 +7,7 @@ import CategoryGrid from "@/components/home/CategoryGrid";
 import LocationGrid from "@/components/home/LocationGrid";
 import Features from "@/components/home/Features";
 import Footer from "@/components/layout/Footer";
+import { getFullImageUrl } from "@/lib/image-utils";
 
 const Index = () => {
   const { data: locations } = useQuery({
@@ -35,14 +36,14 @@ const Index = () => {
       <div className="bg-white w-full py-6">
         <div className="container mx-auto px-4">
           <img 
-            src="/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" 
+            src={getFullImageUrl("/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png")}
             alt="FindMyInteriors UK" 
             className="h-24 md:h-28 lg:h-36 mx-auto transition-all duration-300 hover:scale-105"
           />
         </div>
       </div>
       <Navigation />
-      <Hero backgroundImage="/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png" />
+      <Hero backgroundImage={getFullImageUrl("/lovable-uploads/13058f80-e0ed-415e-9dac-d36d661617c5.png")} />
       <main>
         <CategoryGrid />
         <Features />

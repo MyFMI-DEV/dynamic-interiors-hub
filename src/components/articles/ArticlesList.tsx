@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useArticles } from "@/hooks/useArticles";
 import LoadingState from "@/components/ui/LoadingState";
+import { getFullImageUrl } from "@/lib/image-utils";
 
 const ArticlesList = () => {
   const { data: articles, isLoading, error } = useArticles();
@@ -15,9 +16,13 @@ const ArticlesList = () => {
       {articles.map((article) => (
         <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
           <img
-            src={article.image_url}
+            src={getFullImageUrl(article.image_url)}
             alt={article.title}
             className="w-full h-48 object-cover"
+            onError={(e) => {
+              console.error(`Failed to load image: ${article.image_url}`);
+              e.currentTarget.src = '/placeholder.svg';
+            }}
           />
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
