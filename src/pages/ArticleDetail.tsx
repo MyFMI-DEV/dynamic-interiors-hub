@@ -34,10 +34,10 @@ const ArticleDetail = () => {
   if (!article) return <div>Article not found</div>;
 
   // Extract all image URLs from the content using regex
-  const imgRegex = /<img[^>]+src="([^">]+)"/g;
+  const imgRegex = /<a[^>]+><img[^>]+src="([^">]+)"[^>]+alt="([^">]+)"[^>]+><\/a>/g;
   const contentImages = Array.from(article.content.matchAll(imgRegex)).map(match => ({
     url: match[1],
-    alt: match[0].match(/alt="([^"]*)"/) ? match[0].match(/alt="([^"]*)"/)[1] : ''
+    alt: match[2]
   }));
 
   // Combine article.image_url with content images if it exists
