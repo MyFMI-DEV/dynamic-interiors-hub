@@ -17,23 +17,31 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         // Process the image URL
         let imageUrl = href;
         
-        // If it's not an absolute URL, assume it's a relative path
-        if (!href?.startsWith('http')) {
-          // Remove any leading slashes and ensure proper path structure
-          const cleanPath = href?.replace(/^\/?(lovable-uploads\/)?/, '');
-          imageUrl = `/lovable-uploads/${cleanPath}`;
-          console.log('Processing image URL:', { original: href, cleaned: cleanPath, final: imageUrl });
+        // Remove the domain if it exists and extract just the filename
+        if (href?.includes('findmyinteriors.co.uk')) {
+          const urlParts = href.split('/');
+          imageUrl = urlParts[urlParts.length - 1];
         }
+        
+        // Clean the path and ensure proper structure
+        const cleanPath = imageUrl?.replace(/^\/?(lovable-uploads\/)?/, '');
+        const finalUrl = `/lovable-uploads/${cleanPath}`;
+        
+        console.log('Processing image URL:', { 
+          original: href, 
+          cleaned: cleanPath, 
+          final: finalUrl 
+        });
 
         return `
           <div class="my-8 max-w-3xl mx-auto">
             <img 
-              src="${imageUrl}" 
+              src="${finalUrl}" 
               alt="${text || title || 'Article image'}" 
               class="w-full h-[400px] object-cover rounded-lg shadow-md mx-auto"
               style="max-height: 600px; min-height: 300px;"
               loading="lazy"
-              onerror="this.onerror=null; this.src='/placeholder.svg'; console.log('Image failed to load:', '${imageUrl}');"
+              onerror="this.onerror=null; this.src='/placeholder.svg'; console.log('Image failed to load:', '${finalUrl}');"
             />
             ${title ? `<p class="text-center text-sm text-gray-600 mt-2">${title}</p>` : ''}
           </div>
