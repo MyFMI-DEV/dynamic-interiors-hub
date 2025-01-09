@@ -110,19 +110,6 @@ export const ArticleTemplate = ({
     };
   }, []);
 
-  // Configure marked to handle HTML content and use original image URLs
-  marked.use({
-    renderer: {
-      html(html: string) {
-        return html;
-      },
-      image(href: string, title: string, text: string) {
-        // Use the URL directly without any transformation
-        return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
-      }
-    }
-  });
-
   const htmlContent = marked(content);
 
   return (
