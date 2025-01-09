@@ -14,19 +14,24 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
   marked.use({
     renderer: {
       image(href, title, text) {
-        // Handle both absolute and relative URLs
-        const imageUrl = href?.startsWith('http') ? href : `/lovable-uploads/${href?.replace('/lovable-uploads/', '')}`;
+        // Use the same image handling logic as ArticlesList
+        const imageUrl = href?.startsWith('http') 
+          ? href 
+          : href?.startsWith('/lovable-uploads/') 
+            ? href 
+            : `/lovable-uploads/${href}`;
+
         return `
-          <figure class="my-8">
+          <div class="my-8">
             <img 
               src="${imageUrl}" 
               alt="${text || title || 'Article image'}" 
-              class="w-full h-auto rounded-lg shadow-md max-w-full"
+              class="w-full h-auto rounded-lg shadow-md object-cover"
               loading="lazy"
-              onerror="console.error('Failed to load image:', this.src)"
+              onerror="this.onerror=null; console.error('Failed to load image:', this.src);"
             />
-            ${title ? `<figcaption class="text-center text-sm text-gray-600 mt-2">${title}</figcaption>` : ''}
-          </figure>
+            ${title ? `<p class="text-center text-sm text-gray-600 mt-2">${title}</p>` : ''}
+          </div>
         `;
       }
     }
