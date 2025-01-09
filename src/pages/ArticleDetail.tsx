@@ -15,12 +15,7 @@ const ArticleDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('articles')
-        .select(`
-          *,
-          article_faqs (*),
-          article_locations (*),
-          article_categories (*)
-        `)
+        .select('*')
         .eq('slug', slug)
         .single();
 
@@ -33,7 +28,6 @@ const ArticleDetail = () => {
   if (isLoading) return <LoadingState />;
   if (!article) return <div>Article not found</div>;
 
-  // Prepare the data for ArticleTemplate
   const images = article.image_url ? [
     {
       url: article.image_url,
@@ -41,36 +35,24 @@ const ArticleDetail = () => {
     }
   ] : [];
 
-  const faqs = article.article_faqs?.map(faq => ({
-    question: faq.question,
-    answer: faq.answer
-  })) || [];
-
-  const keyPoints = article.keywords || [];
-
-  const tableData = [
-    { key: "Location", value: article.article_locations?.[0]?.location || "All Locations" },
-    { key: "Category", value: article.article_categories?.[0]?.category || "General" }
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title={article.meta_title}
         description={article.meta_description}
         keywords={article.keywords}
-        location={article.article_locations?.[0]?.location || ""}
-        category={article.article_categories?.[0]?.category || ""}
+        location=""
+        category=""
       />
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <ArticleTemplate
           title={article.title}
           content={article.content}
-          keyPoints={keyPoints}
-          tableData={tableData}
+          keyPoints={[]}
+          tableData={[]}
           images={images}
-          faqs={faqs}
+          faqs={[]}
         />
       </main>
       <Footer />
