@@ -33,7 +33,7 @@ const ArticleDetail = () => {
           article_categories (*),
           article_images (*)
         `)
-        .eq('slug', 'harrogate-home-design')
+        .eq('slug', slug)  // Use the slug from URL parameters
         .maybeSingle();
 
       console.log("Query result:", { articles, queryError });
