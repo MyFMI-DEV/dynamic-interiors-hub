@@ -1,7 +1,5 @@
 import { marked } from "marked";
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 
 interface ArticleTemplateProps {
   title: string;
@@ -14,22 +12,6 @@ export const ArticleTemplate = ({
   content,
   articleId,
 }: ArticleTemplateProps) => {
-  // Fetch article images
-  const { data: articleImages } = useQuery({
-    queryKey: ['article-images', articleId],
-    queryFn: async () => {
-      const { data: images, error } = await supabase
-        .from('article_images')
-        .select('*')
-        .eq('article_id', articleId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      return images;
-    },
-    enabled: !!articleId
-  });
-
   useEffect(() => {
     // Add custom styles for the minimalist chart
     const style = document.createElement('style');
@@ -135,19 +117,8 @@ export const ArticleTemplate = ({
         return html;
       },
       image(href: string, title: string, text: string) {
-        // Check if we have a matching image from the database
-        const matchingImage = articleImages?.find(img => img.alt === text);
-        
-        // If the URL is already a full URL (starts with http or https), use it directly
-        if (href.startsWith('http://') || href.startsWith('https://')) {
-          return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
-        }
-        
-        // Use the database URL if available, otherwise construct the Supabase storage URL
-        const imageUrl = matchingImage?.url || 
-          `https://lyyhynjlgebsrdrmnjhk.supabase.co/storage/v1/object/public/article-images/${href}`;
-        
-        return `<img src="${imageUrl}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
+        // Use the URL directly without any transformation
+        return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
   });
