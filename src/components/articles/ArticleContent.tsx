@@ -16,18 +16,15 @@ const ArticleContent = ({ content }: ArticleContentProps) => {
         // Process the image URL
         let imageUrl = href;
         
-        // If it's a findmyinteriors.co.uk URL, extract just the filename
-        if (href?.includes('findmyinteriors.co.uk/lovable-uploads/')) {
-          const filename = href.split('lovable-uploads/').pop();
-          if (filename) {
-            imageUrl = `/lovable-uploads/${filename}`;
-          }
+        // Only add /lovable-uploads/ prefix if it's not already present and not an external URL
+        if (href && !href.startsWith('/lovable-uploads/') && !href.startsWith('http')) {
+          imageUrl = `/lovable-uploads/${href}`;
         }
         
         console.log('Processing image URL:', { 
           original: href, 
           processed: imageUrl,
-          isFromFindMyInteriors: href?.includes('findmyinteriors.co.uk')
+          isExternal: href?.startsWith('http')
         });
 
         // Return the image with updated sizing and styling
