@@ -129,27 +129,14 @@ export const ArticleTemplate = ({
     };
   }, []);
 
-  // Configure marked to handle HTML content and image replacement
+  // Configure marked to handle HTML content and use original image URLs
   marked.use({
     renderer: {
       html(html: string) {
         return html;
       },
       image(href: string, title: string, text: string) {
-        // Try to find a matching image from articleImages first
-        if (articleImages && articleImages.length > 0) {
-          const filename = href.split('/').pop()?.toLowerCase();
-          const matchingImage = articleImages.find(img => {
-            const imgFilename = img.url.split('/').pop()?.toLowerCase();
-            return imgFilename === filename;
-          });
-
-          if (matchingImage) {
-            return `<img src="${matchingImage.url}" alt="${matchingImage.alt || text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
-          }
-        }
-
-        // If no matching image is found in articleImages, use the original href
+        // Use the original href directly
         return `<img src="${href}" alt="${text}" title="${title || ''}" class="w-full h-auto rounded-lg shadow-lg my-4" />`;
       }
     }
