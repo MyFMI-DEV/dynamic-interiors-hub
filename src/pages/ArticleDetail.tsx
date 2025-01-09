@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
-import { ArticleTemplate } from "@/components/articles/ArticleTemplate";
+import ArticleContent from "@/components/articles/ArticleContent";
 import LoadingState from "@/components/ui/LoadingState";
 
 const ArticleDetail = () => {
@@ -15,7 +15,12 @@ const ArticleDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('articles')
-        .select('*')
+        .select(`
+          *,
+          article_faqs (*),
+          article_locations (*),
+          article_categories (*)
+        `)
         .eq('slug', slug)
         .single();
 
@@ -28,32 +33,20 @@ const ArticleDetail = () => {
   if (isLoading) return <LoadingState />;
   if (!article) return <div>Article not found</div>;
 
-  const images = article.image_url ? [
-    {
-      url: article.image_url,
-      alt: article.title
-    }
-  ] : [];
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
         title={article.meta_title}
         description={article.meta_description}
         keywords={article.keywords}
-        location=""
-        category=""
+        location={article.article_locations?.[0]?.location || ""}
+        category={article.article_categories?.[0]?.category || ""}
       />
       <Navigation />
       <main className="container mx-auto px-4 py-8">
-        <ArticleTemplate
-          title={article.title}
-          content={article.content}
-          keyPoints={[]}
-          tableData={[]}
-          images={images}
-          faqs={[]}
-        />
+        <article className="max-w-4xl mx-auto">
+          <ArticleContent content={article.content} />
+        </article>
       </main>
       <Footer />
     </div>
