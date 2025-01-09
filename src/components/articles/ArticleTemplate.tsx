@@ -19,6 +19,12 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
+  // Format image URLs to ensure they have the correct prefix
+  const formattedImages = images.map(image => ({
+    ...image,
+    url: image.url.startsWith('http') ? image.url : `/lovable-uploads/${image.url}`
+  }));
+
   return (
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
@@ -58,20 +64,24 @@ export const ArticleTemplate = ({
 
       <div className="prose prose-lg max-w-none mb-8" dangerouslySetInnerHTML={{ __html: content }} />
 
-      {images && images.length > 0 && (
+      {formattedImages && formattedImages.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {images.map((image, index) => (
-            <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
+          {formattedImages.map((image, index) => (
+            <figure key={index} className="relative overflow-hidden rounded-lg shadow-md">
               <img
                 src={image.url}
-                alt={image.alt}
-                className="w-full h-64 object-cover"
+                alt={image.alt || `Article image ${index + 1}`}
+                className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
+                loading="lazy"
                 onError={(e) => {
                   console.error(`Failed to load image: ${image.url}`);
                   e.currentTarget.src = '/placeholder.svg';
                 }}
               />
-            </div>
+              <figcaption className="text-center text-sm text-gray-600 mt-2 px-4">
+                {image.alt}
+              </figcaption>
+            </figure>
           ))}
         </div>
       )}
