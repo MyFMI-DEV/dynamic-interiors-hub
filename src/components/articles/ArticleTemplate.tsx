@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import ArticleContent from "./ArticleContent";
 
 interface ArticleTemplateProps {
   title: string;
@@ -56,7 +57,9 @@ export const ArticleTemplate = ({
         </div>
       )}
 
-      <div className="prose prose-lg max-w-none mb-8" dangerouslySetInnerHTML={{ __html: content }} />
+      <div className="mb-8">
+        <ArticleContent content={content} />
+      </div>
 
       {images.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
