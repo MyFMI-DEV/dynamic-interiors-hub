@@ -19,12 +19,8 @@ serve(async (req) => {
   try {
     const { title, description } = await req.json();
 
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key is not configured');
-    }
-
     // Generate an appropriate prompt based on the title and description
-    const prompt = `Create a professional, high-quality interior design image for an article about "${title}". The image should be photorealistic, well-lit, and showcase ${description}. Style: modern and elegant interior design photography.`;
+    const prompt = `Create a professional, high-quality interior design image for ${title}. The image should be photorealistic, well-lit, and showcase ${description}. Style: modern and elegant interior design photography.`;
 
     // Call OpenAI's DALL-E 3 API to generate the image
     const response = await fetch('https://api.openai.com/v1/images/generations', {
