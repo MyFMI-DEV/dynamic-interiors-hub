@@ -6,9 +6,9 @@ import { useCreateArticle } from "@/hooks/useCreateArticle";
 import { toast } from "sonner";
 
 const Articles = () => {
-  const createHarrogateArticle = async () => {
-    const { mutateAsync: createArticle } = useCreateArticle();
+  const { mutateAsync: createArticle } = useCreateArticle();
 
+  const createHarrogateArticle = async () => {
     try {
       await createArticle({
         title: "Harrogate Home Design: A Perfect Blend of Style",
@@ -42,6 +42,12 @@ const Articles = () => {
             question: "Where can I find reputable interior designers and architects in Harrogate?",
             answer: "A great starting point is to explore local directories and websites, such as Find My Interiors and Houzz."
           }
+        ],
+        trends: [
+          { label: "Timeless Designs", value: 42 },
+          { label: "Indoor Swings", value: 35 },
+          { label: "Curved Edges", value: 23 },
+          { label: "Bold Colors", value: 45 }
         ]
       });
 
@@ -64,6 +70,12 @@ const Articles = () => {
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-center mb-8">Interior Design Articles & Guides</h1>
+        <button
+          onClick={createHarrogateArticle}
+          className="mb-8 bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition-colors"
+        >
+          Create Harrogate Article
+        </button>
         <ArticlesList />
       </main>
       <Footer />
