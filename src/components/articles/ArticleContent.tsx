@@ -5,7 +5,6 @@ interface ArticleContentProps {
 }
 
 const ArticleContent = ({ content }: ArticleContentProps) => {
-  // Configure marked to properly handle images
   marked.use({
     renderer: {
       image(href, title, text) {

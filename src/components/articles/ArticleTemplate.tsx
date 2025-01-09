@@ -19,16 +19,6 @@ export const ArticleTemplate = ({
   faqs,
   trends,
 }: ArticleTemplateProps) => {
-  const getImageUrl = (url: string) => {
-    // If it's already a relative path starting with /lovable-uploads, use it as is
-    if (url.startsWith('/lovable-uploads')) {
-      return url;
-    }
-    // If it's a full URL, extract just the filename
-    const filename = url.split('/').pop();
-    return `/lovable-uploads/${filename}`;
-  };
-
   return (
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-primary mb-8 text-center">{title}</h1>
@@ -73,7 +63,7 @@ export const ArticleTemplate = ({
           {images.map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg shadow-md">
               <img
-                src={getImageUrl(image.url)}
+                src={image.url}
                 alt={image.alt}
                 className="w-full h-64 object-cover"
                 onError={(e) => {

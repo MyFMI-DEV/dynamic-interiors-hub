@@ -70,45 +70,6 @@ export type Database = {
           },
         ]
       }
-      article_images: {
-        Row: {
-          alt: string
-          article_id: string
-          created_at: string | null
-          id: string
-          url: string
-        }
-        Insert: {
-          alt: string
-          article_id: string
-          created_at?: string | null
-          id?: string
-          url: string
-        }
-        Update: {
-          alt?: string
-          article_id?: string
-          created_at?: string | null
-          id?: string
-          url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "article_images_article_id_fkey"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "articles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "fk_article"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "articles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       article_locations: {
         Row: {
           article_id: string
@@ -145,6 +106,7 @@ export type Database = {
           description: string
           id: string
           image_url: string
+          images: Json | null
           keywords: string[]
           meta_description: string
           meta_title: string
@@ -158,6 +120,7 @@ export type Database = {
           description: string
           id?: string
           image_url: string
+          images?: Json | null
           keywords?: string[]
           meta_description: string
           meta_title: string
@@ -171,6 +134,7 @@ export type Database = {
           description?: string
           id?: string
           image_url?: string
+          images?: Json | null
           keywords?: string[]
           meta_description?: string
           meta_title?: string
