@@ -31,6 +31,7 @@ export const useCreateArticle = () => {
       location,
       category,
       faqs,
+      images,
     }: CreateArticleParams) => {
       // Insert the main article
       const { data: article, error: articleError } = await supabase
