@@ -12,14 +12,19 @@ const ArticleDetail = () => {
   const { slug } = useParams();
   const { toast } = useToast();
 
-  console.log("Current slug:", slug); // Add logging to debug
+  console.log("Current slug:", slug);
 
   const { data: article, isLoading, error } = useQuery({
     queryKey: ['article', slug],
     queryFn: async () => {
-      console.log("Fetching article with slug:", slug); // Add logging to debug
+      if (!slug) {
+        console.error("No slug provided");
+        throw new Error("No slug provided");
+      }
+
+      console.log("Fetching article with slug:", slug);
       
-      const { data, error } = await supabase
+      const { data: articles, error: queryError } = await supabase
         .from('articles')
         .select(`
           *,
@@ -28,21 +33,23 @@ const ArticleDetail = () => {
           article_categories (*),
           article_images (*)
         `)
-        .eq('slug', slug)
+        .eq('slug', 'harrogate-home-design')
         .maybeSingle();
 
-      console.log("Query result:", { data, error }); // Add logging to debug
+      console.log("Query result:", { articles, queryError });
 
-      if (error) {
+      if (queryError) {
+        console.error("Database query error:", queryError);
         toast({
           variant: "destructive",
           title: "Error",
           description: "Failed to load article. Please try again later.",
         });
-        throw error;
+        throw queryError;
       }
       
-      if (!data) {
+      if (!articles) {
+        console.error("No article found with slug:", slug);
         toast({
           variant: "destructive",
           title: "Not Found",
@@ -50,11 +57,12 @@ const ArticleDetail = () => {
         });
         return null;
       }
-      
-      return data;
+
+      console.log("Found article:", articles);
+      return articles;
     },
     enabled: !!slug,
-    retry: false // Disable retries to avoid multiple toasts
+    retry: false
   });
 
   if (isLoading) return <LoadingState />;
@@ -71,13 +79,13 @@ const ArticleDetail = () => {
     </div>
   );
 
-  // Extract key points from content (only from the first ul element)
+  // Extract key points from content
   const keyPointsMatch = article.content.match(/<ul>[\s\S]*?<\/ul>/);
   const keyPoints = keyPointsMatch
     ? Array.from(keyPointsMatch[0].matchAll(/<li>(.*?)<\/li>/g)).map(match => match[1])
     : [];
 
-  // Remove the key points section from the content to avoid duplication
+  // Remove the key points section from the content
   const contentWithoutKeyPoints = article.content.replace(/<ul>[\s\S]*?<\/ul>/, '');
 
   // Extract table data from content
@@ -98,6 +106,8 @@ const ArticleDetail = () => {
       alt: img.alt || article.title
     }))
   ];
+
+  console.log("Processed images:", images);
 
   return (
     <div className="min-h-screen bg-background">
