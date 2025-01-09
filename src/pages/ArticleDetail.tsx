@@ -45,7 +45,8 @@ const ArticleDetail = () => {
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <article className="max-w-4xl mx-auto">
-          <ArticleContent content={article.content} />
+          <h1 className="text-4xl font-bold mb-8">{article.title}</h1>
+          <ArticleContent content={article.content || ''} />
         </article>
       </main>
       <Footer />
