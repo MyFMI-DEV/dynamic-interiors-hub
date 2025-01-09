@@ -4,7 +4,7 @@ const SocialLinks = () => {
   return (
     <div className="flex justify-center space-x-6 mt-8 mb-8">
       <a
-        href="https://www.facebook.com/findmyinteriors"
+        href="https://www.facebook.com/people/Find-My-Interiors/61569302875457/"
         target="_blank"
         rel="noopener noreferrer"
         className="hover:text-white/80 transition-colors"
