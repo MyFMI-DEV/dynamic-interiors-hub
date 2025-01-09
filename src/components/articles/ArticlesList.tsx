@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useArticles } from "@/hooks/useArticles";
-import { LoadingState } from "@/components/ui/LoadingState";
+import LoadingState from "@/components/ui/LoadingState";
 
 const ArticlesList = () => {
   const { data: articles, isLoading, error } = useArticles();

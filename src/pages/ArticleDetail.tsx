@@ -5,7 +5,7 @@ import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 import ArticleContent from "@/components/articles/ArticleContent";
-import { LoadingState } from "@/components/ui/LoadingState";
+import LoadingState from "@/components/ui/LoadingState";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
