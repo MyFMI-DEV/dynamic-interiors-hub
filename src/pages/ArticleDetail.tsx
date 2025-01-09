@@ -31,7 +31,7 @@ const ArticleDetail = () => {
           article_faqs (*),
           article_locations (*),
           article_categories (*),
-          article_images (*)
+          article_images!article_images_article_id_fkey (*)
         `)
         .eq('slug', slug)
         .single();
