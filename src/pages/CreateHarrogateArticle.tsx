@@ -2,6 +2,7 @@ import { useCreateArticle } from "@/hooks/useCreateArticle";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const CreateHarrogateArticle = () => {
   const mutation = useCreateArticle();
@@ -74,25 +75,38 @@ Today's Harrogate homes successfully integrate modern technology and comfort fea
       ]
     };
 
-    await mutation.mutateAsync(article);
+    try {
+      await mutation.mutateAsync(article);
+      console.log("Article created successfully");
+    } catch (error) {
+      console.error("Error creating article:", error);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center mb-8">Create Harrogate Article</h1>
-        <div className="flex justify-center">
-          <Button 
-            onClick={handleCreateArticle}
-            disabled={mutation.isPending}
-            className="w-64"
-          >
-            {mutation.isPending ? "Creating Article..." : "Create Article"}
-          </Button>
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-center mb-8">Create Harrogate Article</h1>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <p className="text-gray-600 mb-6 text-center">
+              Click the button below to create a pre-configured article about Harrogate home design.
+            </p>
+            <div className="flex justify-center">
+              <Button 
+                onClick={handleCreateArticle}
+                disabled={mutation.isPending}
+                className="w-64"
+              >
+                {mutation.isPending ? "Creating Article..." : "Create Article"}
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
+      <Toaster />
     </div>
   );
 };
