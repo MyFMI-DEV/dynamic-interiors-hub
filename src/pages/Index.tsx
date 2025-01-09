@@ -54,3 +54,6 @@ const Index = () => {
 };
 
 export default Index;
+
+// Add this line at the bottom of the file, after the export
+import("../utils/insertHarrogateArticle").then(module => module.insertHarrogateArticle());
