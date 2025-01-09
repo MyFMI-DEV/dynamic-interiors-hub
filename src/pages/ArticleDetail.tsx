@@ -33,13 +33,33 @@ const ArticleDetail = () => {
   if (isLoading) return <LoadingState />;
   if (!article) return <div>Article not found</div>;
 
-  // Format images array from article.image_url
-  const images = article.image_url ? [
-    {
-      url: article.image_url,
-      alt: article.title
-    }
-  ] : [];
+  // Extract all image URLs from the content using regex
+  const imgRegex = /<img[^>]+src="([^">]+)"/g;
+  const contentImages = Array.from(article.content.matchAll(imgRegex)).map(match => ({
+    url: match[1],
+    alt: match[0].match(/alt="([^"]*)"/) ? match[0].match(/alt="([^"]*)"/)[1] : ''
+  }));
+
+  // Combine article.image_url with content images if it exists
+  const images = article.image_url 
+    ? [{ url: article.image_url, alt: article.title }, ...contentImages]
+    : contentImages;
+
+  // Extract key points from content
+  const keyPointsMatch = article.content.match(/<ul>[\s\S]*?<\/ul>/);
+  const keyPoints = keyPointsMatch
+    ? Array.from(keyPointsMatch[0].matchAll(/<li>(.*?)<\/li>/g)).map(match => match[1])
+    : [];
+
+  // Extract table data from content
+  const tableMatch = article.content.match(/<table>[\s\S]*?<\/table>/);
+  const tableData = tableMatch
+    ? Array.from(tableMatch[0].matchAll(/<tr>\s*<td>(.*?)<\/td>\s*<td>(.*?)<\/td>\s*<\/tr>/g))
+        .map(match => ({
+          key: match[1],
+          value: match[2]
+        }))
+    : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -55,10 +75,16 @@ const ArticleDetail = () => {
         <ArticleTemplate
           title={article.title}
           content={article.content}
-          keyPoints={[]}
-          tableData={[]}
+          keyPoints={keyPoints}
+          tableData={tableData}
           images={images}
           faqs={article.article_faqs || []}
+          trends={[
+            { label: "Timeless Designs", value: 42 },
+            { label: "Indoor Swings", value: 35 },
+            { label: "Curved Edges", value: 23 },
+            { label: "Bold Colors", value: 45 }
+          ]}
         />
       </main>
       <Footer />
