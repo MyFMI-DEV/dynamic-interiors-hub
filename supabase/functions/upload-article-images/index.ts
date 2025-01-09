@@ -79,7 +79,7 @@ serve(async (req) => {
       imageUrls.map(async (url, index) => {
         try {
           console.log(`Fetching image from ${url}`);
-          const response = await fetch(url);
+          const response = await fetch(`${url}?w=1200&q=80`);
           if (!response.ok) {
             throw new Error(`Failed to fetch image: ${response.statusText}`);
           }
@@ -100,8 +100,18 @@ serve(async (req) => {
             return { success: false, filename: filenames[index], error: uploadError };
           }
 
+          // Get the public URL for the uploaded image
+          const { data: { publicUrl } } = supabase.storage
+            .from('article-images')
+            .getPublicUrl(filenames[index]);
+
           console.log(`Successfully uploaded ${filenames[index]}`);
-          return { success: true, filename: filenames[index], data };
+          return { 
+            success: true, 
+            filename: filenames[index], 
+            publicUrl,
+            data 
+          };
         } catch (error) {
           console.error(`Error processing ${url}:`, error);
           return { success: false, filename: filenames[index], error: error.message };
@@ -110,8 +120,31 @@ serve(async (req) => {
     );
 
     console.log('Finished processing all images');
+    
+    // Insert image records into the article_images table
+    const successfulUploads = results.filter(result => result.success);
+    
+    for (const upload of successfulUploads) {
+      const { error: dbError } = await supabase
+        .from('article_images')
+        .insert({
+          url: upload.publicUrl,
+          alt: upload.filename.split('.')[0].replace(/-/g, ' '),
+          article_id: '00000000-0000-0000-0000-000000000000' // Placeholder ID
+        });
+
+      if (dbError) {
+        console.error(`Error inserting image record for ${upload.filename}:`, dbError);
+      }
+    }
+
     return new Response(
-      JSON.stringify({ message: 'Images processed', results }),
+      JSON.stringify({ 
+        message: 'Images processed', 
+        results,
+        successCount: successfulUploads.length,
+        totalCount: results.length
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
   } catch (error) {
