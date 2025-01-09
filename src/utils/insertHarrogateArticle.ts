@@ -4,7 +4,7 @@ export async function insertHarrogateArticle() {
   const { data: existingArticle } = await supabase
     .from('articles')
     .select()
-    .eq('slug', 'harrogate-home-design')
+    .eq('slug', 'harrogate-home-design-perfect-blend-style')
     .single();
 
   if (existingArticle) {
@@ -35,7 +35,7 @@ export async function insertHarrogateArticle() {
         <p>Find inspiration for your next home project.</p>
         `
       })
-      .eq('slug', 'harrogate-home-design');
+      .eq('slug', 'harrogate-home-design-perfect-blend-style');
 
     if (updateError) {
       console.error('Error updating article:', updateError);
