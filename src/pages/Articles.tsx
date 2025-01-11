@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 const Articles = () => {
-  const { data: articles } = useQuery({
+  const { data: articles, isLoading } = useQuery({
     queryKey: ['articles'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -19,6 +19,10 @@ const Articles = () => {
       return data;
     }
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">

@@ -4,12 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
-import { marked } from "marked";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
 
-  const { data: article } = useQuery({
+  const { data: article, isLoading } = useQuery({
     queryKey: ['article', slug],
     queryFn: async () => {
       const { data: articleData, error: articleError } = await supabase
@@ -31,6 +30,10 @@ const ArticleDetail = () => {
     },
     enabled: !!slug
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!article) return null;
 
