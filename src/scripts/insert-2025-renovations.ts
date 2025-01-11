@@ -1,84 +1,92 @@
 import { createArticle } from "@/lib/articles";
 
-const title = "Renovating Your Home in 2025: Latest Trends and Essential Tips";
-const metaTitle = "Home Renovation Trends 2025 | Expert Guide & Tips";
-const metaDescription = "Discover the latest home renovation trends for 2025, from bold colors to smart technology. Get expert tips on sustainable materials, energy efficiency, and budgeting.";
-const slug = "home-renovation-trends-2025";
+export async function insert2025RenovationsArticle() {
+  const title = "2025 Interior Design Trends: What's Next in Home Renovation";
+  const content = `
+# 2025 Interior Design Trends: What's Next in Home Renovation
 
-const content = `
-<div class="article-content">
-  <h1>Renovating Your Home in 2025: Latest Trends and Essential Tips</h1>
-  
-  <p>The pandemic has shifted how we view home renovations. Since early 2020, the demand for renovations has surged by 50%, as homeowners seek spaces that are functional, stylish, and sustainable (Rated People, 2023). As we step into 2025, various trends are emerging to shape the renovation landscape.</p>
+The world of interior design is constantly evolving, and as we approach 2025, exciting new trends are emerging that will shape our living spaces. From sustainable materials to smart technology integration, let's explore what the future holds for home design and renovation.
 
-  <div class="article-image-wrapper" data-image-alt="modern-living-room-2025" data-article-id="home-renovation-trends-2025"></div>
+## Sustainable Living Spaces
+![Sustainable living room with natural materials](sustainable-living)
+The focus on sustainability continues to grow stronger. In 2025, we'll see more:
+- Recycled and upcycled materials
+- Energy-efficient fixtures and appliances
+- Natural, biodegradable materials
+- Zero-waste design solutions
 
-  <h2>What You Need to Know</h2>
-  <div class="key-points">
-    <ul>
-      <li><strong>Bold Colors and Patterns:</strong> Shift towards vibrant hues; moving away from neutrals.</li>
-      <li><strong>Sustainable Materials:</strong> Natural materials are preferred; eco-friendly choices are essential.</li>
-      <li><strong>Smart Home Integration:</strong> Technology must be discreetly integrated into designs.</li>
-      <li><strong>Multifunctional Spaces:</strong> Rooms need to serve more than one purpose for flexibility.</li>
-      <li><strong>Energy-Efficient Upgrades:</strong> Focus on reducing energy consumption and costs.</li>
-    </ul>
-  </div>
+## Smart Home Integration
+![Modern smart home features](smart-home)
+Technology will become even more seamlessly integrated into our homes:
+- Voice-activated lighting and climate control
+- AI-powered space optimization
+- Smart furniture with built-in charging capabilities
+- Automated window treatments and security systems
 
-  <h2>Embracing Bold Colors and Patterns</h2>
-  <p>In 2025, homeowners are leaving behind cool, neutral palettes and opting for bold colors and patterns that energize their spaces. A recent study shows that clients are increasingly requesting vibrant shades for their walls, ceilings, and trims (The Spruce, 2024). This trend reflects a desire for personal expression, allowing each room to tell a unique story through color.</p>
+## Biophilic Design Evolution
+The connection between nature and interior spaces will strengthen:
+- Living walls and indoor gardens
+- Natural light optimization
+- Organic shapes and forms
+- Nature-inspired color palettes
 
-  <div class="article-image-wrapper" data-image-alt="bold-colors-interior" data-article-id="home-renovation-trends-2025"></div>
+## Multifunctional Spaces
+![Flexible home office setup](flexible-office)
+With remote work continuing to influence design:
+- Convertible furniture solutions
+- Modular room dividers
+- Built-in storage systems
+- Acoustic privacy solutions
 
-  <p>This shift towards warmer tones enhances aesthetic appeal while creating a welcoming atmosphere. Homeowners are encouraged to experiment with various textures and patterns, transforming ordinary spaces into extraordinary experiences.</p>
+## Color Trends for 2025
+Key color predictions include:
+- Earth-toned neutrals
+- Deep, calming blues
+- Warm terracotta
+- Sage green accents
 
-  <h2>Sustainable Materials and Eco-Friendly Solutions</h2>
-  <p>More homeowners are choosing sustainable materials for renovations. Building an eco-friendly home in the UK can cost between £225,000 to £585,000, depending on size and design complexity. This trend aligns with biophilic design principles, emphasizing harmony with nature by opting for natural materials over engineered ones.</p>
+## Wellness-Focused Design
+Creating spaces that promote well-being:
+- Air purification systems
+- Circadian lighting
+- Meditation corners
+- Sound-absorbing materials
 
-  <div class="article-image-wrapper" data-image-alt="eco-friendly-materials" data-article-id="home-renovation-trends-2025"></div>
+## Conclusion
+As we move into 2025, interior design will continue to evolve, balancing aesthetics with functionality, sustainability, and technology. These trends reflect our changing lifestyles and the growing importance of creating spaces that support both our physical and mental well-being.
+`;
 
-  <h2>Smart Home Integration</h2>
-  <p>As we progress towards 2025, integrating smart home technology is becoming essential in renovations. Homeowners increasingly seek ways to incorporate automated systems for lighting, security, and climate control without compromising aesthetics.</p>
+  const metaTitle = "2025 Interior Design Trends & Home Renovation Predictions | Expert Guide";
+  const metaDescription = "Discover the top interior design trends for 2025. From sustainable materials to smart home integration, learn what's next in home renovation and design.";
+  const slug = "2025-interior-design-trends-renovation-predictions";
 
-  <div class="article-image-wrapper" data-image-alt="smart-home-integration" data-article-id="home-renovation-trends-2025"></div>
+  const categories = ["Interior Design", "Home Renovation", "Design Trends"];
+  const locations = ["United Kingdom"];
 
-  <h2>Energy-Efficient Upgrades</h2>
-  <p>Energy efficiency is a significant factor in home renovations. Upgrading to energy-efficient solutions like modern thermostats and heat pumps can reduce heating costs and energy consumption substantially. These upgrades not only benefit the environment but also save homeowners money in the long run.</p>
+  const faqs = [
+    {
+      question: "What are the biggest interior design trends for 2025?",
+      answer: "The biggest trends for 2025 include sustainable materials, smart home integration, biophilic design, multifunctional spaces, and wellness-focused design elements."
+    },
+    {
+      question: "How can I incorporate smart technology into my home design?",
+      answer: "You can incorporate smart technology through voice-activated systems, automated lighting and climate control, smart furniture with built-in charging, and integrated security systems."
+    },
+    {
+      question: "What colors will be popular in interior design in 2025?",
+      answer: "Popular colors for 2025 include earth-toned neutrals, deep blues, warm terracotta, and sage green accents, focusing on natural and calming palettes."
+    },
+    {
+      question: "How important is sustainability in 2025 interior design?",
+      answer: "Sustainability is extremely important in 2025, with a strong focus on recycled materials, energy efficiency, biodegradable materials, and zero-waste design solutions."
+    },
+    {
+      question: "What is biophilic design and why is it trending?",
+      answer: "Biophilic design incorporates natural elements into interior spaces through living walls, natural light, organic shapes, and nature-inspired colors. It's trending because it improves well-being and connects people with nature."
+    }
+  ];
 
-  <h2>Budgeting and Financial Planning</h2>
-  <p>Effective budgeting is crucial for successful home renovations. Homeowners should set aside a contingency fund of 10-20% of the total budget to cover unexpected expenses. With rising costs in the renovation sector, planning ahead can prevent financial strain.</p>
-
-  <p>Nearly 89% of tradespeople have reported increased costs in recent years, underscoring the need for thorough financial planning. By keeping a close eye on expenses and being prepared for fluctuations, homeowners can navigate the renovation process with greater ease.</p>
-</div>`;
-
-const categories = ["Interior Design", "Home Renovation", "Sustainable Living"];
-const locations = ["United Kingdom"];
-
-const faqs = [
-  {
-    question: "What are the top home renovation trends for 2025?",
-    answer: "Home renovation trends include bold colors, sustainable materials, smart home technology, multifunctional spaces, and energy-efficient upgrades."
-  },
-  {
-    question: "How much should I budget for a complete home renovation in 2025?",
-    answer: "Budgets can vary widely, but it's advisable to set aside a contingency fund of 10-20% of the total budget."
-  },
-  {
-    question: "What are the most cost-effective energy-efficient upgrades for homes in 2025?",
-    answer: "Upgrades like modern thermostats, heat pumps, and proper insulation can significantly reduce energy consumption."
-  },
-  {
-    question: "How can I incorporate smart home technology into my renovation plans?",
-    answer: "Consider integrating automated lighting, security systems, and voice-activated devices to enhance convenience."
-  },
-  {
-    question: "What are the best sustainable materials for home renovations in 2025?",
-    answer: "Natural materials that promote biophilic design are increasingly favored, aligning with eco-friendly renovation practices."
-  }
-];
-
-export const insert2025RenovationsArticle = async () => {
   try {
-    console.log('Creating article with:', { title, slug, categories, locations });
     const article = await createArticle(
       title,
       content,
@@ -89,11 +97,10 @@ export const insert2025RenovationsArticle = async () => {
       locations,
       faqs
     );
-    
-    console.log("Article created successfully:", article);
+    console.log("Successfully created article:", article);
     return article;
   } catch (error) {
     console.error("Error creating article:", error);
     throw error;
   }
-};
+}

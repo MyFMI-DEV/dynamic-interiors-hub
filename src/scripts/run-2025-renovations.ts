@@ -1,13 +1,11 @@
-import { insert2025RenovationsArticle } from './insert-2025-renovations';
-
-console.log('Starting article insertion...');
+import { insert2025RenovationsArticle } from "./insert-2025-renovations";
 
 insert2025RenovationsArticle()
-  .then((article) => {
-    console.log('Successfully inserted 2025 renovations article:', article);
+  .then(() => {
+    console.log("Successfully inserted 2025 renovations article");
     process.exit(0);
   })
   .catch((error) => {
-    console.error('Failed to insert 2025 renovations article:', error);
+    console.error("Error inserting article:", error);
     process.exit(1);
   });
