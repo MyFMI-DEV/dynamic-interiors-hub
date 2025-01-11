@@ -1,6 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import { ArticleImage } from './ArticleImage';
+import React from 'react';
 import { processArticleContent } from '@/utils/contentProcessor';
 
 interface ArticleContentProps {
@@ -9,69 +7,10 @@ interface ArticleContentProps {
 }
 
 export const ArticleContent = ({ content, articleId }: ArticleContentProps) => {
-  const articleRef = useRef<HTMLDivElement>(null);
-  const rootsRef = useRef<Map<string, any>>(new Map());
-
-  useEffect(() => {
-    const cleanupRoots = () => {
-      console.log('Cleaning up React roots');
-      rootsRef.current.forEach((root) => {
-        try {
-          root.unmount();
-        } catch (error) {
-          console.error('Error unmounting React root:', error);
-        }
-      });
-      rootsRef.current.clear();
-    };
-
-    const initializeImages = () => {
-      if (!articleRef.current) {
-        console.log('Article ref is not available');
-        return;
-      }
-
-      const imageWrappers = articleRef.current.querySelectorAll('.article-image-wrapper');
-      console.log('Found image wrappers:', imageWrappers.length);
-
-      imageWrappers.forEach((wrapper, index) => {
-        const alt = wrapper.getAttribute('data-image-alt');
-        const wrapperArticleId = wrapper.getAttribute('data-article-id');
-
-        console.log(`Processing image ${index + 1}:`, {
-          alt,
-          articleId: wrapperArticleId,
-          wrapper: wrapper.outerHTML
-        });
-
-        if (alt && wrapperArticleId) {
-          const container = document.createElement('div');
-          wrapper.replaceWith(container);
-
-          const root = createRoot(container);
-          rootsRef.current.set(alt, root);
-          
-          console.log(`Rendering ArticleImage for: ${alt}`);
-          root.render(<ArticleImage alt={alt} articleId={wrapperArticleId} />);
-        } else {
-          console.warn('Missing required attributes:', { alt, articleId: wrapperArticleId });
-        }
-      });
-    };
-
-    console.log('Content received:', content ? 'Yes' : 'No');
-    console.log('ArticleId received:', articleId);
-
-    initializeImages();
-    return cleanupRoots;
-  }, [content, articleId]);
-
   const processedContent = processArticleContent(content, articleId);
-  console.log('Processed content length:', processedContent?.length || 0);
-
+  
   return (
     <article 
-      ref={articleRef}
       className="
         prose prose-lg mx-auto max-w-4xl
         prose-headings:font-bold
