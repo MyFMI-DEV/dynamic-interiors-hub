@@ -9,38 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      ai_generated_images: {
-        Row: {
-          alt_text: string
-          article_id: string | null
-          created_at: string | null
-          id: string
-          image_url: string
-        }
-        Insert: {
-          alt_text: string
-          article_id?: string | null
-          created_at?: string | null
-          id?: string
-          image_url: string
-        }
-        Update: {
-          alt_text?: string
-          article_id?: string | null
-          created_at?: string | null
-          id?: string
-          image_url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ai_generated_images_article_id_fkey"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "articles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       article_categories: {
         Row: {
           article_id: string | null
