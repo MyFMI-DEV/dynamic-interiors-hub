@@ -1,35 +1,30 @@
 import { createArticle } from "../lib/articles";
 
 export async function testArticleCreation() {
-  try {
-    console.log("Starting test article creation...");
-    
-    const article = await createArticle(
-      "Test Article with Image",
-      "<h1>Test Article with Image</h1><p>This is a test article to verify database insertion with an image.</p><img alt='A beautiful test image showing interior design' />",
-      "Test Article with Image - Meta Title",
-      "This is a test meta description for an article with image",
-      "test-article-with-image",
-      ["Test Category", "Interior Design"],
-      ["Test Location", "London"],
-      [
-        {
-          question: "Test Question About Images?",
-          answer: "Test Answer about images and design"
-        },
-        {
-          question: "Another Test Question?",
-          answer: "Another Test Answer"
-        }
-      ]
-    );
-    
-    console.log("Article created successfully:", article);
-    return article;
-  } catch (error) {
-    console.error("Error creating article:", error);
-    throw error;
-  }
+  console.log("Starting test article creation...");
+  
+  const article = await createArticle(
+    "Test Article with Image 2",
+    "<h1>Test Article with Image 2</h1><p>This is another test article to verify database insertion with an image.</p><img alt='A beautiful interior design showcase with modern furniture' />",
+    "Test Article with Image 2 - Meta Title",
+    "This is a test meta description for another article with image",
+    "test-article-with-image-2",
+    ["Test Category", "Interior Design"],
+    ["Test Location", "London"],
+    [
+      {
+        question: "Test Question About Interior Design?",
+        answer: "This is a detailed answer about interior design principles"
+      },
+      {
+        question: "What makes a good interior design?",
+        answer: "A good interior design balances functionality with aesthetics"
+      }
+    ]
+  );
+  
+  console.log("Article created successfully:", article);
+  return article;
 }
 
 // Run the test if this file is executed directly
