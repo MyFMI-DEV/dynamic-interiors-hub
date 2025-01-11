@@ -78,6 +78,9 @@ const ArticleDetail = () => {
               prose-th:bg-[#E5DEFF] prose-th:text-primary prose-th:p-4 prose-th:text-left
               prose-td:border prose-td:border-muted prose-td:p-4
               [&_.key-points]:bg-[#EDF6F9] [&_.key-points]:p-8 [&_.key-points]:rounded-xl [&_.key-points]:my-8 [&_.key-points]:shadow-sm
+              [&_.key-points-table]:w-full [&_.key-points-table]:border-separate [&_.key-points-table]:border-spacing-y-4
+              [&_.key-points-table_th]:bg-transparent [&_.key-points-table_th]:text-[#006D77] [&_.key-points-table_th]:font-semibold [&_.key-points-table_th]:text-lg [&_.key-points-table_th]:pl-0 [&_.key-points-table_th]:w-1/3
+              [&_.key-points-table_td]:bg-transparent [&_.key-points-table_td]:border-0 [&_.key-points-table_td]:pl-4 [&_.key-points-table_td]:text-muted-foreground
               [&_.minimalist-key-points]:bg-[#EDF6F9] [&_.minimalist-key-points]:p-8 [&_.minimalist-key-points]:rounded-xl [&_.minimalist-key-points]:my-8 [&_.minimalist-key-points]:shadow-sm
               [&_.minimalist-chart-container]:bg-[#FEF7CD] [&_.minimalist-chart-container]:p-6 [&_.minimalist-chart-container]:rounded-lg [&_.minimalist-chart-container]:my-8
               [&_blockquote]:border-l-4 [&_blockquote]:border-primary-light [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8
