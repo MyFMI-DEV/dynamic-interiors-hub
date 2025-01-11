@@ -9,6 +9,38 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_generated_images: {
+        Row: {
+          id: string
+          alt_text: string
+          image_url: string
+          article_id: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          alt_text: string
+          image_url: string
+          article_id?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          alt_text?: string
+          image_url?: string
+          article_id?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_generated_images_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       article_categories: {
         Row: {
           article_id: string | null
@@ -367,3 +399,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+

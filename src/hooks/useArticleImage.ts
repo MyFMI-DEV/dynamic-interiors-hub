@@ -6,23 +6,27 @@ export const useArticleImage = (articleId: string, altText: string) => {
     queryKey: ['article-image', articleId, altText],
     queryFn: async () => {
       // First try to fetch from cache
-      const { data: existingImage } = await supabase
+      const { data: existingImage, error } = await supabase
         .from('ai_generated_images')
         .select('image_url')
         .eq('article_id', articleId)
         .eq('alt_text', altText)
         .single();
 
-      if (existingImage) {
+      if (error) {
+        console.log('Error fetching cached image:', error);
+      }
+
+      if (existingImage?.image_url) {
         return existingImage.image_url;
       }
 
       // If not found, generate new image
-      const { data, error } = await supabase.functions.invoke('generate-article-image', {
+      const { data, error: functionError } = await supabase.functions.invoke('generate-article-image', {
         body: { articleId, altText }
       });
 
-      if (error) throw error;
+      if (functionError) throw functionError;
       return data.imageUrl;
     },
     retry: 1,
