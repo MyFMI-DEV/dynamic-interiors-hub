@@ -3,7 +3,7 @@ import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { fetchAllArticles } from "@/lib/articleUtils";
 
@@ -12,10 +12,6 @@ const Articles = () => {
     queryKey: ['articles'],
     queryFn: fetchAllArticles
   });
-
-  const getDefaultImage = () => {
-    return 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80';
-  };
 
   if (isLoading) {
     return (
@@ -48,29 +44,20 @@ const Articles = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles?.map((article) => (
             <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200">
-              <Link to={`/articles/${article.slug}`} className="block">
-                <div className="aspect-w-16 aspect-h-9 w-full">
-                  <img 
-                    src={article.image_url || getDefaultImage()} 
-                    alt={article.title}
-                    className="object-cover w-full h-48"
-                  />
+              <Link to={`/articles/${article.slug}`} className="block p-6">
+                <h2 className="text-xl font-semibold mb-3 text-primary hover:text-primary/80 transition-colors">
+                  {article.title}
+                </h2>
+                <p className="text-muted-foreground line-clamp-3 text-sm">
+                  {article.meta_description}
+                </p>
+                <div className="mt-4 text-sm text-muted-foreground">
+                  {new Date(article.created_at).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
                 </div>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-3 text-primary hover:text-primary/80 transition-colors">
-                    {article.title}
-                  </h2>
-                  <p className="text-muted-foreground line-clamp-3 text-sm">
-                    {article.meta_description}
-                  </p>
-                  <div className="mt-4 text-sm text-muted-foreground">
-                    {new Date(article.created_at).toLocaleDateString('en-GB', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}
-                  </div>
-                </CardContent>
               </Link>
             </Card>
           ))}

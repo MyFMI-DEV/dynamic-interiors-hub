@@ -8,7 +8,6 @@ export interface Article {
   meta_description: string;
   slug: string;
   created_at: string;
-  image_url?: string | null;
   faqs?: Array<{
     id: string;
     question: string;
