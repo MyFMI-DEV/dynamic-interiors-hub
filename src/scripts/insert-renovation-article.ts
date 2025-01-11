@@ -1,6 +1,6 @@
 import { createArticle } from "../lib/articles";
 
-async function insertRenovationArticle() {
+export async function insertRenovationArticle() {
   try {
     const article = await createArticle(
       "Renovating Your Home in 2025: Trends and Tips",
@@ -197,5 +197,3 @@ async function insertRenovationArticle() {
     console.error("Error creating article:", error);
   }
 }
-
-export { insertRenovationArticle };
