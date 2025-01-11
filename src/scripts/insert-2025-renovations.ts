@@ -78,6 +78,7 @@ const faqs = [
 
 export const insert2025RenovationsArticle = async () => {
   try {
+    console.log('Creating article with:', { title, slug, categories, locations });
     const article = await createArticle(
       title,
       content,
