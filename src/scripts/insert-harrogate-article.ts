@@ -1,6 +1,6 @@
 import { createArticle } from "../lib/articles";
 
-async function insertHarrogateArticle() {
+export async function insertHarrogateArticle() {
   try {
     const article = await createArticle(
       "Harrogate Home Design: A Perfect Blend of Style",
