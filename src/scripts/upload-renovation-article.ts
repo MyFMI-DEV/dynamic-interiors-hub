@@ -154,7 +154,7 @@ const renovationArticle = {
 </style>`,
   metaTitle: "2025 Home Renovation Guide: Latest Trends and Expert Tips",
   metaDescription: "Discover the latest home renovation trends for 2025, from bold colors to sustainable materials. Expert advice on budgeting, planning, and implementing modern home upgrades.",
-  slug: "home-renovation-guide-2025-latest",
+  slug: "home-renovation-guide-2025-latest-trends",
   categories: ["Home Renovation", "Interior Design", "Home Improvement"],
   locations: ["UK"],
   faqs: [

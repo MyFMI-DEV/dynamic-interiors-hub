@@ -1,6 +1,7 @@
 import { main } from './upload-renovation-article';
 
 console.log('Starting to upload Renovation article...');
+
 main()
   .then((result) => {
     console.log('Successfully uploaded Renovation article:', result);
