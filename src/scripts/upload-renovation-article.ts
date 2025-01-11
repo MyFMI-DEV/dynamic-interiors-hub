@@ -181,16 +181,14 @@ const renovationArticle = {
   ]
 };
 
-async function main() {
+export async function main() {
   try {
     console.log('Starting article upload...');
     const result = await uploadArticle(renovationArticle);
     console.log('Article uploaded successfully:', result);
-    process.exit(0);
+    return result;
   } catch (error) {
     console.error('Error uploading article:', error);
-    process.exit(1);
+    throw error;
   }
 }
-
-main();
