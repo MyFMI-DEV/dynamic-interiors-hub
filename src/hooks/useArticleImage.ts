@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 export const useArticleImage = (articleId: string, altText: string) => {
   return useQuery({
@@ -22,7 +23,7 @@ export const useArticleImage = (articleId: string, altText: string) => {
       }
 
       // If not found, generate new image
-      const { data, error: functionError } = await supabase.functions.invoke('generate-article-image', {
+      const { data, error: functionError } = await supabase.functions.invoke<{ imageUrl: string }>('generate-article-image', {
         body: { articleId, altText }
       });
 
