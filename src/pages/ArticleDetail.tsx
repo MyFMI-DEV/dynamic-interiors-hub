@@ -5,6 +5,8 @@ import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import KeyPointsSection from "@/components/article/KeyPointsSection";
+import FAQSection from "@/components/article/FAQSection";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
@@ -77,31 +79,12 @@ const ArticleDetail = () => {
               prose-table:border-collapse prose-table:my-8 prose-table:w-full
               prose-th:bg-[#E5DEFF] prose-th:text-primary prose-th:p-4 prose-th:text-left
               prose-td:border prose-td:border-muted prose-td:p-4
-              [&_.key-points]:bg-[#EDF6F9] [&_.key-points]:p-8 [&_.key-points]:rounded-xl [&_.key-points]:my-8 [&_.key-points]:shadow-sm
-              [&_.key-points-table]:w-full [&_.key-points-table]:border-separate [&_.key-points-table]:border-spacing-y-4
-              [&_.key-points-table_th]:bg-transparent [&_.key-points-table_th]:text-[#006D77] [&_.key-points-table_th]:font-semibold [&_.key-points-table_th]:text-lg [&_.key-points-table_th]:pl-0 [&_.key-points-table_th]:w-1/3
-              [&_.key-points-table_td]:bg-transparent [&_.key-points-table_td]:border-0 [&_.key-points-table_td]:pl-4 [&_.key-points-table_td]:text-muted-foreground
-              [&_.minimalist-key-points]:bg-[#EDF6F9] [&_.minimalist-key-points]:p-8 [&_.minimalist-key-points]:rounded-xl [&_.minimalist-key-points]:my-8 [&_.minimalist-key-points]:shadow-sm
-              [&_.minimalist-chart-container]:bg-[#FEF7CD] [&_.minimalist-chart-container]:p-6 [&_.minimalist-chart-container]:rounded-lg [&_.minimalist-chart-container]:my-8
-              [&_blockquote]:border-l-4 [&_blockquote]:border-primary-light [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:my-8
               [&_.div-container]:bg-transparent
             "
             dangerouslySetInnerHTML={{ __html: article.content }} 
           />
           
-          {article.faqs && article.faqs.length > 0 && (
-            <section className="mt-16 bg-[#EDF6F9] p-8 rounded-xl shadow-sm">
-              <h2 className="text-3xl font-semibold text-[#006D77] mb-8">Frequently Asked Questions</h2>
-              <div className="space-y-6">
-                {article.faqs.map((faq: any) => (
-                  <div key={faq.id} className="bg-white rounded-lg p-6 shadow-sm">
-                    <h3 className="font-semibold text-[#221F26] mb-3">{faq.question}</h3>
-                    <p className="text-[#8E9196]">{faq.answer}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          <FAQSection faqs={article.faqs} />
         </article>
       </main>
       <Footer />
