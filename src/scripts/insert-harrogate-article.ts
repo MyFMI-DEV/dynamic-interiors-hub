@@ -16,58 +16,21 @@ async function insertHarrogateArticle() {
   </ul>
 </div>
 
-<p>Harrogate, voted the "happiest place to live" in Britain for three years, is a town that radiates charm. Its lush greenery and historical architecture inspire contemporary home designs. The unique character of Harrogate not only shapes the buildings but also adds a special touch to the interiors. Below is a summary table to highlight the key points about Harrogate home design.</p>
+<p>Harrogate, voted the "happiest place to live" in Britain for three years, is a town that radiates charm. Its lush greenery and historical architecture inspire contemporary home designs. The unique character of Harrogate not only shapes the buildings but also adds a special touch to the interiors.</p>
 
-<table>
-  <tr>
-    <th>Key Points</th>
-    <th>Details</th>
-  </tr>
-  <tr>
-    <td>Population</td>
-    <td>Approximately 75,070 (2016)</td>
-  </tr>
-  <tr>
-    <td>Architectural Styles</td>
-    <td>Victorian, Edwardian, and contemporary designs</td>
-  </tr>
-  <tr>
-    <td>Sustainability</td>
-    <td>Focus on eco-friendly materials and designs</td>
-  </tr>
-  <tr>
-    <td>Cultural Influences</td>
-    <td>Rich artistic scene impacting design choices</td>
-  </tr>
-</table>
+<img alt="Harrogate spa town with historical buildings and modern interior designs" />
 
 <h2>The Essence of Harrogate Home Design</h2>
 
 <p>In this historical town, home design trends blend the old with the new. Residents strive for a balance between traditional charm and modern functionality, creating spaces that are both elegant and inviting. Local interior designers and furniture suppliers work tirelessly to turn these visions into reality, ensuring that each home reflects the character of its owners.</p>
 
-<p>From minimalist chic to luxurious opulence, interior design services cater to a range of tastes. The essence of Harrogate home design lies in harmonizing historical elements with contemporary aesthetics. Designers in the area possess valuable insights into local architectural styles and materials, making them key players in creating beautiful homes.</p>
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-  <a href="https://www.findmyinteriors.co.uk" style="flex: 1; min-width: 300px; max-width: 500px;">
-    <img src="https://www.findmyinteriors.co.uk/lovable-uploads/d60fa430-dfe1-4db5-84c4-ac740134aa18.png" alt="Interior Design Services" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-  </a>
-  <a href="https://www.findmyinteriors.co.uk" style="flex: 1; min-width: 300px; max-width: 500px;">
-    <img src="https://www.findmyinteriors.co.uk/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png" alt="Local Expertise" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-  </a>
-</div>
+<img alt="Modern Harrogate living room with traditional architectural elements" />
 
 <h2>Architectural Styles in Harrogate</h2>
 
 <p>Harrogate's architectural landscape is diverse, akin to a painter's palette filled with vibrant colors. The town, home to about 89,060 residents, showcases a mix of Victorian, Edwardian, and contemporary designs. This variety allows homeowners to personalize their spaces while honoring the town's historical context.</p>
 
-<p>Interior designers in Harrogate specialize in these various styles, enabling residents to choose designs that resonate with their personal tastes. From traditional stonework to sleek modern lines, the options are as varied as the community itself. Utilizing local materials adds authenticity to each design, making homes feel connected to their roots.</p>
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-  <a href="https://www.findmyinteriors.co.uk" style="flex: 1; min-width: 300px; max-width: 500px;">
-    <img src="https://www.findmyinteriors.co.uk/lovable-uploads/b47542a6-4411-407e-8cb4-28a1ca0f5371.png" alt="Architectural Styles" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-  </a>
-  <a style="flex: 1; min-width: 300px; max-width: 500px;">
-    <img alt="Home Categories" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-  </a>
-</div>
+<img alt="Victorian mansion in Harrogate with contemporary interior design touches" />
 
 <h2>Climate-Responsive Design in Harrogate</h2>
 
