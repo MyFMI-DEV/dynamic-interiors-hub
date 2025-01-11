@@ -5,17 +5,21 @@ export async function testArticleCreation() {
     console.log("Starting test article creation...");
     
     const article = await createArticle(
-      "Test Article 2",
-      "<h1>Test Article 2</h1><p>This is a test article to verify database insertion.</p>",
-      "Test Article 2 - Meta Title",
-      "This is a test meta description for article 2",
-      "test-article-2",
-      ["Test Category"],
-      ["Test Location"],
+      "Test Article with Image",
+      "<h1>Test Article with Image</h1><p>This is a test article to verify database insertion with an image.</p><img alt='A beautiful test image showing interior design' />",
+      "Test Article with Image - Meta Title",
+      "This is a test meta description for an article with image",
+      "test-article-with-image",
+      ["Test Category", "Interior Design"],
+      ["Test Location", "London"],
       [
         {
-          question: "Test Question?",
-          answer: "Test Answer"
+          question: "Test Question About Images?",
+          answer: "Test Answer about images and design"
+        },
+        {
+          question: "Another Test Question?",
+          answer: "Another Test Answer"
         }
       ]
     );
