@@ -11,25 +11,25 @@ export type Database = {
     Tables: {
       ai_generated_images: {
         Row: {
-          id: string
           alt_text: string
-          image_url: string
           article_id: string | null
           created_at: string | null
+          id: string
+          image_url: string
         }
         Insert: {
-          id?: string
           alt_text: string
-          image_url: string
           article_id?: string | null
           created_at?: string | null
+          id?: string
+          image_url: string
         }
         Update: {
-          id?: string
           alt_text?: string
-          image_url?: string
           article_id?: string | null
           created_at?: string | null
+          id?: string
+          image_url?: string
         }
         Relationships: [
           {
@@ -38,7 +38,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "articles"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       article_categories: {
@@ -399,4 +399,3 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
-
