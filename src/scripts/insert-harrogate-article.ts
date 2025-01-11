@@ -18,19 +18,19 @@ export async function insertHarrogateArticle() {
 
 <p>Harrogate, voted the "happiest place to live" in Britain for three years, is a town that radiates charm. Its lush greenery and historical architecture inspire contemporary home designs. The unique character of Harrogate not only shapes the buildings but also adds a special touch to the interiors.</p>
 
-<img alt="Harrogate spa town with historical buildings and modern interior designs" />
+<img alt="A panoramic view of Harrogate showing historical buildings surrounded by lush gardens and modern interior designs" />
 
 <h2>The Essence of Harrogate Home Design</h2>
 
 <p>In this historical town, home design trends blend the old with the new. Residents strive for a balance between traditional charm and modern functionality, creating spaces that are both elegant and inviting. Local interior designers and furniture suppliers work tirelessly to turn these visions into reality, ensuring that each home reflects the character of its owners.</p>
 
-<img alt="Modern Harrogate living room with traditional architectural elements" />
+<img alt="An elegant Harrogate living room featuring a blend of traditional architectural elements with contemporary furniture and decor" />
 
 <h2>Architectural Styles in Harrogate</h2>
 
 <p>Harrogate's architectural landscape is diverse, akin to a painter's palette filled with vibrant colors. The town, home to about 89,060 residents, showcases a mix of Victorian, Edwardian, and contemporary designs. This variety allows homeowners to personalize their spaces while honoring the town's historical context.</p>
 
-<img alt="Victorian mansion in Harrogate with contemporary interior design touches" />
+<img alt="A stunning Victorian mansion in Harrogate with modernized interiors showcasing a perfect blend of historical and contemporary design elements" />
 
 <h2>Climate-Responsive Design in Harrogate</h2>
 
@@ -98,7 +98,7 @@ export async function insertHarrogateArticle() {
 <li><strong>How do I incorporate sustainable design elements in my Harrogate home?</strong> To incorporate sustainable elements, consider using eco-friendly materials, energy-efficient appliances, and designs that maximize natural light and ventilation.</li>
 <li><strong>What should I consider when seeking planning permission for a home renovation in Harrogate?</strong> It's crucial to understand local regulations, engage with local authorities early, and ensure that your project complies with planning guidelines.</li>
 <li><strong>How does Harrogate's climate influence local home design trends?</strong> Harrogate's climate, with its moderate temperatures and rainfall, encourages designs that prioritize insulation, natural light, and energy efficiency.</li>
-<li><strong>Where can I find reputable interior designers and architects in Harrogate?</strong> A great starting point is to explore local directories and websites, such as <a href="https://www.findmyinteriors.com/articles/details/6766bf6e1f34e6bd9f28b586">Find My Interiors</a> and <a href="https://www.houzz.co.uk/professionals/interior-designers/c/Harrogate--North-Yorkshire">Houzz</a>.</li>
+<li><strong>Where can I find reputable interior designers and architects in Harrogate?</strong> A great starting point is to explore local directories and websites, such as Find My Interiors and Houzz.</li>
 </ol>
 
 <div class="minimalist-chart-container">
