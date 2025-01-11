@@ -8,8 +8,6 @@ import HowItWorks from "./pages/HowItWorks";
 import WhyChooseUs from "./pages/WhyChooseUs";
 import PostFree from "./pages/PostFree";
 import Sitemap from "./pages/Sitemap";
-import Articles from "./pages/Articles";
-import ArticleDetail from "./pages/ArticleDetail";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +22,6 @@ function App() {
           <Route path="/why-choose-us" element={<WhyChooseUs />} />
           <Route path="/post-free" element={<PostFree />} />
           <Route path="/sitemap.xml" element={<Sitemap />} />
-          <Route path="/articles" element={<Articles />} />
-          <Route path="/articles/:slug" element={<ArticleDetail />} />
           <Route path="/:location/:category" element={<LocationCategory />} />
         </Routes>
       </BrowserRouter>
