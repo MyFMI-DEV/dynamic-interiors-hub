@@ -1,6 +1,8 @@
 export const processArticleContent = (content: string, articleId: string) => {
   try {
     console.log('Processing article content for article:', articleId);
+    console.log('Raw content:', content?.substring(0, 100) + '...');
+
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     
@@ -13,17 +15,25 @@ export const processArticleContent = (content: string, articleId: string) => {
     console.log('Found images:', images.length);
     
     images.forEach((img, index) => {
+      console.log(`Processing image ${index + 1}:`, {
+        src: img.src,
+        alt: img.alt,
+        parentNode: img.parentNode?.nodeName
+      });
+
       if (!img.src && img.alt) {
-        console.log(`Processing image ${index + 1}:`, { alt: img.alt });
         const wrapper = doc.createElement('div');
         wrapper.setAttribute('data-image-alt', img.alt);
         wrapper.setAttribute('data-article-id', articleId);
         wrapper.className = 'article-image-wrapper';
         img.parentNode?.replaceChild(wrapper, img);
+        console.log(`Created wrapper for image ${index + 1}:`, wrapper.outerHTML);
       }
     });
 
-    return doc.body.innerHTML;
+    const result = doc.body.innerHTML;
+    console.log('Processed content length:', result.length);
+    return result;
   } catch (error) {
     console.error('Error processing article content:', error);
     return content;

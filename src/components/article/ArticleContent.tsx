@@ -14,6 +14,7 @@ export const ArticleContent = ({ content, articleId }: ArticleContentProps) => {
 
   useEffect(() => {
     const cleanupRoots = () => {
+      console.log('Cleaning up React roots');
       rootsRef.current.forEach((root) => {
         try {
           root.unmount();
@@ -25,14 +26,23 @@ export const ArticleContent = ({ content, articleId }: ArticleContentProps) => {
     };
 
     const initializeImages = () => {
-      if (!articleRef.current) return;
+      if (!articleRef.current) {
+        console.log('Article ref is not available');
+        return;
+      }
 
       const imageWrappers = articleRef.current.querySelectorAll('.article-image-wrapper');
       console.log('Found image wrappers:', imageWrappers.length);
 
-      imageWrappers.forEach((wrapper) => {
+      imageWrappers.forEach((wrapper, index) => {
         const alt = wrapper.getAttribute('data-image-alt');
         const wrapperArticleId = wrapper.getAttribute('data-article-id');
+
+        console.log(`Processing image ${index + 1}:`, {
+          alt,
+          articleId: wrapperArticleId,
+          wrapper: wrapper.outerHTML
+        });
 
         if (alt && wrapperArticleId) {
           const container = document.createElement('div');
@@ -41,16 +51,23 @@ export const ArticleContent = ({ content, articleId }: ArticleContentProps) => {
           const root = createRoot(container);
           rootsRef.current.set(alt, root);
           
+          console.log(`Rendering ArticleImage for: ${alt}`);
           root.render(<ArticleImage alt={alt} articleId={wrapperArticleId} />);
+        } else {
+          console.warn('Missing required attributes:', { alt, articleId: wrapperArticleId });
         }
       });
     };
+
+    console.log('Content received:', content ? 'Yes' : 'No');
+    console.log('ArticleId received:', articleId);
 
     initializeImages();
     return cleanupRoots;
   }, [content, articleId]);
 
   const processedContent = processArticleContent(content, articleId);
+  console.log('Processed content length:', processedContent?.length || 0);
 
   return (
     <article 
