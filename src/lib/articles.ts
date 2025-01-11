@@ -10,6 +10,8 @@ export async function createArticle(
   locations: string[],
   faqs: Array<{ question: string; answer: string }>
 ) {
+  console.log('Starting article creation:', { title, slug });
+  
   // Insert the main article
   const { data: article, error: articleError } = await supabase
     .from('articles')
@@ -23,45 +25,67 @@ export async function createArticle(
     .select()
     .single();
 
-  if (articleError) throw articleError;
+  if (articleError) {
+    console.error('Error inserting article:', articleError);
+    throw articleError;
+  }
 
-  // Insert categories
-  const categoryPromises = categories.map(category =>
-    supabase
-      .from('article_categories')
-      .insert({
-        article_id: article.id,
-        category,
-      })
-  );
+  console.log('Article inserted successfully:', article);
 
-  // Insert locations
-  const locationPromises = locations.map(location =>
-    supabase
-      .from('article_locations')
-      .insert({
-        article_id: article.id,
-        location,
-      })
-  );
+  try {
+    // Insert categories
+    const categoryPromises = categories.map(category => {
+      console.log('Inserting category:', category);
+      return supabase
+        .from('article_categories')
+        .insert({
+          article_id: article.id,
+          category,
+        });
+    });
 
-  // Insert FAQs
-  const faqPromises = faqs.map(faq =>
-    supabase
-      .from('article_faqs')
-      .insert({
-        article_id: article.id,
-        question: faq.question,
-        answer: faq.answer,
-      })
-  );
+    // Insert locations
+    const locationPromises = locations.map(location => {
+      console.log('Inserting location:', location);
+      return supabase
+        .from('article_locations')
+        .insert({
+          article_id: article.id,
+          location,
+        });
+    });
 
-  // Wait for all insertions to complete
-  await Promise.all([
-    ...categoryPromises,
-    ...locationPromises,
-    ...faqPromises,
-  ]);
+    // Insert FAQs
+    const faqPromises = faqs.map(faq => {
+      console.log('Inserting FAQ:', faq.question);
+      return supabase
+        .from('article_faqs')
+        .insert({
+          article_id: article.id,
+          question: faq.question,
+          answer: faq.answer,
+        });
+    });
 
-  return article;
+    // Wait for all insertions to complete
+    const results = await Promise.all([
+      ...categoryPromises,
+      ...locationPromises,
+      ...faqPromises,
+    ]);
+
+    // Check for any errors in the results
+    results.forEach((result, index) => {
+      if (result.error) {
+        console.error('Error in related data insertion:', result.error);
+        throw result.error;
+      }
+    });
+
+    console.log('All related data inserted successfully');
+    return article;
+  } catch (error) {
+    console.error('Error inserting related data:', error);
+    throw error;
+  }
 }
