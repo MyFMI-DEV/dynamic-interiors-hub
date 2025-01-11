@@ -12,17 +12,30 @@ const content = `
 <img alt="modern-living-room-2025" />
 
 <h2>What You Need to Know</h2>
-<div class="my-8">
-  ${KeyPointsSection({
-    points: [
-      { label: "Bold Colors and Patterns", value: "Shift towards vibrant hues; moving away from neutrals." },
-      { label: "Sustainable Materials", value: "Natural materials are preferred; eco-friendly choices are essential." },
-      { label: "Smart Home Integration", value: "Technology must be discreetly integrated into designs." },
-      { label: "Multifunctional Spaces", value: "Rooms need to serve more than one purpose for flexibility." },
-      { label: "Energy-Efficient Upgrades", value: "Focus on reducing energy consumption and costs." }
-    ]
-  })}
-</div>
+<table class="my-8 w-full">
+  <tbody>
+    <tr>
+      <td class="font-semibold text-[#006D77] pl-0 w-1/3">Bold Colors and Patterns</td>
+      <td class="text-muted-foreground pl-6">Shift towards vibrant hues; moving away from neutrals.</td>
+    </tr>
+    <tr>
+      <td class="font-semibold text-[#006D77] pl-0 w-1/3">Sustainable Materials</td>
+      <td class="text-muted-foreground pl-6">Natural materials are preferred; eco-friendly choices are essential.</td>
+    </tr>
+    <tr>
+      <td class="font-semibold text-[#006D77] pl-0 w-1/3">Smart Home Integration</td>
+      <td class="text-muted-foreground pl-6">Technology must be discreetly integrated into designs.</td>
+    </tr>
+    <tr>
+      <td class="font-semibold text-[#006D77] pl-0 w-1/3">Multifunctional Spaces</td>
+      <td class="text-muted-foreground pl-6">Rooms need to serve more than one purpose for flexibility.</td>
+    </tr>
+    <tr>
+      <td class="font-semibold text-[#006D77] pl-0 w-1/3">Energy-Efficient Upgrades</td>
+      <td class="text-muted-foreground pl-6">Focus on reducing energy consumption and costs.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2>Embracing Bold Colors and Patterns</h2>
 <p>In 2025, homeowners are leaving behind cool, neutral palettes and opting for bold colors and patterns that energize their spaces. A recent study shows that clients are increasingly requesting vibrant shades for their walls, ceilings, and trims (The Spruce, 2024). This trend reflects a desire for personal expression, allowing each room to tell a unique story through color.</p>
@@ -96,6 +109,3 @@ export const insert2025RenovationsArticle = async () => {
     throw error;
   }
 };
-
-// Execute the function
-insert2025RenovationsArticle();
