@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
 export const useArticleImage = (articleId: string, altText: string) => {
   return useQuery({
@@ -8,24 +7,24 @@ export const useArticleImage = (articleId: string, altText: string) => {
     queryFn: async () => {
       console.log('Fetching image for:', { articleId, altText });
       
-      // First try to fetch from cache
-      const { data: existingImage, error: cacheError } = await supabase
-        .from('ai_generated_images')
+      // Fetch the article's image URL
+      const { data: article, error: articleError } = await supabase
+        .from('articles')
         .select('image_url')
-        .eq('article_id', articleId)
-        .eq('alt_text', altText)
+        .eq('id', articleId)
         .single();
 
-      if (cacheError) {
-        console.log('Cache miss or error:', cacheError.message);
+      if (articleError) {
+        console.error('Error fetching article:', articleError);
+        throw articleError;
       }
 
-      if (existingImage?.image_url) {
-        console.log('Found cached image:', existingImage.image_url);
-        return existingImage.image_url;
+      if (article?.image_url) {
+        console.log('Found image:', article.image_url);
+        return article.image_url;
       }
 
-      console.log('No cached image found, generating new one...');
+      console.log('No image found, generating new one...');
 
       // If not found, generate new image
       const { data: generatedData, error: functionError } = await supabase.functions.invoke<{ imageUrl: string }>('generate-article-image', {
@@ -44,17 +43,14 @@ export const useArticleImage = (articleId: string, altText: string) => {
 
       console.log('Successfully generated image:', generatedData.imageUrl);
 
-      // Store the generated image URL
-      const { error: insertError } = await supabase
-        .from('ai_generated_images')
-        .insert({
-          article_id: articleId,
-          alt_text: altText,
-          image_url: generatedData.imageUrl
-        });
+      // Update the article with the generated image URL
+      const { error: updateError } = await supabase
+        .from('articles')
+        .update({ image_url: generatedData.imageUrl })
+        .eq('id', articleId);
 
-      if (insertError) {
-        console.error('Failed to cache generated image:', insertError);
+      if (updateError) {
+        console.error('Failed to update article with image URL:', updateError);
         // Don't throw here, we still want to return the image URL
       }
 
