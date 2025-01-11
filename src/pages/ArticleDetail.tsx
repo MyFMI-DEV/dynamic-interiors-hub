@@ -66,9 +66,10 @@ const ArticleDetail = () => {
         <article className="prose prose-lg mx-auto max-w-4xl">
           <div 
             className="
-              prose-headings:font-semibold
-              prose-h1:text-5xl prose-h1:text-[#006D77] prose-h1:mb-12 prose-h1:font-bold prose-h1:leading-tight
+              prose-headings:font-bold
+              prose-h1:text-5xl prose-h1:text-[#006D77] prose-h1:mb-12 prose-h1:leading-tight
               prose-h2:text-3xl prose-h2:text-primary-light prose-h2:mt-12 prose-h2:mb-6
+              prose-h3:text-2xl prose-h3:text-primary prose-h3:mt-10 prose-h3:mb-4
               prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-8
               prose-a:text-primary prose-a:no-underline hover:prose-a:text-primary/80
               prose-img:rounded-lg prose-img:shadow-md prose-img:my-12
