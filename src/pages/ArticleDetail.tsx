@@ -1,36 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import KeyPointsSection from "@/components/article/KeyPointsSection";
 import FAQSection from "@/components/article/FAQSection";
+import { fetchArticleBySlug } from "@/lib/articleUtils";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
 
   const { data: article, isLoading } = useQuery({
     queryKey: ['article', slug],
-    queryFn: async () => {
-      const { data: articleData, error: articleError } = await supabase
-        .from('articles')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-      
-      if (articleError) throw articleError;
-
-      const { data: faqs, error: faqsError } = await supabase
-        .from('article_faqs')
-        .select('*')
-        .eq('article_id', articleData.id);
-
-      if (faqsError) throw faqsError;
-
-      return { ...articleData, faqs };
-    },
+    queryFn: () => fetchArticleBySlug(slug as string),
     enabled: !!slug
   });
 

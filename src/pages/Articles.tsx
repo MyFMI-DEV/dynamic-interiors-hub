@@ -1,28 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { SEOHead } from "@/components/SEOHead";
 import Navigation from "@/components/Navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { fetchAllArticles } from "@/lib/articleUtils";
 
 const Articles = () => {
   const { data: articles, isLoading } = useQuery({
     queryKey: ['articles'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) {
-        console.error('Error fetching articles:', error);
-        throw error;
-      }
-      console.log('Fetched articles:', data);
-      return data;
-    }
+    queryFn: fetchAllArticles
   });
 
   if (isLoading) {
