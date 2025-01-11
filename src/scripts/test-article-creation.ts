@@ -1,6 +1,6 @@
 import { createArticle } from "../lib/articles";
 
-async function testArticleCreation() {
+export async function testArticleCreation() {
   try {
     console.log("Starting test article creation...");
     
@@ -21,9 +21,14 @@ async function testArticleCreation() {
     );
     
     console.log("Article created successfully:", article);
+    return article;
   } catch (error) {
     console.error("Error creating article:", error);
+    throw error;
   }
 }
 
-testArticleCreation();
+// Run the test if this file is executed directly
+if (import.meta.url === new URL(import.meta.resolve('./test-article-creation.ts')).href) {
+  testArticleCreation();
+}

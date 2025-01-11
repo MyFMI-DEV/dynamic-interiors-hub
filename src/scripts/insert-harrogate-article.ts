@@ -1,6 +1,6 @@
 import { createArticle } from "../lib/articles";
 
-async function insertHarrogateArticle() {
+export async function insertHarrogateArticle() {
   try {
     const article = await createArticle(
       "Harrogate Home Design: A Perfect Blend of Style",
@@ -229,9 +229,14 @@ async function insertHarrogateArticle() {
     );
     
     console.log("Article created successfully:", article);
+    return article;
   } catch (error) {
     console.error("Error creating article:", error);
+    throw error;
   }
 }
 
-insertHarrogateArticle();
+// Run the insertion if this file is executed directly
+if (import.meta.url === new URL(import.meta.resolve('./insert-harrogate-article.ts')).href) {
+  insertHarrogateArticle();
+}
