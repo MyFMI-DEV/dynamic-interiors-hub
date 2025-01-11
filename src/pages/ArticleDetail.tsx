@@ -7,6 +7,8 @@ import Header from "@/components/layout/Header";
 import KeyPointsSection from "@/components/article/KeyPointsSection";
 import FAQSection from "@/components/article/FAQSection";
 import { fetchArticleBySlug } from "@/lib/articleUtils";
+import { useArticleImage } from "@/hooks/useArticleImage";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ArticleDetail = () => {
   const { slug } = useParams();
@@ -16,6 +18,43 @@ const ArticleDetail = () => {
     queryFn: () => fetchArticleBySlug(slug as string),
     enabled: !!slug
   });
+
+  const processContent = (content: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    const images = doc.getElementsByTagName('img');
+
+    Array.from(images).forEach((img) => {
+      if (!img.src && img.alt) {
+        const ImageComponent = () => {
+          const { data: imageUrl, isLoading } = useArticleImage(article?.id || '', img.alt);
+
+          if (isLoading) {
+            return (
+              <div className="w-full">
+                <Skeleton className="w-full h-64" />
+              </div>
+            );
+          }
+
+          return imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={img.alt}
+              className="w-full aspect-video object-cover rounded-lg"
+            />
+          ) : null;
+        };
+
+        // Replace the original img with our component
+        const wrapper = document.createElement('div');
+        wrapper.setAttribute('data-image-alt', img.alt);
+        img.parentNode?.replaceChild(wrapper, img);
+      }
+    });
+
+    return doc.body.innerHTML;
+  };
 
   if (isLoading) {
     return (
@@ -33,6 +72,8 @@ const ArticleDetail = () => {
   }
 
   if (!article) return null;
+
+  const processedContent = processContent(article.content);
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,7 +110,7 @@ const ArticleDetail = () => {
               [&_.div-container]:bg-transparent
               space-y-8
             "
-            dangerouslySetInnerHTML={{ __html: article.content }} 
+            dangerouslySetInnerHTML={{ __html: processedContent }} 
           />
           
           {article.faqs && article.faqs.length > 0 && (
