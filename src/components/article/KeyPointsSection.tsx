@@ -18,8 +18,8 @@ interface KeyPointsSectionProps {
 
 const KeyPointsSection = ({ points, title = "Key Points" }: KeyPointsSectionProps) => {
   return (
-    <div className="bg-[#EDF6F9] p-8 rounded-xl my-8 shadow-sm">
-      <h3 className="text-2xl font-semibold text-[#006D77] mb-6">{title}</h3>
+    <div className="bg-[#EDF6F9] p-8 rounded-xl my-12 shadow-sm">
+      <h3 className="text-3xl font-semibold text-[#006D77] mb-8">{title}</h3>
       <Table>
         <TableBody>
           {points.map((point, index) => (
@@ -27,7 +27,7 @@ const KeyPointsSection = ({ points, title = "Key Points" }: KeyPointsSectionProp
               <TableCell className="font-semibold text-[#006D77] pl-0 w-1/3 align-top">
                 {point.label}
               </TableCell>
-              <TableCell className="text-muted-foreground pl-4">
+              <TableCell className="text-muted-foreground pl-6">
                 {point.value}
               </TableCell>
             </TableRow>
