@@ -144,10 +144,9 @@ const ArticleDetail = () => {
         {article.faqs && article.faqs.length > 0 && (
           <FAQSection faqs={article.faqs} />
         )}
-      </article>
-    </main>
-    <Footer />
-  </div>
+      </main>
+      <Footer />
+    </div>
   );
 };
 
