@@ -87,7 +87,9 @@ const ArticleDetail = () => {
             dangerouslySetInnerHTML={{ __html: article.content }} 
           />
           
-          <FAQSection faqs={article.faqs} />
+          {article.faqs && article.faqs.length > 0 && (
+            <FAQSection faqs={article.faqs} />
+          )}
         </article>
       </main>
       <Footer />
