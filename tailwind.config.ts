@@ -54,6 +54,36 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '65ch',
+            color: '#4A5568',
+            p: {
+              color: '#4A5568',
+            },
+            h1: {
+              color: '#006D77',
+            },
+            h2: {
+              color: '#83C5BE',
+            },
+            h3: {
+              color: '#006D77',
+            },
+            a: {
+              color: '#83C5BE',
+              '&:hover': {
+                color: '#83C5BE',
+                opacity: 0.8,
+              },
+            },
+            strong: {
+              color: '#2D3748',
+            },
+          },
+        },
+      },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
       },
@@ -64,5 +94,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
