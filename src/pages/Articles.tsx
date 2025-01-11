@@ -13,14 +13,8 @@ const Articles = () => {
     queryFn: fetchAllArticles
   });
 
-  const getRandomPlaceholderImage = () => {
-    const images = [
-      'photo-1649972904349-6e44c42644a7',
-      'photo-1488590528505-98d2b5aba04b',
-      'photo-1486312338219-ce68d2c6f44d',
-      'photo-1581091226825-a6a2a5aee158'
-    ];
-    return `https://images.unsplash.com/${images[Math.floor(Math.random() * images.length)]}?auto=format&fit=crop&w=800&q=80`;
+  const getDefaultImage = () => {
+    return 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80';
   };
 
   if (isLoading) {
@@ -57,7 +51,7 @@ const Articles = () => {
               <Link to={`/articles/${article.slug}`} className="block">
                 <div className="aspect-w-16 aspect-h-9 w-full">
                   <img 
-                    src={getRandomPlaceholderImage()} 
+                    src={article.image_url || getDefaultImage()} 
                     alt={article.title}
                     className="object-cover w-full h-48"
                   />
