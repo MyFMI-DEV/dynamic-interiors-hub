@@ -1,7 +1,7 @@
 import { uploadArticle } from "../lib/articleUploader";
 
 const renovationArticle = {
-  title: "Renovating Your Home in 2025: Trends and Tips",
+  title: "Renovating Your Home in 2025: Latest Trends and Tips",
   content: `<h1>Renovating Your Home in 2025</h1>
 <p>The pandemic has shifted how we view home renovations. Since early 2020, the demand for renovations has surged by 50%, as homeowners seek spaces that are functional, stylish, and sustainable (Rated People, 2023). As we step into 2025, various trends are emerging to shape the renovation landscape.</p>
 
@@ -152,9 +152,9 @@ const renovationArticle = {
   text-align: center;
 }
 </style>`,
-  metaTitle: "Home Renovation Guide 2025: Latest Trends and Expert Tips",
+  metaTitle: "2025 Home Renovation Guide: Latest Trends and Expert Tips",
   metaDescription: "Discover the latest home renovation trends for 2025, from bold colors to sustainable materials. Expert advice on budgeting, planning, and implementing modern home upgrades.",
-  slug: "home-renovation-guide-2025",
+  slug: "home-renovation-guide-2025-latest",
   categories: ["Home Renovation", "Interior Design", "Home Improvement"],
   locations: ["UK"],
   faqs: [
