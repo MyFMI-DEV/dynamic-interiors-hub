@@ -21,8 +21,8 @@ export const processArticleContent = (content: string, articleId: string) => {
         parentNode: img.parentNode?.nodeName
       });
 
-      // Only process images without src but with alt text
-      if (!img.getAttribute('src') && img.getAttribute('alt')) {
+      // Process all images with alt text, regardless of src
+      if (img.getAttribute('alt')) {
         const wrapper = doc.createElement('div');
         wrapper.setAttribute('data-image-alt', img.getAttribute('alt') || '');
         wrapper.setAttribute('data-article-id', articleId);
@@ -33,6 +33,8 @@ export const processArticleContent = (content: string, articleId: string) => {
           img.parentNode.replaceChild(wrapper, img);
           console.log(`Created wrapper for image ${index + 1} with alt:`, img.getAttribute('alt'));
         }
+      } else {
+        console.warn('Image missing alt text:', index + 1);
       }
     });
 
