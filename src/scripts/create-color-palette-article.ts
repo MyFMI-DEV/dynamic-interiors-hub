@@ -17,30 +17,17 @@ const articleData = {
 
 <p>As we approach 2025, color trends in interior design are blossoming like a spring garden. Rich, warm shades like burgundy and dark green will take center stage, complemented by grounding earth tones. These colors create an ambiance that speaks of luxury and elegance, making them perfect for modern interiors.</p>
 
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.modern}" alt="Modern interior with warm earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-</div>
+<div class="article-image-wrapper" data-image-alt="Modern interior with warm earth tones" data-article-id="color-palettes-2025"></div>
 
 <h2>The Rise of Warm Earth Tones</h2>
 <p>Warm earth tones are creating waves in modern interior design, with chocolate brown leading the charge. This rich color brings a sense of comfort, making it an ideal choice for living spaces. It pairs well with light neutrals and vibrant accents, creating a balanced environment that feels welcoming.</p>
 
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.living}" alt="Living room with warm earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-</div>
+<div class="article-image-wrapper" data-image-alt="Living room with warm earth tones" data-article-id="color-palettes-2025"></div>
 
 <h2>Sophisticated Greens: From Seafoam to Verdant</h2>
 <p>Greens, especially dark verdant shades, are emerging as sophisticated choices for modern interiors. These colors add depth and warmth to spaces, making them ideal for walls, ceilings, and even floors.</p>
 
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.minimalist}" alt="Minimalist interior with green accents" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-</div>
-
-<h2>The Versatility of Neutrals: Mustard and Caramel</h2>
-<p>Neutrals are evolving, with a shift towards warmer, earth-inspired shades. Mustard and caramel are taking the spotlight, providing warmth and versatility in modern design. These colors work well in various settings, from living rooms to kitchens, and can complement both bold and subtle hues.</p>
-
-<div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.traditional}" alt="Traditional interior with neutral tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
-</div>
+<div class="article-image-wrapper" data-image-alt="Minimalist interior with green accents" data-article-id="color-palettes-2025"></div>
 
 <h2>The 60-30-10 Rule in Modern Color Palettes</h2>
 <p>The 60-30-10 rule is a widely used guideline in interior design, suggesting that 60% of a space should be a dominant color, 30% a secondary color, and 10% an accent color. This rule helps create a harmonious balance and enhances the visual appeal of any room.</p>
