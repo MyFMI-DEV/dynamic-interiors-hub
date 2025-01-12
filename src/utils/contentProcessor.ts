@@ -21,18 +21,16 @@ export const processArticleContent = (content: string, articleId: string) => {
         parentNode: img.parentNode?.nodeName
       });
 
-      // Only process images without src but with alt text
-      if (!img.getAttribute('src') && img.getAttribute('alt')) {
-        const wrapper = doc.createElement('div');
-        wrapper.setAttribute('data-image-alt', img.getAttribute('alt') || '');
-        wrapper.setAttribute('data-article-id', articleId);
-        wrapper.className = 'article-image-wrapper';
-        
-        // Replace the img with the wrapper
-        if (img.parentNode) {
-          img.parentNode.replaceChild(wrapper, img);
-          console.log(`Created wrapper for image ${index + 1} with alt:`, img.getAttribute('alt'));
-        }
+      // Create wrapper for images that need to be processed
+      const wrapper = doc.createElement('div');
+      wrapper.setAttribute('data-image-alt', img.getAttribute('alt') || '');
+      wrapper.setAttribute('data-article-id', articleId);
+      wrapper.className = 'article-image-wrapper';
+      
+      // Replace the img with the wrapper
+      if (img.parentNode) {
+        img.parentNode.replaceChild(wrapper, img);
+        console.log(`Created wrapper for image ${index + 1} with alt:`, img.getAttribute('alt'));
       }
     });
 

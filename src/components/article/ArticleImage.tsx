@@ -35,29 +35,25 @@ export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
     );
   }
 
-  // Handle both relative and absolute URLs
-  const processImageUrl = (url: string) => {
-    if (!url) return '';
-    // If it's already a relative URL starting with /lovable-uploads, use it as is
-    if (url.startsWith('/lovable-uploads')) {
-      return url;
-    }
-    // If it's an absolute URL, extract the path after lovable-uploads
-    if (url.includes('lovable-uploads')) {
-      const match = url.match(/\/lovable-uploads\/.*$/);
-      return match ? match[0] : url;
-    }
-    return url;
-  };
+  if (!imageUrl) {
+    console.log('No image URL available for:', alt);
+    return null;
+  }
 
-  console.log('Rendering image:', { alt, imageUrl });
-  return imageUrl ? (
+  // Clean up the image URL to ensure it's in the correct format
+  const cleanImageUrl = imageUrl.startsWith('/lovable-uploads') 
+    ? imageUrl 
+    : `/lovable-uploads/${imageUrl.split('/lovable-uploads/').pop()}`;
+
+  console.log('Final image URL:', cleanImageUrl);
+
+  return (
     <img
-      src={processImageUrl(imageUrl)}
+      src={cleanImageUrl}
       alt={alt}
       className="w-full aspect-video object-cover rounded-lg my-8"
       onError={(e) => {
-        console.error('Image failed to load:', imageUrl);
+        console.error('Image failed to load:', cleanImageUrl);
         toast({
           title: "Image failed to load",
           description: "There was a problem loading the image. Please try again later.",
@@ -65,5 +61,5 @@ export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
         });
       }}
     />
-  ) : null;
+  );
 };

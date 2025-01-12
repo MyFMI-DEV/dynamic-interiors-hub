@@ -19,42 +19,18 @@ export const useArticleImage = (articleId: string, altText: string) => {
         throw fetchError;
       }
 
-      if (article?.image_url) {
-        console.log('Found existing image:', article.image_url);
-        return article.image_url;
+      if (!article?.image_url) {
+        console.log('No image found for article:', articleId);
+        return null;
       }
 
-      console.log('No image found, generating new one...');
+      // Clean up the URL to ensure it's in the correct format
+      const imageUrl = article.image_url.startsWith('/lovable-uploads')
+        ? article.image_url
+        : `/lovable-uploads/${article.image_url.split('/lovable-uploads/').pop()}`;
 
-      // If no image exists, generate a new one
-      const { data: generatedData, error: functionError } = await supabase.functions.invoke<{ imageUrl: string }>('generate-article-image', {
-        body: { altText, articleId }
-      });
-
-      if (functionError) {
-        console.error('Edge function error:', functionError);
-        throw new Error('Failed to generate image');
-      }
-
-      if (!generatedData?.imageUrl) {
-        console.error('No image URL returned from edge function');
-        throw new Error('No image URL returned');
-      }
-
-      console.log('Successfully generated image:', generatedData.imageUrl);
-
-      // Update the article with the new image URL
-      const { error: updateError } = await supabase
-        .from('articles')
-        .update({ image_url: generatedData.imageUrl })
-        .eq('id', articleId);
-
-      if (updateError) {
-        console.error('Failed to update article with new image:', updateError);
-        // Don't throw here, we still want to return the image URL
-      }
-
-      return generatedData.imageUrl;
+      console.log('Processed image URL:', imageUrl);
+      return imageUrl;
     },
     retry: 1,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
