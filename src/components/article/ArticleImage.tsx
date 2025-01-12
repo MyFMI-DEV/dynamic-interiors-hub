@@ -1,7 +1,7 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { getRelevantImage } from '@/utils/imageUtils';
+import { useArticleImage } from '@/hooks/useArticleImage';
 
 interface ArticleImageProps {
   alt: string;
@@ -11,32 +11,27 @@ interface ArticleImageProps {
 export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [imageSrc, setImageSrc] = React.useState<string>('');
-
-  React.useEffect(() => {
-    console.log('Setting up image with alt:', alt);
-    const initialSrc = alt || getRelevantImage(alt);
-    setImageSrc(initialSrc);
-    console.log('Initial image source set to:', initialSrc);
-  }, [alt]);
+  
+  const { data: imageSrc } = useArticleImage(articleId, alt);
 
   const handleImageLoad = () => {
     console.log('Image loaded successfully:', imageSrc);
     setIsLoading(false);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleImageError = () => {
     console.error('Image failed to load:', imageSrc);
-    const fallbackSrc = getRelevantImage(alt);
-    console.log('Using fallback image:', fallbackSrc);
-    setImageSrc(fallbackSrc);
     setIsLoading(false);
     toast({
-      title: "Using fallback image",
-      description: "The original image couldn't be loaded. Using a relevant default image instead.",
+      title: "Image loading error",
+      description: "The image couldn't be loaded. Using a fallback image instead.",
       variant: "destructive",
     });
   };
+
+  if (!imageSrc) {
+    return null;
+  }
 
   return (
     <div className="w-full my-8">
