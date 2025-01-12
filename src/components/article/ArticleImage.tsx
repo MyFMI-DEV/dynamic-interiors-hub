@@ -35,10 +35,25 @@ export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
     );
   }
 
+  // Handle both relative and absolute URLs
+  const processImageUrl = (url: string) => {
+    if (!url) return '';
+    // If it's already a relative URL starting with /lovable-uploads, use it as is
+    if (url.startsWith('/lovable-uploads')) {
+      return url;
+    }
+    // If it's an absolute URL, extract the path after lovable-uploads
+    if (url.includes('lovable-uploads')) {
+      const match = url.match(/\/lovable-uploads\/.*$/);
+      return match ? match[0] : url;
+    }
+    return url;
+  };
+
   console.log('Rendering image:', { alt, imageUrl });
   return imageUrl ? (
     <img
-      src={imageUrl}
+      src={processImageUrl(imageUrl)}
       alt={alt}
       className="w-full aspect-video object-cover rounded-lg my-8"
       onError={(e) => {
