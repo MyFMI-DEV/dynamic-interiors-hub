@@ -2,24 +2,23 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Article } from "@/lib/articleUtils";
-import { useArticleImage } from "@/hooks/useArticleImage";
+import { getRelevantImage } from "@/utils/imageUtils";
 
 interface ArticleCardProps {
   article: Article;
 }
 
 export const ArticleCard = ({ article }: ArticleCardProps) => {
-  const { data: imageSrc } = useArticleImage(
-    article.id,
-    article.title + ' ' + article.meta_description
-  );
+  const getDefaultImage = (article: Article) => {
+    return getRelevantImage(article.title + ' ' + article.meta_description);
+  };
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200">
       <Link to={`/articles/${article.slug}`} className="block">
         <AspectRatio ratio={16/9} className="bg-muted">
           <img 
-            src={article.image_url || imageSrc} 
+            src={article.image_url || getDefaultImage(article)} 
             alt={article.title}
             className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
           />
