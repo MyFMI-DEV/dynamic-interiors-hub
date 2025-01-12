@@ -11,8 +11,26 @@ export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
 
-  // Default fallback image from Unsplash
-  const fallbackImage = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800";
+  // Collection of relevant interior design images from Unsplash
+  const defaultImages = {
+    living: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800",
+    kitchen: "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=80&w=800",
+    bedroom: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=800",
+    bathroom: "https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=800",
+    office: "https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?q=80&w=800",
+    default: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800"
+  };
+
+  // Select relevant image based on alt text content
+  const getFallbackImage = (altText: string) => {
+    const text = altText.toLowerCase();
+    if (text.includes('living')) return defaultImages.living;
+    if (text.includes('kitchen')) return defaultImages.kitchen;
+    if (text.includes('bedroom')) return defaultImages.bedroom;
+    if (text.includes('bathroom')) return defaultImages.bathroom;
+    if (text.includes('office')) return defaultImages.office;
+    return defaultImages.default;
+  };
 
   if (isLoading) {
     return (
@@ -24,17 +42,17 @@ export const ArticleImage = ({ alt, articleId }: ArticleImageProps) => {
 
   return (
     <img
-      src={alt || fallbackImage}
+      src={alt || getFallbackImage(alt)}
       alt="Interior design"
       className="w-full aspect-video object-cover rounded-lg my-8"
       onLoad={() => setIsLoading(false)}
       onError={(e) => {
         console.error('Image failed to load:', alt);
         setIsLoading(false);
-        (e.target as HTMLImageElement).src = fallbackImage;
+        (e.target as HTMLImageElement).src = getFallbackImage(alt);
         toast({
           title: "Using fallback image",
-          description: "The original image couldn't be loaded. Using a default image instead.",
+          description: "The original image couldn't be loaded. Using a relevant default image instead.",
           variant: "destructive",
         });
       }}
