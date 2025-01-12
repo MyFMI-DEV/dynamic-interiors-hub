@@ -1,5 +1,4 @@
 import { createArticle, CreateArticleData } from "../lib/createArticle";
-import { defaultImages } from "@/utils/imageUtils";
 
 const articleData: CreateArticleData = {
   title: "Best Color Palettes for Modern Interiors",
@@ -18,25 +17,26 @@ const articleData: CreateArticleData = {
 <p>As we approach 2025, color trends in interior design are blossoming like a spring garden. Rich, warm shades like burgundy and dark green will take center stage, complemented by grounding earth tones.</p>
 
 <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.modern}" alt="Modern interior with warm earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
+<img src="/lovable-uploads/72684d42-3b44-420d-9ee9-d71df69c29ff.png" alt="Modern interior with warm earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
 </div>
 
 <h2>The Rise of Warm Earth Tones</h2>
 <p>Warm earth tones are creating waves in modern interior design, with chocolate brown leading the charge. This rich color brings a sense of comfort, making it an ideal choice for living spaces.</p>
 
 <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.living}" alt="Living room with earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
+<img src="/lovable-uploads/fb800d5b-4e40-44d5-9188-41cce11bbaf1.png" alt="Living room with earth tones" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
 </div>
 
 <h2>Sophisticated Greens: From Seafoam to Verdant</h2>
 <p>Greens, especially dark verdant shades, are emerging as sophisticated choices for modern interiors. These colors add depth and warmth to spaces, making them ideal for walls, ceilings, and even floors.</p>
 
 <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-<img src="${defaultImages.minimalist}" alt="Minimalist space with green accents" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
+<img src="/lovable-uploads/42ffcb97-aa24-47f0-834e-33757c6f5cae.png" alt="Minimalist space with green accents" style="width: 100%; aspect-ratio: 16/9; object-fit: cover;">
 </div>`,
   metaTitle: "Best Color Palettes for Modern Interiors 2025 | Interior Design Guide",
   metaDescription: "Discover the top color trends for 2025 interior design. Learn how to incorporate warm earth tones, sophisticated greens, and vibrant accents in your modern home.",
   slug: "best-color-palettes-modern-interiors-2025",
+  imageUrl: "/lovable-uploads/72684d42-3b44-420d-9ee9-d71df69c29ff.png",
   categories: ["Interior Design", "Color Schemes", "Modern Design"],
   locations: ["United Kingdom"],
   faqs: [
@@ -55,10 +55,9 @@ const articleData: CreateArticleData = {
   ]
 };
 
-// Function to run the article creation
 async function runArticleCreation() {
+  console.log('Starting article creation process...');
   try {
-    console.log('Starting article creation process...');
     const article = await createArticle(articleData);
     console.log('Article created successfully:', article);
     process.exit(0);
@@ -69,4 +68,8 @@ async function runArticleCreation() {
 }
 
 // Run the creation process
-runArticleCreation();
+console.log('Running the script...');
+runArticleCreation().catch(error => {
+  console.error('Unexpected error:', error);
+  process.exit(1);
+});
