@@ -15,25 +15,92 @@ export const defaultImages = {
   default: "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?q=80&w=800"
 };
 
+// Keep track of used images to ensure uniqueness
+const usedImages = new Set<string>();
+
+// Keywords mapping for better relevance matching
+const keywordMap: Record<string, string[]> = {
+  living: ['living room', 'lounge', 'sitting room', 'family room', 'salon'],
+  kitchen: ['kitchen', 'cooking', 'culinary', 'dining'],
+  bedroom: ['bedroom', 'sleeping', 'bed', 'master'],
+  bathroom: ['bathroom', 'bath', 'shower', 'washroom', 'toilet'],
+  office: ['office', 'study', 'work', 'desk', 'workspace'],
+  dining: ['dining', 'eating', 'dinner', 'breakfast'],
+  garden: ['garden', 'outdoor', 'patio', 'landscape'],
+  modern: ['modern', 'contemporary', 'minimal'],
+  traditional: ['traditional', 'classic', 'vintage', 'rustic'],
+  minimalist: ['minimalist', 'minimal', 'simple', 'clean']
+};
+
+/**
+ * Find the most relevant category based on text content
+ */
+const findBestMatch = (text: string): string => {
+  const normalizedText = text.toLowerCase();
+  let bestMatch = 'default';
+  let maxMatches = 0;
+
+  Object.entries(keywordMap).forEach(([category, keywords]) => {
+    const matches = keywords.filter(keyword => normalizedText.includes(keyword)).length;
+    if (matches > maxMatches) {
+      maxMatches = matches;
+      bestMatch = category;
+    }
+  });
+
+  return bestMatch;
+};
+
+/**
+ * Get available images for a category that haven't been used
+ */
+const getAvailableImages = (category: string): string[] => {
+  const allImages = Object.entries(defaultImages)
+    .filter(([key, url]) => key !== 'default' && !usedImages.has(url))
+    .map(([_, url]) => url);
+
+  if (allImages.length === 0) {
+    // If all images have been used, reset the tracking
+    usedImages.clear();
+    return Object.values(defaultImages).filter(url => url !== defaultImages.default);
+  }
+
+  return allImages;
+};
+
 /**
  * Select relevant image based on content keywords
  */
 export const getRelevantImage = (text: string): string => {
-  const keywords = text.toLowerCase();
+  console.log('Getting relevant image for:', text);
   
-  if (keywords.includes('living')) return defaultImages.living;
-  if (keywords.includes('kitchen')) return defaultImages.kitchen;
-  if (keywords.includes('bedroom')) return defaultImages.bedroom;
-  if (keywords.includes('bathroom')) return defaultImages.bathroom;
-  if (keywords.includes('office')) return defaultImages.office;
-  if (keywords.includes('dining')) return defaultImages.dining;
-  if (keywords.includes('garden')) return defaultImages.garden;
-  if (keywords.includes('modern')) return defaultImages.modern;
-  if (keywords.includes('traditional')) return defaultImages.traditional;
-  if (keywords.includes('minimalist')) return defaultImages.minimalist;
+  if (!text) {
+    console.log('No text provided, using default image');
+    return defaultImages.default;
+  }
+
+  const category = findBestMatch(text);
+  console.log('Best matching category:', category);
+
+  const availableImages = getAvailableImages(category);
   
-  // If no specific match is found, return a random image
-  const images = Object.values(defaultImages);
-  const randomIndex = Math.floor(Math.random() * (images.length - 1)); // -1 to exclude default
-  return images[randomIndex];
+  // If we have a direct category match and it's available, use it
+  const categoryImage = defaultImages[category as keyof typeof defaultImages];
+  if (categoryImage && !usedImages.has(categoryImage)) {
+    usedImages.add(categoryImage);
+    console.log('Using category-specific image:', categoryImage);
+    return categoryImage;
+  }
+
+  // Otherwise, select a random available image
+  if (availableImages.length > 0) {
+    const randomIndex = Math.floor(Math.random() * availableImages.length);
+    const selectedImage = availableImages[randomIndex];
+    usedImages.add(selectedImage);
+    console.log('Using random available image:', selectedImage);
+    return selectedImage;
+  }
+
+  console.log('No suitable images found, using default');
+  return defaultImages.default;
 };
