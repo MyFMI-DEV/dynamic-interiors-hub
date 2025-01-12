@@ -1,5 +1,4 @@
 import { createArticle } from "../lib/createArticle";
-import { defaultImages } from "@/utils/imageUtils";
 
 const articleData = {
   title: "Best Color Palettes for Modern Interiors",
@@ -30,27 +29,7 @@ const articleData = {
 <div class="article-image-wrapper" data-image-alt="Minimalist interior with green accents" data-article-id="color-palettes-2025"></div>
 
 <h2>The 60-30-10 Rule in Modern Color Palettes</h2>
-<p>The 60-30-10 rule is a widely used guideline in interior design, suggesting that 60% of a space should be a dominant color, 30% a secondary color, and 10% an accent color. This rule helps create a harmonious balance and enhances the visual appeal of any room.</p>
-
-<div class="minimalist-chart-container">
-    <div class="div-container">
-        <h2>Application of the 60-30-10 Rule</h2>
-    </div>
-    <div class="minimalist-chart">
-        <div class="chart-column">
-            <div class="bar2" style="height: 60%;" data-value="60"></div>
-            <div class="bar-label">Dominant Color</div>
-        </div>
-        <div class="chart-column">
-            <div class="bar" style="height: 30%;" data-value="30"></div>
-            <div class="bar-label">Secondary Color</div>
-        </div>
-        <div class="chart-column">
-            <div class="bar2" style="height: 10%;" data-value="10"></div>
-            <div class="bar-label">Accent Color</div>
-        </div>
-    </div>
-</div>`,
+<p>The 60-30-10 rule is a widely used guideline in interior design, suggesting that 60% of a space should be a dominant color, 30% a secondary color, and 10% an accent color. This rule helps create a harmonious balance and enhances the visual appeal of any room.</p>`,
   metaTitle: "Best Color Palettes for Modern Interiors 2025 | Interior Design Guide",
   metaDescription: "Discover the top color trends for 2025, from warm earth tones to sophisticated greens. Learn how to create harmonious color schemes using the 60-30-10 rule.",
   slug: "best-color-palettes-modern-interiors-2025",
@@ -68,14 +47,6 @@ const articleData = {
     {
       question: "What are some timeless color combinations for a modern home?",
       answer: "Combinations like navy with white, grey with mustard, and earthy tones with greens create lasting appeal."
-    },
-    {
-      question: "How does lighting affect color choices in interior design?",
-      answer: "Lighting can change the perception of color; natural light enhances warm tones while artificial light can alter their appearance."
-    },
-    {
-      question: "Can I mix different color palettes in an open-plan living space?",
-      answer: "Yes, mixing color palettes can be effective; use a common color to tie areas together for cohesion."
     }
   ]
 };
