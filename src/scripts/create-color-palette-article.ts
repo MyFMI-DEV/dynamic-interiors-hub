@@ -58,8 +58,19 @@ const articleData: CreateArticleData = {
 async function runArticleCreation() {
   console.log('Starting article creation process...');
   try {
+    console.log('Creating article with data:', {
+      title: articleData.title,
+      slug: articleData.slug,
+      categories: articleData.categories,
+      locations: articleData.locations
+    });
+    
     const article = await createArticle(articleData);
-    console.log('Article created successfully:', article);
+    console.log('Article created successfully:', {
+      id: article.id,
+      title: article.title,
+      slug: article.slug
+    });
     process.exit(0);
   } catch (error) {
     console.error('Failed to create article:', error);
@@ -68,7 +79,7 @@ async function runArticleCreation() {
 }
 
 // Run the creation process
-console.log('Running the script...');
+console.log('Initializing script execution...');
 runArticleCreation().catch(error => {
   console.error('Unexpected error:', error);
   process.exit(1);
